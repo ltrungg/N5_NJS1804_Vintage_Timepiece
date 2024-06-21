@@ -1,0 +1,361 @@
+<html:class="{ 'theme-dark' : dark }" x-data="data()" lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vintage Timepiece</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://cdn.jsdelivr.net/npm/pagedone@1.1.2/src/css/pagedone.css"/>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pagedone@1.1.2/src/js/pagedone.js"></script>
+    </head>                                          
+        <style>
+        .swiper-wrapper {
+            height: max-content !important;
+           
+            width: max-content;
+        }
+
+        .swiper-button-prev:after,
+        .swiper-rtl .swiper-button-next:after {
+            content: "" !important;
+        }
+
+        .swiper-button-next:after,
+        .swiper-rtl .swiper-button-prev:after {
+            content: "" !important;
+
+        }
+
+        .product-thumb .swiper-slide.swiper-slide-thumb-active>.slide\:border-indigo-600 {
+            --tw-border-opacity: 1;
+            border-color: rgb(79 70 229 / var(--tw-border-opacity));
+        }
+    </style>
+<body>
+    <nav class="h-16 w-screen flex flex-row justify-between border-b border-[#7d7d7d] mb-8">
+            <div class="hidden md:flex w-full items-center justify-center ml-4 gap-4 text-sm lg:text-lg">
+                <a href="#"
+                    class="w-max text-center font-bold ease-in-out duration-100 hover:text-[#565656] relative menuItem">PURCHASE</a>
+                <a href="#"
+                    class="w-max text-center font-bold ease-in-out duration-100 hover:text-[#565656] relative menuItem">SELL</a>
+                <a href="#"
+                    class="w-max text-center font-bold ease-in-out duration-100 hover:text-[#565656] relative menuItem">ABOUT</a>
+                <a href="#"
+                    class="w-max text-center font-bold ease-in-out duration-100 hover:text-[#565656] relative menuItem">CONTACT</a>
+            </div>
+               <div class="flex md:hidden w-full items-center justify-start ml-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z"></path>
+                </svg>
+            </div>
+
+            <a href="/" class="min-w-fit w-full flex items-center justify-center gap-2 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#000">
+                    <path
+                        d="M4 2H20V6.45994L13.5366 12L20 17.5401V22H4V17.5401L10.4634 12L4 6.45994V2ZM16.2967 7L18 5.54007V4H6V5.54007L7.70326 7H16.2967ZM12 13.3171L6 18.4599V20H7L12 17L17 20H18V18.4599L12 13.3171Z">
+                    </path>
+                </svg>
+                <p class="min-w-fit text-2xl text-black">VINTAGE TIMEPIECE</p>
+            </a>
+
+            <div class="w-full flex items-center justify-end gap-4 mr-16">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path
+                        d="M20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM19 20V4H5V20H19ZM8 9H16V11H8V9ZM8 13H16V15H8V13Z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path
+                        d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM6.00436 7.00265V13.0027H17.5163L19.3163 7.00265H6.00436ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path
+                        d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z">
+                    </path>
+                </svg>
+            </div>
+            </nav>
+
+ <section class="py-10 lg:py-24 relative ">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="pro-detail w-full flex flex-col justify-center order-last lg:order-none max-lg:max-w-[608px] max-lg:mx-auto">
+                    <p class="font-medium text-lg text-indigo-600 mb-4">Travel &nbsp; / &nbsp; Menswear</p>
+                    <h2 class="mb-2 font-manrope font-bold text-3xl leading-10 text-gray-900">Yellow Summer Travel Bag
+                    </h2>
+                    <div class="flex flex-col sm:flex-row sm:items-center mb-6">
+                        <h6
+                            class="font-manrope font-semibold text-2xl leading-9 text-gray-900 pr-5 sm:border-r border-gray-200 mr-5">
+                            $220</h6>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_12029_1640)">
+                                        <path
+                                            d="M9.10326 2.31699C9.47008 1.57374 10.5299 1.57374 10.8967 2.31699L12.7063 5.98347C12.8519 6.27862 13.1335 6.48319 13.4592 6.53051L17.5054 7.11846C18.3256 7.23765 18.6531 8.24562 18.0596 8.82416L15.1318 11.6781C14.8961 11.9079 14.7885 12.2389 14.8442 12.5632L15.5353 16.5931C15.6754 17.41 14.818 18.033 14.0844 17.6473L10.4653 15.7446C10.174 15.5915 9.82598 15.5915 9.53466 15.7446L5.91562 17.6473C5.18199 18.033 4.32456 17.41 4.46467 16.5931L5.15585 12.5632C5.21148 12.2389 5.10393 11.9079 4.86825 11.6781L1.94038 8.82416C1.34687 8.24562 1.67438 7.23765 2.4946 7.11846L6.54081 6.53051C6.86652 6.48319 7.14808 6.27862 7.29374 5.98347L9.10326 2.31699Z"
+                                            fill="#FBBF24" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_12029_1640">
+                                            <rect width="20" height="20" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_12029_1640)">
+                                        <path
+                                            d="M9.10326 2.31699C9.47008 1.57374 10.5299 1.57374 10.8967 2.31699L12.7063 5.98347C12.8519 6.27862 13.1335 6.48319 13.4592 6.53051L17.5054 7.11846C18.3256 7.23765 18.6531 8.24562 18.0596 8.82416L15.1318 11.6781C14.8961 11.9079 14.7885 12.2389 14.8442 12.5632L15.5353 16.5931C15.6754 17.41 14.818 18.033 14.0844 17.6473L10.4653 15.7446C10.174 15.5915 9.82598 15.5915 9.53466 15.7446L5.91562 17.6473C5.18199 18.033 4.32456 17.41 4.46467 16.5931L5.15585 12.5632C5.21148 12.2389 5.10393 11.9079 4.86825 11.6781L1.94038 8.82416C1.34687 8.24562 1.67438 7.23765 2.4946 7.11846L6.54081 6.53051C6.86652 6.48319 7.14808 6.27862 7.29374 5.98347L9.10326 2.31699Z"
+                                            fill="#FBBF24" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_12029_1640">
+                                            <rect width="20" height="20" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_12029_1640)">
+                                        <path
+                                            d="M9.10326 2.31699C9.47008 1.57374 10.5299 1.57374 10.8967 2.31699L12.7063 5.98347C12.8519 6.27862 13.1335 6.48319 13.4592 6.53051L17.5054 7.11846C18.3256 7.23765 18.6531 8.24562 18.0596 8.82416L15.1318 11.6781C14.8961 11.9079 14.7885 12.2389 14.8442 12.5632L15.5353 16.5931C15.6754 17.41 14.818 18.033 14.0844 17.6473L10.4653 15.7446C10.174 15.5915 9.82598 15.5915 9.53466 15.7446L5.91562 17.6473C5.18199 18.033 4.32456 17.41 4.46467 16.5931L5.15585 12.5632C5.21148 12.2389 5.10393 11.9079 4.86825 11.6781L1.94038 8.82416C1.34687 8.24562 1.67438 7.23765 2.4946 7.11846L6.54081 6.53051C6.86652 6.48319 7.14808 6.27862 7.29374 5.98347L9.10326 2.31699Z"
+                                            fill="#FBBF24" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_12029_1640">
+                                            <rect width="20" height="20" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_12029_1640)">
+                                        <path
+                                            d="M9.10326 2.31699C9.47008 1.57374 10.5299 1.57374 10.8967 2.31699L12.7063 5.98347C12.8519 6.27862 13.1335 6.48319 13.4592 6.53051L17.5054 7.11846C18.3256 7.23765 18.6531 8.24562 18.0596 8.82416L15.1318 11.6781C14.8961 11.9079 14.7885 12.2389 14.8442 12.5632L15.5353 16.5931C15.6754 17.41 14.818 18.033 14.0844 17.6473L10.4653 15.7446C10.174 15.5915 9.82598 15.5915 9.53466 15.7446L5.91562 17.6473C5.18199 18.033 4.32456 17.41 4.46467 16.5931L5.15585 12.5632C5.21148 12.2389 5.10393 11.9079 4.86825 11.6781L1.94038 8.82416C1.34687 8.24562 1.67438 7.23765 2.4946 7.11846L6.54081 6.53051C6.86652 6.48319 7.14808 6.27862 7.29374 5.98347L9.10326 2.31699Z"
+                                            fill="#FBBF24" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_12029_1640">
+                                            <rect width="20" height="20" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_8480_66029)">
+                                        <path
+                                            d="M9.10326 2.31699C9.47008 1.57374 10.5299 1.57374 10.8967 2.31699L12.7063 5.98347C12.8519 6.27862 13.1335 6.48319 13.4592 6.53051L17.5054 7.11846C18.3256 7.23765 18.6531 8.24562 18.0596 8.82416L15.1318 11.6781C14.8961 11.9079 14.7885 12.2389 14.8442 12.5632L15.5353 16.5931C15.6754 17.41 14.818 18.033 14.0844 17.6473L10.4653 15.7446C10.174 15.5915 9.82598 15.5915 9.53466 15.7446L5.91562 17.6473C5.18199 18.033 4.32456 17.41 4.46467 16.5931L5.15585 12.5632C5.21148 12.2389 5.10393 11.9079 4.86825 11.6781L1.94038 8.82416C1.34687 8.24562 1.67438 7.23765 2.4946 7.11846L6.54081 6.53051C6.86652 6.48319 7.14808 6.27862 7.29374 5.98347L9.10326 2.31699Z"
+                                            fill="#F3F4F6" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_8480_66029">
+                                            <rect width="20" height="20" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+
+                            </div>
+                            <span class="pl-2 font-normal leading-7 text-gray-500 text-sm ">1624 review</span>
+                        </div>
+
+                    </div>
+                    <p class="text-gray-500 text-base font-normal mb-8 ">
+                        the perfect companion for your next adventure! Embrace the spirit of sunny escapades with this
+                        vibrant and versatile bag designed to cater to your travel needs while adding a pop of color to
+                        your journey.
+                    </p>
+                    <div class="block w-full">
+                        <p class="font-medium text-lg leading-8 text-gray-900 mb-4">Bag Color</p>
+                        <div class="text">
+                            <div class="flex items-center justify-start gap-3 md:gap-6 relative mb-6 ">
+                                <button data-ui="checked active"
+                                    class="p-2.5 border border-gray-200 rounded-full transition-all duration-300 hover:border-emerald-500 :border-emerald-500">
+                                    <svg width="20" height="20" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="20" cy="20" r="20" fill="#10B981" />
+                                    </svg>
+                                </button>
+                                <button
+                                    class="p-2.5 border border-gray-200 rounded-full transition-all duration-300 hover:border-amber-400 focus-within:border-amber-400">
+                                    <svg width="20" height="20" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="20" cy="20" r="20" fill="#FBBF24" />
+                                    </svg>
+
+                                </button>
+                                <button
+                                    class="p-2.5 border border-gray-200 rounded-full transition-all duration-300 hover:border-red-500 focus-within:border-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 40 40"
+                                        fill="none">
+                                        <circle cx="20" cy="20" r="20" fill="#F43F5E" />
+                                    </svg>
+                                </button>
+                                <button
+                                    class="p-2.5 border border-gray-200 rounded-full  transition-all duration-300 hover:border-blue-400 focus-within:border-blue-400">
+                                    <svg width="20" height="20" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="20" cy="20" r="20" fill="#2563EB" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                            <div class="block w-full mb-6">
+                                <p class="font-medium text-lg leading-8 text-gray-900 mb-4">Bag size</p>
+                                <div class="grid grid-cols-2 min-[400px]:grid-cols-3 gap-3">
+                                    <button
+                                        class="border border-gray-200 text-gray-900 text-lg py-2 rounded-full px-1.5 sm:px-6 w-full font-semibold whitespace-nowrap shadow-sm shadow-transparent transition-all duration-300 hover:shadow-gray-300 hover:bg-gray-50 hover:border-gray-300">56
+                                        cm (S)</button>
+                                    <button
+                                        class="border border-gray-200 text-gray-900 text-lg py-2 rounded-full px-1.5 sm:px-6 w-full font-semibold whitespace-nowrap shadow-sm shadow-transparent transition-all duration-300 hover:shadow-gray-300 hover:bg-gray-50 hover:border-gray-300">67
+                                        cm (M)</button>
+                                    <button
+                                        class="border border-gray-200 text-gray-900 text-lg py-2 rounded-full px-1.5 sm:px-6 w-full font-semibold whitespace-nowrap shadow-sm shadow-transparent transition-all duration-300 hover:shadow-gray-300 hover:bg-gray-50 hover:border-gray-300">77
+                                        cm (L)</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                                <div class="flex items-center justify-center w-full">
+                                    <button
+                                        class="group py-4 px-6 border border-gray-400 rounded-l-full shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-300 hover:bg-gray-50">
+                                        <svg class="stroke-gray-700 transition-all duration-500 group-hover:stroke-black"
+                                            width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16.5 11H5.5" stroke="" stroke-width="1.6"
+                                                stroke-linecap="round" />
+                                            <path d="M16.5 11H5.5" stroke="" stroke-opacity="0.2" stroke-width="1.6"
+                                                stroke-linecap="round" />
+                                            <path d="M16.5 11H5.5" stroke="" stroke-opacity="0.2" stroke-width="1.6"
+                                                stroke-linecap="round" />
+                                        </svg>
+                                    </button>
+                                    <input type="text"
+                                        class="font-semibold text-gray-900 text-lg py-[13px] px-6 w-full lg:max-w-[118px] border-y border-gray-400 bg-transparent placeholder:text-gray-900 text-center hover:bg-gray-50 focus-within:bg-gray-50 outline-0"
+                                        placeholder="1">
+                                    <button
+                                        class="group py-4 px-6 border border-gray-400 rounded-r-full shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-300 hover:bg-gray-50">
+                                        <svg class="stroke-gray-700 transition-all duration-500 group-hover:stroke-black"
+                                            width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" stroke-width="1.6"
+                                                stroke-linecap="round" />
+                                            <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" stroke-opacity="0.2"
+                                                stroke-width="1.6" stroke-linecap="round" />
+                                            <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" stroke-opacity="0.2"
+                                                stroke-width="1.6" stroke-linecap="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button
+                                    class="group py-4 px-5 rounded-full bg-indigo-50 text-indigo-600 font-semibold text-lg w-full flex items-center justify-center gap-2 shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100 hover:shadow-indigo-200">
+                                    <svg class="stroke-indigo-600 transition-all duration-500" width="22" height="22"
+                                        viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.7394 17.875C10.7394 18.6344 10.1062 19.25 9.32511 19.25C8.54402 19.25 7.91083 18.6344 7.91083 17.875M16.3965 17.875C16.3965 18.6344 15.7633 19.25 14.9823 19.25C14.2012 19.25 13.568 18.6344 13.568 17.875M4.1394 5.5L5.46568 12.5908C5.73339 14.0221 5.86724 14.7377 6.37649 15.1605C6.88573 15.5833 7.61377 15.5833 9.06984 15.5833H15.2379C16.6941 15.5833 17.4222 15.5833 17.9314 15.1605C18.4407 14.7376 18.5745 14.0219 18.8421 12.5906L19.3564 9.84059C19.7324 7.82973 19.9203 6.8243 19.3705 6.16215C18.8207 5.5 17.7979 5.5 15.7522 5.5H4.1394ZM4.1394 5.5L3.66797 2.75"
+                                            stroke="" stroke-width="1.6" stroke-linecap="round" />
+                                    </svg>
+                                    Add to cart</button>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button
+                                    class="group transition-all duration-500 p-4 rounded-full bg-indigo-50 hover:bg-indigo-100 hover:shadow-sm hover:shadow-indigo-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"
+                                        fill="none">
+                                        <path
+                                            d="M4.47084 14.3196L13.0281 22.7501L21.9599 13.9506M13.0034 5.07888C15.4786 2.64037 19.5008 2.64037 21.976 5.07888C24.4511 7.5254 24.4511 11.4799 21.9841 13.9265M12.9956 5.07888C10.5204 2.64037 6.49824 2.64037 4.02307 5.07888C1.54789 7.51738 1.54789 11.4799 4.02307 13.9184M4.02307 13.9184L4.04407 13.939M4.02307 13.9184L4.46274 14.3115"
+                                            stroke="#4F46E5" stroke-width="1.6" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+
+                                </button>
+                                <button
+                                    class="text-center w-full px-5 py-4 rounded-[100px] bg-indigo-600 flex items-center justify-center font-semibold text-lg text-white shadow-sm transition-all duration-500 hover:bg-indigo-700 hover:shadow-indigo-400">
+                                    Buy Now
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                {{!-- </div>
+                <div class="">
+                    <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+                        class="swiper product-prev mb-6">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1700471851.png"
+                                    alt="Yellow Travel Bag image" class="mx-auto">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1711514857.png"
+                                    alt="Yellow Travel Bag image" class="mx-auto">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1711514875.png"
+                                    alt="Yellow Travel Bag image" class="mx-auto">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1711514892.png"
+                                    alt="Yellow Travel Bag image" class="mx-auto">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div thumbsSlider="" class="swiper product-thumb max-w-[608px] mx-auto">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1700471871.png" alt="Travel Bag image"
+                                    class=" cursor-pointer border-2 border-gray-50 transition-all duration-500 hover:border-indigo-600 slide:border-indigo-600">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1711514930.png" alt="Travel Bag image"
+                                    class=" cursor-pointer border-2 border-gray-50 transition-all duration-500 hover:border-indigo-600 slide:border-indigo-600">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1700471908.png" alt="Travel Bag image"
+                                    class=" cursor-pointer border-2 border-gray-50 transition-all duration-500 hover:border-indigo-600 slide:border-indigo-600">
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://pagedone.io/asset/uploads/1700471925.png" alt="Travel Bag image"
+                                    class=" cursor-pointer border-2 border-gray-50 transition-all duration-500 hover:border-indigo-600 slide:border-indigo-600">
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+
+
+            </div>
+        </div>
+    </section>
+
+<script>
+        var swiper = new Swiper(".product-thumb", {
+            loop: true,
+            spaceBetween: 12,
+            slidesPerView: 4,
+            
+            freeMode: true,
+            watchSlidesProgress: true,
+           
+        });
+        var swiper2 = new Swiper(".product-prev", {
+            loop: true,
+            spaceBetween: 32,
+            effect: "fade",
+           
+            thumbs: {
+                swiper: swiper,
+            },
+            
+        });
+    </script>
+    </body>
+   </html>

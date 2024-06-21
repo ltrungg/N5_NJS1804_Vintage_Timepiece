@@ -1,0 +1,98 @@
+/*
+.signin-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+  }
+  
+  .signin-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 1rem;
+  }
+  
+  .signin-form {
+    width: 24rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .signin-form .ant-input,
+  .signin-form .ant-input-password {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .signin-form .ant-input:focus,
+  .signin-form .ant-input-password:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .signin-form .ant-checkbox-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .signin-form button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .signin-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .signin-divider {
+    text-align: center;
+    color: #888;
+  }
+  
+  .signin-divider p {
+    color: #888;
+  }
+  
+  .signin-google-login {
+    width: 100%;
+  }
+  
+  .signin-forgot-password {
+    text-align: right;
+    margin-top: 0.5rem;
+  }
+  
+  .signin-forgot-password button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .signin-forgot-password button:hover {
+    color: #0056b3;
+  }
+   */

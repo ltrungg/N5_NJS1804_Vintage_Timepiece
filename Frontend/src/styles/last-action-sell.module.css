@@ -1,0 +1,77 @@
+ .bodyLast {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.containerLast {
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  margin-top: 100px;
+}
+
+.timelineSectionLast {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.detailsSectionLast {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.h2Last,
+.h3Last {
+  margin-top: 0;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.pLast {
+  margin: 10px 0;
+}
+
+.statusLast {
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.completeLast {
+  color: green;
+}
+
+.inProgressLast {
+  color: orange;
+}
+
+.pending {
+  color: gray;
+}
+
+.buttonLast {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 4px 8px;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.buttonLast:hover {
+  background-color: #333333;
+} 
+

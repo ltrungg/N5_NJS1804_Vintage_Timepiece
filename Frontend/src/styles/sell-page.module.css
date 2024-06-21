@@ -1,0 +1,66 @@
+/* Container Styles */
+.contentHome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Inner Content Styles */
+.contentInner {
+  background: #f5f5f5; /* Background color */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding */
+  max-width: 800px; /* Max width */
+  width: 100%; /* Full width */
+  box-sizing: border-box; /* Include padding in width */
+
+}
+
+/* Form Group Styles */
+.formGroup {
+  margin-bottom: 20px;
+}
+
+/* Input Styles */
+.antInput {
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Checkbox Styles */
+.ant-checkbox-wrapper {
+  margin-right: 8px;
+}
+
+/* Button Styles */
+.ant-btn-primary {
+  background-color: #1890ff; /* Primary button color */
+  border-color: #1890ff; /* Primary button border color */
+}
+
+.ant-btn-primary:hover {
+  background-color: #40a9ff; /* Hover color */
+}
+
+.submitButton,
+.backButton {
+  width: 25%; /* Độ rộng tự động để vừa với nội dung */
+}
+
+.backButton {
+  margin-right: auto; /* Đẩy nút back về bên trái */
+}
+
+.submitButton {
+  margin-left: auto; /* Đẩy nút submit về bên phải */
+}
+
+/* Radio Button Styles */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.radioOption {
+  margin-bottom: 8px;
+}

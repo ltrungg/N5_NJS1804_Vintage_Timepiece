@@ -1,0 +1,42 @@
+/*
+.brand-form{
+
+    text-align: center;
+    margin-top: 20px;
+}
+
+h2{
+    margin-bottom: 10px;
+    
+}
+
+.search-form{
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.input-form{
+    width: 300px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.logo-form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.onclick-form{
+    cursor: pointer;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.image-form{
+    width: 100px;
+    height: 100px;
+}
