@@ -56,3 +56,20 @@ The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize 
 ## Sprint 2: Incoming...
 
 
+## User Stories
+
+| User Story | Actor                     | Function                  | Description                                                                                                                                                  |
+|------------|---------------------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| US-01      | Seller                    | Interact with Appraisers  | Sellers can request evaluations from professional appraisers and receive feedback, which can be used to adjust the listing price and provide potential buyers with assurance of the watch’s value and authenticity. |
+| US-02      | Seller                    | Manage Listings           | Sellers have the ability to update their watch listings, including changing descriptions, adjusting prices, or removing the listing if the watch is sold or withdrawn from sale, ensuring that their listings are always current. |
+| US-03      | Seller                    | Complete Transactions     | Sellers can finalize sales with buyers through the platform’s secure payment system, ensuring both parties complete the transaction safely and reliably. |
+| US-04      | Buyer                     | Browse Listings           | Buyers can search for specific vintage watches using various filters and search capabilities, making it easy to find watches that match their criteria. |
+| US-05      | Buyer                     | Leave Feedback            | After completing transactions, buyers can leave ratings and reviews for sellers and appraisers, which helps improve the community's trust and informs future buyers. |
+| US-06      | Buyer                     | View Appraisals           | Buyers can access detailed appraisal reports for listed watches, providing them with important information about the watch’s authenticity, condition, and market value to make informed purchasing decisions. |
+| US-07      | Appraiser                 | Communicate with Sellers  | Appraisers can communicate directly with sellers to offer advice or feedback on watch listings, including suggestions for price adjustments based on market conditions and the watch’s condition. |
+| US-08      | Appraiser                 | Generate Reports          | Appraisers create detailed reports on the watches they evaluate, including estimations of value, condition notes, and authenticity verification, which are provided to sellers and buyers. |
+| US-09      | Administrator             | User Management           | Administrators oversee the management of user accounts, including the approval of appraisers, conflict resolution between buyers and sellers, and general support, ensuring a smooth and fair experience for all users. |
+| US-10      | Administrator             | Monitor Transactions      | Administrators ensure that all transactions conducted on the platform are fair and secure. They have the authority to intervene in disputes and take necessary actions to resolve issues. |
+| US-11      | Administrator             | Maintain System Security  | Administrators are responsible for implementing and updating security protocols, managing data privacy issues, and handling cybersecurity threats to protect the platform and its users. |
+| US-12      | Customer Support Agent    | Resolve Queries           | Customer Support Agents provide timely support to users facing issues with the platform, transactions, or account settings, ensuring that users have a positive and seamless experience. |
+| US-13      | Customer Support Agent    | Feedback Collection       | Customer Support Agents gather feedback from users to inform future updates and improvements in service delivery, ensuring that the platform evolves to meet user needs effectively. |
