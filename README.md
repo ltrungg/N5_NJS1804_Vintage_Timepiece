@@ -46,8 +46,74 @@ The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize 
 
 ## Work assignment table
 
+## Sprint Plan
+
+### Sprint 1
+Focus on Buyer functionalities.
+
+| Use Case ID | Name                  | Actor |
+|-------------|-----------------------|-------|
+| UC-03       | Browse Listings       | Buyer |
+| UC-04       | View Appraisals       | Buyer |
+| UC-05       | Make Purchases        | Buyer |
+| UC-06       | Leave Feedback        | Buyer |
+| UC-17       | View Purchase History | Buyer |
+| UC-19       | Request Return        | Buyer |
+| UC-21       | Escalate Dispute      | Buyer |
+| UC-25       | View Watch Details    | Buyer |
+| UC-26       | Create Wishlist       | Buyer |
+| UC-27       | Follow Seller         | Buyer |
+| UC-28       | Compare Watches       | Buyer |
+| UC-29       | Offer Price           | Buyer |
+| UC-31       | Track Shipment        | Buyer |
+| UC-32       | Confirm Delivery      | Buyer |
+| UC-34       | Review Purchase       | Buyer |
+| UC-40       | Generate Purchase Report | Buyer |
+
+### Sprint 2
+Focus on Seller functionalities.
+
+| Use Case ID | Name                     | Actor  |
+|-------------|--------------------------|--------|
+| UC-01       | List Items               | Seller |
+| UC-02       | Interact with Appraisers | Seller |
+| UC-18       | View Sales History       | Seller |
+| UC-20       | Approve Return Request   | Seller |
+| UC-30       | Accept Offer             | Seller |
+| UC-35       | Review Sale              | Seller |
+| UC-37       | Issue Refund             | Seller |
+| UC-39       | Generate Sales Report    | Seller |
+
+### Sprint 3
+Focus on Appraiser and Customer Support functionalities.
+
+| Use Case ID | Name                     | Actor                |
+|-------------|--------------------------|----------------------|
+| UC-07       | Conduct Evaluations      | Appraiser            |
+| UC-08       | Generate Reports         | Appraiser            |
+| UC-33       | Verify Authenticity      | Appraiser            |
+| UC-12       | Resolve Queries          | Customer Support Agent |
+| UC-13       | Feedback Collection      | Customer Support Agent |
+| UC-24       | Contact Support          | User                 |
+
+### Sprint 4
+Focus on Administrator and general user functionalities.
+
+| Use Case ID | Name                     | Actor            |
+|-------------|--------------------------|------------------|
+| UC-09       | User Management          | Administrator    |
+| UC-10       | Monitor Transactions     | Administrator    |
+| UC-11       | Maintain System Security | Administrator    |
+| UC-14       | Register Account         | User             |
+| UC-15       | Login                    | User             |
+| UC-16       | Reset Password           | User             |
+| UC-22       | Update Profile Information | User           |
+| UC-23       | Receive Notifications    | User             |
+| UC-36       | Flag Inappropriate Content | User           |
+| UC-38       | Approve New Appraiser    | Administrator    |
+
 ## Sprint 1
-| Name  | Test Case    | Role   |
+| Name  | Use Case     | Role   |
 |-------|--------------|--------|
 | Trung | MA09, MA10   | Leader |
 | Phát  | MA01, MA02   | Member |
