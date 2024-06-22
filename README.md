@@ -56,7 +56,7 @@ Focus on Buyer functionalities.
 | UC-06       | Leave Feedback        | Buyer |
 | UC-17       | View Purchase History | Buyer |
 | UC-19       | Request Return        | Buyer |
-| UC-21       | Escalate Dispute      | Buyer |
+| UC-21       | Report Issue          | Buyer |
 | UC-25       | View Watch Details    | Buyer |
 | UC-26       | Create Wishlist       | Buyer |
 | UC-27       | Follow Seller         | Buyer |
