@@ -1,3 +1,5 @@
+![Vintage Watch](https://www.time4diamonds.com/media/wysiwyg/IMG_4453_1.jpg)
+
 # Vintage Timepiece Evaluation and Trading Platform
 
 ## Overview
