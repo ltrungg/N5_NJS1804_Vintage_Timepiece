@@ -41,3 +41,18 @@ The **Vintage Timepiece Evaluation and Trading Platform** is an integrated onlin
 
 ## Conclusion
 The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize the vintage watch market by providing a comprehensive, user-friendly, and secure platform for all stakeholders. Whether you are a seller looking to list a prized timepiece, a buyer searching for a unique addition to your collection, or an appraiser providing expert evaluations, this platform is designed to meet all your needs efficiently and effectively.
+
+
+## Work assignment table
+
+## Sprint 1
+| Name  | Use Case     | Role   |
+|-------|--------------|--------|
+| Trung | MA09, MA10   | Leader |
+| Phát  | MA01, MA02   | Member |
+| Khiêm | MA03, MA04   | Member |
+| Phong | MA05, MA06   | Member |
+| Nghĩa | MA07, MA08   | Member |
+## Sprint 2: Incoming...
+
+
