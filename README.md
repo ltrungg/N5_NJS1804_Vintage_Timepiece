@@ -46,7 +46,7 @@ The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize 
 ## Work assignment table
 
 ## Sprint 1
-| Name  | Use Case     | Role   |
+| Name  | Test Case    | Role   |
 |-------|--------------|--------|
 | Trung | MA09, MA10   | Leader |
 | Phát  | MA01, MA02   | Member |
