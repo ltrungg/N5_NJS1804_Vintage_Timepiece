@@ -43,9 +43,6 @@ The **Vintage Timepiece Evaluation and Trading Platform** is an integrated onlin
 The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize the vintage watch market by providing a comprehensive, user-friendly, and secure platform for all stakeholders. Whether you are a seller looking to list a prized timepiece, a buyer searching for a unique addition to your collection, or an appraiser providing expert evaluations, this platform is designed to meet all your needs efficiently and effectively.
 
 
-
-## Work assignment table
-
 ## Sprint Plan
 
 ### Sprint 1
@@ -112,16 +109,41 @@ Focus on Administrator and general user functionalities.
 | UC-36       | Flag Inappropriate Content | User           |
 | UC-38       | Approve New Appraiser    | Administrator    |
 
+
+## Work assignment table
 ## Sprint 1
-| Name  | Use Case     | Role   |
-|-------|--------------|--------|
-| Trung | MA09, MA10   | Leader |
-| Phát  | MA01, MA02   | Member |
-| Khiêm | MA03, MA04   | Member |
-| Phong | MA05, MA06   | Member |
-| Nghĩa | MA07, MA08   | Member |
-## Sprint 2: Incoming...
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Trung | UC-03                       | Leader |
+| Phát  | UC-06, UC-17                | Member |
+| Khiêm | UC-21, UC-25                | Member |
+| Phong | UC-27                       | Member |
+| Nghĩa | UC-40, UC-28                | Member |
+## Sprint 2: 
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Trung | UC-05, UC-04                | Leader |
+| Phát  | UC-17, UC-02                | Member |
+| Khiêm | UC-26, UC-20                | Member |
+| Phong | UC-29, UC-31                | Member |
+| Nghĩa | UC-40, UC-01                | Member |
 
+## Sprint 3: 
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Trung | UC-07  UC-35                | Leader |
+| Phát  | UC-08, UC-37                | Member |
+| Khiêm | UC-33, UC-30                        | Member |
+| Phong | UC-12, UC-39                | Member |
+| Nghĩa | UC-13, UC-24                | Member |
 
+## Sprint 4: 
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Trung | UC-09, UC-10                | Leader |
+| Phát  | UC-11, UC-14                | Member |
+| Khiêm | UC-15, UC-16                | Member |
+| Phong | UC-22, UC-23                | Member |
+| Nghĩa | UC-36, UC-38                | Member |
 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
