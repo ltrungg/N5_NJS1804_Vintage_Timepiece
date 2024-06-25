@@ -50,7 +50,7 @@ Focus on Buyer functionalities.
 
 | Use Case ID | Name                  | Actor |
 |-------------|-----------------------|-------|
-| UC-03       | Browse Listings       | Buyer |
+| UC-03       | Search Product        | Buyer |
 | UC-04       | View Appraisals       | Buyer |
 | UC-05       | Make Purchases        | Buyer |
 | UC-06       | Leave Feedback        | Buyer |
@@ -111,15 +111,15 @@ Focus on Administrator and general user functionalities.
 
 
 ## Work assignment table
-## Sprint 1
+## Sprint 1 
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-03                       | Leader |
-| Phát  | UC-06, UC-17                | Member |
-| Khiêm | UC-21, UC-25                | Member |
+| Phát  | UC-16, UC24               | Member |
+| Khiêm | UC-14  UC-15                | Member |
 | Phong | UC-27                       | Member |
 | Nghĩa | UC-40, UC-28                | Member |
-## Sprint 2: 
+## Sprint 2:   
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-05, UC-04                | Leader |
@@ -135,14 +135,14 @@ Focus on Administrator and general user functionalities.
 | Phát  | UC-08, UC-37                | Member |
 | Khiêm | UC-33, UC-30                        | Member |
 | Phong | UC-12, UC-39                | Member |
-| Nghĩa | UC-13, UC-24                | Member |
+| Nghĩa | UC-13, UC-17                | Member |
 
 ## Sprint 4: 
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-09, UC-10                | Leader |
-| Phát  | UC-11, UC-14                | Member |
-| Khiêm | UC-15, UC-16                | Member |
+| Phát  | UC-11, UC-21                | Member |
+| Khiêm | UC-25, UC-06                | Member |
 | Phong | UC-22, UC-23                | Member |
 | Nghĩa | UC-36, UC-38                | Member |
 
