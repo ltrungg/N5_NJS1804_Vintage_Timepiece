@@ -115,10 +115,10 @@ Focus on Administrator and general user functionalities.
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-03                       | Leader |
-| Phát  | UC-16, UC24               | Member |
-| Khiêm | UC-14  UC-15                | Member |
-| Phong | UC-27                       | Member |
-| Nghĩa | UC-40, UC-28                | Member |
+| Phát  | UC-16, UC24                 | Member |
+| Khiêm | UC-14, UC-15                | Member |
+| Phong | UC-01                       | Member |
+| Nghĩa | UC-25                       | Member |
 ## Sprint 2:   
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
@@ -126,7 +126,7 @@ Focus on Administrator and general user functionalities.
 | Phát  | UC-17, UC-02                | Member |
 | Khiêm | UC-26, UC-20                | Member |
 | Phong | UC-29, UC-31                | Member |
-| Nghĩa | UC-40, UC-01                | Member |
+| Nghĩa | UC-40, UC-27, UC-28         | Member |
 
 ## Sprint 3: 
 | Name  | Use Case                    | Role   |
