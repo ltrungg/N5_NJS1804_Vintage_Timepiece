@@ -1,4 +1,4 @@
-/* Container Styles */
+/* 
 .contentHome {
   display: flex;
   justify-content: center;
@@ -6,56 +6,56 @@
   min-height: 100vh;
 }
 
-/* Inner Content Styles */
+
 .contentInner {
-  background: #f5f5f5; /* Background color */
-  border-radius: 8px; /* Rounded corners */
-  padding: 20px; /* Padding */
-  max-width: 800px; /* Max width */
-  width: 100%; /* Full width */
-  box-sizing: border-box; /* Include padding in width */
+  background: #f5f5f5; 
+  border-radius: 8px; 
+  padding: 20px; 
+  max-width: 800px; 
+  width: 100%; 
+  box-sizing: border-box; 
 
 }
 
-/* Form Group Styles */
+
 .formGroup {
   margin-bottom: 20px;
 }
 
-/* Input Styles */
+
 .antInput {
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 4px; 
 }
 
-/* Checkbox Styles */
+
 .ant-checkbox-wrapper {
   margin-right: 8px;
 }
 
-/* Button Styles */
+
 .ant-btn-primary {
-  background-color: #1890ff; /* Primary button color */
-  border-color: #1890ff; /* Primary button border color */
+  background-color: #1890ff; 
+  border-color: #1890ff; 
 }
 
 .ant-btn-primary:hover {
-  background-color: #40a9ff; /* Hover color */
+  background-color: #40a9ff; 
 }
 
 .submitButton,
 .backButton {
-  width: 25%; /* Độ rộng tự động để vừa với nội dung */
+  width: 25%; 
 }
 
 .backButton {
-  margin-right: auto; /* Đẩy nút back về bên trái */
+  margin-right: auto;
 }
 
 .submitButton {
-  margin-left: auto; /* Đẩy nút submit về bên phải */
+  margin-left: auto; 
 }
 
-/* Radio Button Styles */
+
 .radioGroup {
   display: flex;
   flex-direction: column;
@@ -63,4 +63,4 @@
 
 .radioOption {
   margin-bottom: 8px;
-}
+} */

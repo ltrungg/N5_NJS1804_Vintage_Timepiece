@@ -108,7 +108,7 @@ export default function ProductDetailComponent({ product, isInCart }) {
             </div>
             <div className="flex flex-row items-center justify-between flex-[100%] sm:flex-[45%] md:flex-[30%] lg:flex-[20%]">
               <p className="font-bold">Remaining Insurance:</p>
-              <p className="font-light">{product.remainingInsurance}</p>
+              <p className="font-light">{product.remainingInsurance} months</p>
             </div>
             <div className="flex flex-row items-center justify-between flex-[100%] sm:flex-[45%] md:flex-[30%] lg:flex-[20%]">
               <p className="font-bold">Case material:</p>

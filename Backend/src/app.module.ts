@@ -13,6 +13,8 @@ import { ContactService } from './modules/contact/contact.service';
 import { ContactController } from './modules/contact/contact.controller';
 import { OrderModule } from './modules/order/order.module';
 import { OrderItemModule } from './modules/orderItem/orderItem.module';
+import { SellModule } from './modules/sell/sell.module';
+
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { OrderItemModule } from './modules/orderItem/orderItem.module';
     ContactModule,
     OrderModule,
     OrderItemModule,
+    SellModule
   ],
   providers: [ContactService],
   controllers: [ContactController],

@@ -2,8 +2,8 @@ import React from "react";
 
 export default function CompanyFeatures() {
   return (
-    <div className="font-poppins bg-teal-950">
-      <p className="w-full text-center text-white text-[3em] my-8 font-bold">
+    <div className="font-poppins">
+      <p className="w-full text-center text-black text-[3em] my-8 font-bold">
         ABOUT VINTAGE TIMEPIECE
       </p>
       <div className="w-full flex items-center text-center mt-8">

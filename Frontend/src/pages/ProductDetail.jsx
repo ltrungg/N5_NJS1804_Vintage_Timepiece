@@ -37,7 +37,7 @@ export default function ProductDetail() {
   }, []);
 
   return (
-    <div className="min-h-[70vh] flex flex-col items-center gap-16">
+    <div className="min-h-[70vh] flex flex-col items-center gap-16 py-8">
       <ProductDetailComponent product={product} isInCart={isInCart} />
       <RelatedProductList list={relatedProducts} />
     </div>

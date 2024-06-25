@@ -156,6 +156,7 @@ export default function Cart() {
           content: "Your order has been successfully placed.",
           duration: 5,
         });
+        window.location.replace(`/order_completed/${generatedOrderCode}`);
       })
       .catch((err) => {
         console.log(err);
@@ -197,7 +198,7 @@ export default function Cart() {
     );
   } else
     return (
-      <div className="w-full flex items-start justify-center gap-8 px-16">
+      <div className="w-full flex items-start justify-center gap-8 p-16">
         {contextHolder}
         <div className="w-2/3">
           <ShoppingCart
