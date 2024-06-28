@@ -51,63 +51,65 @@ Focus on Buyer functionalities.
 | Use Case ID | Name                  | Actor |
 |-------------|-----------------------|-------|
 | UC-03       | Search Product        | Buyer |
-| UC-04       | View Appraisals       | Buyer |
-| UC-05       | Make Purchases        | Buyer |
-| UC-06       | Leave Feedback        | Buyer |
-| UC-17       | View Purchase History | Buyer |
-| UC-19       | Request Return        | Buyer |
-| UC-21       | Report Issue          | Buyer |
+| UC-01       | List Items            | Buyer |
+| UC-16       | Reset Password           | User             |
+| UC-14       | Register Account         | User             |
+| UC-15       | Login                    | User             |
 | UC-25       | View Watch Details    | Buyer |
-| UC-26       | Create Wishlist       | Buyer |
-| UC-27       | Follow Seller         | Buyer |
-| UC-28       | Compare Watches       | Buyer |
-| UC-29       | Offer Price           | Buyer |
-| UC-31       | Track Shipment        | Buyer |
-| UC-32       | Confirm Delivery      | Buyer |
-| UC-34       | Review Purchase       | Buyer |
-| UC-40       | Generate Purchase Report | Buyer |
+| UC-24       | Contact Support          | User                 |
 
 ### Sprint 2
-Focus on Seller functionalities.
+Focus on Seller and Buyer functionalities.
 
 | Use Case ID | Name                     | Actor  |
 |-------------|--------------------------|--------|
-| UC-01       | List Items               | Seller |
-| UC-02       | Interact with Appraisers | Seller |
+| UC-02       | Interact with Seller | Buyer |
 | UC-18       | View Sales History       | Seller |
+| UC-26       | Create Wishlist       | Buyer |
 | UC-20       | Approve Return Request   | Seller |
-| UC-30       | Accept Offer             | Seller |
 | UC-35       | Review Sale              | Seller |
 | UC-37       | Issue Refund             | Seller |
-| UC-39       | Generate Sales Report    | Seller |
+| UC-22       | Update Profile Information | User           |
+| UC-21       | Report Issue          | Buyer |
+| UC-34       | Review Purchase       | Buyer |
+| UC-06       | Leave Feedback           | Seller |
 
 ### Sprint 3
-Focus on Appraiser and Customer Support functionalities.
+Focus on Appraiser and Buyer functionalities.
 
 | Use Case ID | Name                     | Actor                |
 |-------------|--------------------------|----------------------|
 | UC-07       | Conduct Evaluations      | Appraiser            |
 | UC-08       | Generate Reports         | Appraiser            |
 | UC-33       | Verify Authenticity      | Appraiser            |
-| UC-12       | Resolve Queries          | Customer Support Agent |
-| UC-13       | Feedback Collection      | Customer Support Agent |
-| UC-24       | Contact Support          | User                 |
+| UC-19       | Request Return        | Buyer |
+| UC-27       | Follow Seller         | Buyer |
+| UC-04       | View Appraisals          | Buyer            |
+| UC-05       | Make Purchases           | Buyer            |
+| UC-28       | Compare Watches       | Buyer |
+| UC-23       | Receive Notifications    | User             |
+| UC-38       | Approve New Appraiser    | Administrator    |
+
+
 
 ### Sprint 4
-Focus on Administrator and general user functionalities.
+Focus on Administrator,  Customer Support Agent and general functionalities.
 
 | Use Case ID | Name                     | Actor            |
 |-------------|--------------------------|------------------|
 | UC-09       | User Management          | Administrator    |
 | UC-10       | Monitor Transactions     | Administrator    |
 | UC-11       | Maintain System Security | Administrator    |
-| UC-14       | Register Account         | User             |
-| UC-15       | Login                    | User             |
-| UC-16       | Reset Password           | User             |
-| UC-22       | Update Profile Information | User           |
-| UC-23       | Receive Notifications    | User             |
+| UC-29       | Offer Price           | Buyer |
+| UC-31       | Track Shipment        | Buyer |
+| UC-32       | Confirm Delivery      | Buyer |
 | UC-36       | Flag Inappropriate Content | User           |
-| UC-38       | Approve New Appraiser    | Administrator    |
+| UC-30       | Accept Offer             | Seller |
+| UC-39       | Generate Sales Report    | Seller |
+| UC-12       | Resolve Queries          | Customer Support Agent |
+| UC-13       | Feedback Collection      | Customer Support Agent |
+| UC-17       | View Purchase History | Buyer |
+| UC-40       | Generate Purchase Report | Buyer |
 
 
 ## Work assignment table
@@ -120,30 +122,32 @@ Focus on Administrator and general user functionalities.
 | Phong | UC-01                       | Member |
 | Nghĩa | UC-25                       | Member |
 ## Sprint 2:   
+
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
-| Trung | UC-05, UC-04                | Leader |
-| Phát  | UC-17, UC-02                | Member |
+| Trung | UC-35, UC-37                | Leader |
+| Phát  | UC-18, UC-02                | Member |
 | Khiêm | UC-26, UC-20                | Member |
-| Phong | UC-29, UC-31                | Member |
-| Nghĩa | UC-40, UC-27, UC-28         | Member |
+| Phong | UC-34, UC-06                | Member |
+| Nghĩa | UC-22, UC-21                | Member |
 
 ## Sprint 3: 
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
-| Trung | UC-07  UC-35                | Leader |
-| Phát  | UC-08, UC-37                | Member |
-| Khiêm | UC-33, UC-30                        | Member |
-| Phong | UC-12, UC-39                | Member |
-| Nghĩa | UC-13, UC-17                | Member |
+| Trung | UC-07, UC-08                | Leader |
+| Phát  |   UC-04, UC-05                | Member |
+| Khiêm | UC-33, UC-19                | Member |
+| Phong | UC-28, UC-39                | Member |
+| Nghĩa | UC-38, UC-27                | Member |
+
 
 ## Sprint 4: 
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
-| Trung | UC-09, UC-10                | Leader |
-| Phát  | UC-11, UC-21                | Member |
-| Khiêm | UC-25, UC-06                | Member |
-| Phong | UC-22, UC-23                | Member |
-| Nghĩa | UC-36, UC-38                | Member |
+| Trung | UC-09, UC-10, UC-32         | Leader |
+| Phát  | UC-11, UC-17,UC-30          | Member |
+| Khiêm | UC-25, UC-06, UC-31         | Member |
+| Phong | UC-40, UC-39,UC-12          | Member |
+| Nghĩa | UC-36, UC-13,UC-29          | Member |
 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
