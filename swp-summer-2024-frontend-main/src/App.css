@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+
+    background-image: url('https://scr.vn/wp-content/uploads/2020/07/h%C3%ACnh-n%E1%BB%81n-tr%E1%BA%AFng-tinh.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 0;
+    }
+}

@@ -1,3 +1,0 @@
-function checkout() {
-  alert('Checkout');
-}

@@ -1,0 +1,83 @@
+.form-container-other {
+    border: 1px solid #8d0606; /* Viền màu xám nhạt */
+    border-radius: 5px; /* Đường cong viền */
+    padding: 15px; /* Giảm khoảng cách giữa nội dung và viền */
+    margin: 20px; /* Tạo khoảng cách giữa form và các phần tử xung quanh */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hiển thị bóng đổ */
+    width: 50%;
+    height: 100%;
+    margin-top: 100px;
+}
+
+.form-group {
+    margin-bottom: 10px; /* Giảm khoảng cách giữa các nhóm trường */
+}
+
+label {
+    display: block;
+    margin-bottom: 3px; /* Giảm khoảng cách giữa nhãn và trường nhập */
+    font-weight: bold;
+    font-size: 14px; /* Giảm kích thước của chữ */
+}
+
+input[type="text"],
+input[type="file"],
+select,
+.checkbox-label {
+    width: calc(100% - 22px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px; /* Giảm kích thước của chữ */
+}
+
+input[type="color"] {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    font-size: 14px; /* Giảm kích thước của chữ */
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    font-size: 14px; /* Giảm kích thước của chữ */
+}
+
+.button-other {
+    display: block; /* Biến nút thành phần block để có thể căn giữa */
+    margin: 0 auto; /* Căn nút ra giữa theo chiều ngang */
+    padding: 10px 20px;
+    border: 1px solid #141515; /* Thêm viền xung quanh */
+    border-radius: 5px;
+    background-color: #c5c6ca;
+    color: #000000;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-other:hover {
+    background-color: #0056b3;
+    border-color: #0056b3; /* Thay đổi màu viền khi di chuột qua */
+}
+
+h1 {
+    text-align: center; /* Căn giữa tiêu đề */
+    font-size: 24px; /* Điều chỉnh kích thước tiêu đề */
+    margin-bottom: 20px; /* Tạo khoảng cách dưới tiêu đề */
+    font-weight: bold;
+}
+

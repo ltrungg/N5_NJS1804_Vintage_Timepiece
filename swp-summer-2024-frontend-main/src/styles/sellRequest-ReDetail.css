@@ -1,0 +1,42 @@
+.container-staff {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f2f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  margin-top: 50px; /* Giảm khoảng cách trên */
+  margin-bottom: 50px; /* Giảm khoảng cách dưới */
+}
+
+.container-staff h2 {
+  margin-bottom: 20px;
+  color: #1890ff; /* Màu chữ cho tiêu đề */
+}
+
+.ant-descriptions-bordered {
+  margin-bottom: 20px;
+}
+
+.ant-descriptions-item-label {
+  font-weight: bold;
+  font-size: 18px;
+  color: #1890ff; /* Màu xanh dương */
+}
+
+.ant-input {
+  width: 300px;
+}
+
+.update-button {
+  text-align: center; /* Căn giữa nội dung theo chiều ngang */
+  margin-top: 20px;
+}
+
+.update-button .ant-btn-primary {
+  width: 100px;
+  margin: 0 auto; /* Căn giữa nút theo chiều ngang */
+  display: block; /* Để nút chiếm toàn bộ chiều ngang của phần tử cha */
+}
+
