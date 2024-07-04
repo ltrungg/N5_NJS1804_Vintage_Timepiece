@@ -64,15 +64,16 @@ Focus on Seller and Buyer functionalities.
 | Use Case ID | Name                       | Actor    |
 |-------------|----------------------------|----------|
 | UC-02       | Chat                       | Customer |
-| UC-18       | Create Admin account       | Administrator |
+| UC-09       | User Management            | Administrator          |
+| UC-17       | View User Report           | Administrator |
+| UC-23       | Remove Product In Wishlist | Customer       |
+| UC-29       | View Wishlist              | Customer               |
+| UC-30       | View All Product Report    | Administrator          |
 | UC-26       | Create Wishlist            | Customer    |
-| UC-20       | Update Product Report      | Administrator |
 | UC-35       | View Available Product     | Customer   |
+| UC-36       | View Updating Product      | Customer               |
 | UC-37       | View Sold Product          | Customer   |
-| UC-22       | Update Profile Information | Customer     |
-| UC-21       | Report A Product Issue     | Customer |
-| UC-34       | Review Purchase            | Customer    |
-| UC-06       | Leave Feedback             | Customer   |
+
 
 ## Sprint 3
 Focus on Appraiser and Buyer functionalities.
@@ -87,28 +88,28 @@ Focus on Appraiser and Buyer functionalities.
 | UC-04       | View Appraisals          | Customer      |
 | UC-05       | Make Purchases           | Customer      |
 | UC-28       | Compare Watches          | Customer      |
-| UC-23       | Remove Product In Wishlist | Customer       |
-| UC-38       | Approve New Appraiser    | Administrator    |
+| UC-18       | Create Admin account       | Administrator |
+| UC-31       | View in appraisal product  | Customer               |
+
 
 ## Sprint 4
 Focus on Administrator, Customer Support Agent, and general functionalities.
 
 | Use Case ID | Name                       | Actor                  |
 |-------------|----------------------------|------------------------|
-| UC-09       | User Management            | Administrator          |
 | UC-10       | Monitor Transactions       | Administrator          |
 | UC-11       | View appraiser's requests  | Administrator          |
-| UC-29       | View Wishlist              | Customer               |
-| UC-31       | View in appraisal product  | Customer               |
 | UC-32       | Remove Product Report      | Administrator          |
-| UC-36       | View Updating Product      | Customer               |
-| UC-30       | View All Product Report    | Administrator          |
 | UC-39       | Delete Product             | Administrator          |
 | UC-12       | Delete an Account          | Administrator |
 | UC-13       | View Product               | Administrator |
-| UC-17       | View User Report           | Administrator |
 | UC-40       | Update Product             | Administrator |
-
+| UC-22       | Update Profile Information | Customer     |
+| UC-21       | Report A Product Issue     | Customer |
+| UC-34       | Review Purchase            | Customer    |
+| UC-06       | Leave Feedback             | Customer   |
+| UC-20       | Update Product Report      | Administrator |
+| UC-38       | Approve New Appraiser    | Administrator    |
 
 ## Work assignment table
 ## Sprint 1 
