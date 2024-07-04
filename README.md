@@ -70,7 +70,7 @@ Focus on Seller and Buyer functionalities.
 | UC-35       | Review Sale              | Seller |
 | UC-37       | Issue Refund             | Seller |
 | UC-22       | Update Profile Information | User           |
-| UC-21       | Report Issue          | Buyer |
+| UC-21       | Report Seller          | Buyer |
 | UC-34       | Review Purchase       | Buyer |
 | UC-06       | Leave Feedback           | Seller |
 
