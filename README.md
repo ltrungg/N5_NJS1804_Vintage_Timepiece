@@ -45,71 +45,69 @@ The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize 
 
 ## Sprint Plan
 
-### Sprint 1
+## Sprint 1
 Focus on Buyer functionalities.
 
-| Use Case ID | Name                  | Actor |
-|-------------|-----------------------|-------|
-| UC-03       | Search Product        | Buyer |
-| UC-01       | List Items            | Buyer |
-| UC-16       | Reset Password           | User             |
-| UC-14       | Register Account         | User             |
-| UC-15       | Login                    | User             |
-| UC-25       | View Watch Details    | Buyer |
-| UC-24       | Contact Support          | User                 |
+| Use Case ID | Name                | Actor |
+|-------------|---------------------|-------|
+| UC-03       | Search Product      | Customer |
+| UC-01       | Customer Upload Product To Sell | Customer |
+| UC-16       | Forgot Password     | Customer |
+| UC-14       | Register Account    | Customer |
+| UC-15       | Login               | Customer |
+| UC-25       | View Watch Details  | Customer |
+| UC-24       | Contact Support     | Customer |
 
-### Sprint 2
+## Sprint 2
 Focus on Seller and Buyer functionalities.
 
-| Use Case ID | Name                     | Actor  |
-|-------------|--------------------------|--------|
-| UC-02       | Interact with Seller | Buyer |
-| UC-18       | View Sales History       | Seller |
-| UC-26       | Create Wishlist       | Buyer |
-| UC-20       | Approve Return Request   | Seller |
-| UC-35       | Review Sale              | Seller |
-| UC-37       | Issue Refund             | Seller |
-| UC-22       | Update Profile Information | User           |
-| UC-21       | Report Seller          | Buyer |
-| UC-34       | Review Purchase       | Buyer |
-| UC-06       | Leave Feedback           | Seller |
+| Use Case ID | Name                       | Actor    |
+|-------------|----------------------------|----------|
+| UC-02       | Chat                       | Customer |
+| UC-18       | Create Admin account       | Administrator |
+| UC-26       | Create Wishlist            | Customer    |
+| UC-20       | Update Product Report      | Administrator |
+| UC-35       | View Available Product     | Customer   |
+| UC-37       | View Sold Product          | Customer   |
+| UC-22       | Update Profile Information | Customer     |
+| UC-21       | Report A Product Issue     | Customer |
+| UC-34       | Review Purchase            | Customer    |
+| UC-06       | Leave Feedback             | Customer   |
 
-### Sprint 3
+## Sprint 3
 Focus on Appraiser and Buyer functionalities.
 
-| Use Case ID | Name                     | Actor                |
-|-------------|--------------------------|----------------------|
-| UC-07       | Conduct Evaluations      | Appraiser            |
-| UC-08       | Generate Reports         | Appraiser            |
-| UC-33       | Verify Authenticity      | Appraiser            |
-| UC-19       | Request Return        | Buyer |
-| UC-27       | Follow Seller         | Buyer |
-| UC-04       | View Appraisals          | Buyer            |
-| UC-05       | Make Purchases           | Buyer            |
-| UC-28       | Compare Watches       | Buyer |
-| UC-23       | Receive Notifications    | User             |
+| Use Case ID | Name                     | Actor      |
+|-------------|--------------------------|------------|
+| UC-07       | Conduct Evaluations      | Appraiser  |
+| UC-08       | Generate Reports         | Appraiser  |
+| UC-33       | Verify Authenticity      | Appraiser  |
+| UC-19       | Create Staff account     | Administrator |
+| UC-27       | Follow Seller            | Customer      |
+| UC-04       | View Appraisals          | Customer      |
+| UC-05       | Make Purchases           | Customer      |
+| UC-28       | Compare Watches          | Customer      |
+| UC-23       | Remove Product In Wishlist | Customer       |
 | UC-38       | Approve New Appraiser    | Administrator    |
 
+## Sprint 4
+Focus on Administrator, Customer Support Agent, and general functionalities.
 
-
-### Sprint 4
-Focus on Administrator,  Customer Support Agent and general functionalities.
-
-| Use Case ID | Name                     | Actor            |
-|-------------|--------------------------|------------------|
-| UC-09       | User Management          | Administrator    |
-| UC-10       | Monitor Transactions     | Administrator    |
-| UC-11       | Maintain System Security | Administrator    |
-| UC-29       | Offer Price           | Buyer |
-| UC-31       | Track Shipment        | Buyer |
-| UC-32       | Confirm Delivery      | Buyer |
-| UC-36       | Flag Inappropriate Content | User           |
-| UC-30       | Accept Offer             | Seller |
-| UC-39       | Generate Sales Report    | Seller |
-| UC-12       | Resolve Queries          | Customer Support Agent |
-| UC-13       | Feedback Collection      | Customer Support Agent |
-| UC-17       | View Purchase History | Buyer |
-| UC-40       | Generate Purchase Report | Buyer |
+| Use Case ID | Name                       | Actor                  |
+|-------------|----------------------------|------------------------|
+| UC-09       | User Management            | Administrator          |
+| UC-10       | Monitor Transactions       | Administrator          |
+| UC-11       | View appraiser's requests  | Administrator          |
+| UC-29       | View Wishlist              | Customer               |
+| UC-31       | View in appraisal product  | Customer               |
+| UC-32       | Remove Product Report      | Administrator          |
+| UC-36       | View Updating Product      | Customer               |
+| UC-30       | View All Product Report    | Administrator          |
+| UC-39       | Delete Product             | Administrator          |
+| UC-12       | Delete an Account          | Administrator |
+| UC-13       | View Product               | Administrator |
+| UC-17       | View User Report           | Administrator |
+| UC-40       | Update Product             | Administrator |
 
 
 ## Work assignment table
