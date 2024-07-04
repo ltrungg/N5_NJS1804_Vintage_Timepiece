@@ -1,0 +1,14 @@
+input[type="checkbox"] {
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked,
+input[type="checkbox"]:focus,
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus-visible {
+  background-color: rgb(43, 134, 183) !important;
+}
+
+[type="checkbox"]:indeterminate {
+  background-color: rgb(16, 148, 220) !important;
+}
