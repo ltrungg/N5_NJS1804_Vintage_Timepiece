@@ -64,16 +64,18 @@ Focus on Seller and Buyer functionalities.
 | Use Case ID | Name                       | Actor    |
 |-------------|----------------------------|----------|
 | UC-02       | Chat                       | Customer |
-| UC-09       | User Management            | Administrator          |
+| UC-09       | View All User Account            | Administrator          |
 | UC-17       | View User Report           | Administrator |
-| UC-23       | Remove Product In Wishlist | Customer       |
-| UC-29       | View Wishlist              | Customer               |
-| UC-30       | View All Product Report    | Administrator          |
 | UC-26       | Create Wishlist            | Customer    |
+| UC-29       | View Wishlist              | Customer               |
+| UC-23       | Remove Product In Wishlist | Customer       |
+| UC-30       | View All Product Report    | Administrator          |
+| UC-31       | View in appraisal product  | Customer   |   
 | UC-35       | View Available Product     | Customer   |
 | UC-36       | View Updating Product      | Customer               |
 | UC-37       | View Sold Product          | Customer   |
-
+| UC-10       | Monitor Transactions       | Administrator          |
+| UC-11       | View appraiser's requests  | Administrator          |
 
 ## Sprint 3
 Focus on Appraiser and Buyer functionalities.
@@ -89,7 +91,6 @@ Focus on Appraiser and Buyer functionalities.
 | UC-05       | Make Purchases           | Customer      |
 | UC-28       | Compare Watches          | Customer      |
 | UC-18       | Create Admin account       | Administrator |
-| UC-31       | View in appraisal product  | Customer               |
 
 
 ## Sprint 4
@@ -97,8 +98,6 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 
 | Use Case ID | Name                       | Actor                  |
 |-------------|----------------------------|------------------------|
-| UC-10       | Monitor Transactions       | Administrator          |
-| UC-11       | View appraiser's requests  | Administrator          |
 | UC-32       | Remove Product Report      | Administrator          |
 | UC-39       | Delete Product             | Administrator          |
 | UC-12       | Delete an Account          | Administrator |
@@ -121,14 +120,19 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 | Phong | UC-01                       | Member |
 | Nghĩa | UC-25                       | Member |
 ## Sprint 2:   
-
+UC-35, UC-37
+UC-30, UC-17 
+UC-28, UC-39
+UC-20
+| UC-10       | Monitor Transactions       | Administrator          |
+| UC-11       | View appraiser's requests  | Administrator          |
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
-| Trung | UC-35, UC-37                | Leader |
-| Phát  | UC-18, UC-02                | Member |
-| Khiêm | UC-26, UC-20                | Member |
-| Phong | UC-34, UC-06                | Member |
-| Nghĩa | UC-22, UC-21                | Member |
+| Trung | UC-02                       | Leader |
+| Phát  | UC-09                       | Member |
+| Khiêm | UC-26, UC-29, UC-23         | Member |
+| Phong | UC-31, UC-35, UC-36, UC-37  | Member |
+| Nghĩa | UC-10, UC-11                | Member |
 
 ## Sprint 3: 
 | Name  | Use Case                    | Role   |
