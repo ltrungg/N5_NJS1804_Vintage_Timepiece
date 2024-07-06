@@ -64,7 +64,7 @@ export default function Navbar() {
       ),
     },
     {
-      key: "3",
+      key: "4",
       label: (
         <div
           onClick={signOut}
@@ -85,6 +85,28 @@ export default function Navbar() {
     },
   ];
 
+  if (user && user.role === "appraiser") {
+    items.push({
+      key: "3",
+      label: (
+        <div
+          onClick={() => (window.location.href = "/appraisal")}
+          className="w-full min-w-fit flex items-center gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="currentColor"
+          >
+            <path d="M2 22H22V20H2V22ZM4 13H7V11H4V13ZM7 16H4V18H7V16ZM10 18H7V16H10V18ZM10 11H7V13H10V11ZM10 8V6H4V8H10ZM14 18H11V16H14V18ZM14 13H11V11H14V13ZM11 8V6H18V8H11ZM18 18H15V16H18V18ZM15 13H18V11H15V13ZM18 8V6H14V8H18Z"></path>
+          </svg>
+          Appraisal
+        </div>
+      ),
+    });
+  }
   if (
     window.location.pathname === "/signin" ||
     window.location.pathname === "/signup"
