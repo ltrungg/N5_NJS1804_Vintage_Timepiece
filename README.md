@@ -74,7 +74,7 @@ Focus on Seller and Buyer functionalities.
 | UC-35       | View Available Product     | Customer   |
 | UC-36       | View Updating Product      | Customer               |
 | UC-37       | View Sold Product          | Customer   |
-| UC-10       | Monitor Transactions       | Administrator          |
+| UC-10       | Manage Transactions       | Administrator          |
 | UC-11       | View appraiser's requests  | Administrator          |
 
 ## Sprint 3
