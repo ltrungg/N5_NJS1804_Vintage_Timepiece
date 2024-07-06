@@ -86,12 +86,11 @@ Focus on Appraiser and Buyer functionalities.
 | UC-08       | Generate Reports         | Appraiser  |
 | UC-33       | Verify Authenticity      | Appraiser  |
 | UC-19       | Create Staff account     | Administrator |
-| UC-27       | Follow Seller            | Customer      |
 | UC-04       | View Appraisals          | Customer      |
 | UC-05       | Make Purchases           | Customer      |
 | UC-28       | Compare Watches          | Customer      |
 | UC-18       | Create Admin account       | Administrator |
-
+| UC-06       | Leave Feedback             | Customer   |
 
 ## Sprint 4
 Focus on Administrator, Customer Support Agent, and general functionalities.
@@ -106,10 +105,9 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 | UC-22       | Update Profile Information | Customer     |
 | UC-21       | Report A Product Issue     | Customer |
 | UC-34       | Review Purchase            | Customer    |
-| UC-06       | Leave Feedback             | Customer   |
 | UC-20       | Update Product Report      | Administrator |
 | UC-38       | Approve New Appraiser    | Administrator    |
-
+| UC-27       | Follow Seller            | Customer      |
 ## Work assignment table
 ## Sprint 1 
 | Name  | Use Case                    | Role   |
@@ -147,5 +145,8 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 | Khiêm | UC-25, UC-06, UC-31         | Member |
 | Phong | UC-40, UC-39,UC-12          | Member |
 | Nghĩa | UC-36, UC-13,UC-29          | Member |
+
+chạy backend: npm run start:dev
+chạy frontend: npm run dev 
 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
