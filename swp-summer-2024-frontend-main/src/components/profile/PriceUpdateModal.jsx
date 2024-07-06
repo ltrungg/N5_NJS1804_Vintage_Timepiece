@@ -1,6 +1,7 @@
 import { Avatar, Input, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CurrencySplitter from "../../assistants/currencySpliter";
 
 export default function PriceUpdateModal({
   product,
@@ -33,6 +34,11 @@ export default function PriceUpdateModal({
     }
   }, [price]);
 
+  useEffect(() => {
+    setPrice("");
+    setNote("");
+  }, [open]);
+
   const handleConfirmUpdatePrice = async () => {
     await axios
       .post("http://localhost:3000/sellerRequest", {
@@ -42,8 +48,10 @@ export default function PriceUpdateModal({
         update: {
           price: price,
         },
+        details: `Update price from $${CurrencySplitter(
+          parseFloat(product.price)
+        )} to $${CurrencySplitter(parseFloat(price))}`,
         note: note,
-        status: false,
       })
       .then(async (res) => {
         await axios
@@ -87,6 +95,10 @@ export default function PriceUpdateModal({
         <div className="flex flex-col gap-2">
           <p className="font-semibold">{product.name}</p>
           <p className="text-xs opacity-80">{product.brand}</p>
+          <p className="py-2 text-[0.9em] text-red-500 font-semibold italic">
+            Note: We only consider a price update that is not above 20% lower or
+            higher than the original price.
+          </p>
           <p className="">
             Current price:{" "}
             <span className="text-lg font-semibold text-sky-800 px-1">
@@ -143,8 +155,8 @@ export default function PriceUpdateModal({
       </div>
 
       <div className="w-full flex items-center justify-end gap-8">
-        <button onClick={() => resetData()} className="hover:underline">
-          Reset
+        <button onClick={() => setOpen(false)} className="hover:underline">
+          Cancel
         </button>
         <button
           disabled={!isValidPrice || price === "" || note.length === 0}

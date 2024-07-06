@@ -21,6 +21,8 @@ import { SellerRequestModule } from './modules/sellerRequest/sellerRequest.modul
 import { ImageModule } from './modules/upload/image/image.module';
 import { ReportModule } from './modules/report/report.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
+import { AccountModule } from './modules/userAccount/userAccount.module';
+
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { FeedbackModule } from './modules/feedback/feedback.module';
     ChatModule,
     ChatRoomModule,
     SellerRequestModule,
+    AccountModule
   ],
   providers: [ContactService],
   controllers: [ContactController],

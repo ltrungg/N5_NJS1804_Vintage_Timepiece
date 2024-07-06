@@ -1,25 +1,26 @@
 import React from "react";
 import { Avatar } from "antd";
-import { useParams } from "react-router-dom";
 import moment from "moment";
 
-export default function RoomItem({ chatRoom }) {
-  const roomId = useParams().id;
-  const currentlySelected = roomId && chatRoom.chatRoom.code === roomId;
-
+export default function RoomItem({ chatRoom, current, getSelectedRoom }) {
   const handleSelectRoom = () => {
-    if (roomId !== chatRoom.chatRoom.code) {
-      window.location.replace(`/chat/${chatRoom.chatRoom.code}`);
-    }
+    getSelectedRoom(chatRoom.chatRoom.code);
   };
 
   return (
     <div
       onClick={handleSelectRoom}
-      className={`w-full flex items-center justify-between gap-2 p-2 cursor-default border-b border-gray-200 ${
-        currentlySelected ? "bg-slate-200" : "bg-white hover:bg-slate-100"
+      className={`relative w-full min-h-24 max-h-24 overflow-hidden flex items-center justify-between gap-2 p-2 cursor-default border-b border-gray-200 ${
+        current ? "bg-slate-200" : "bg-white hover:bg-slate-100"
       }`}
     >
+      <span
+        className={`${
+          chatRoom.participant.role !== "appraiser" && "hidden"
+        } absolute z-10 top-1 left-[-10px] pl-[12px] p-1 text-[0.6em] font-semibold text-white bg-red-500 rounded-lg`}
+      >
+        Appraiser
+      </span>
       <div className="flex gap-2">
         <Avatar src={chatRoom.participant.avatar} alt="" size={40} />
         <div className="min-w-fit flex flex-col self-start justify-start gap-1">

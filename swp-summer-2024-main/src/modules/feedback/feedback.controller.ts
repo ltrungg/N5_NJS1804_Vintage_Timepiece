@@ -32,7 +32,7 @@ export class FeedbackController {
   async findAllByEvaluator(@Param('id') evaluatorId: string): Promise<any[]> {
     return this.feedbackService.findAllByEvaluator(evaluatorId);
   }
-//http://localhost:3000/average-rate/evaluated/id
+//http://localhost:3000/feedback/average-rate/id
 //c4fba15e-d9cb-42cd-988b-02cf680cab3e
 //neu là 4.5 trở lên sẽ làm tròn lên 5 nhe 
   @Get('/average-rate/:id')

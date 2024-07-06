@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import dateFormat from "../../assistants/date.format";
 import { Avatar, Dropdown, message } from "antd";
+import CurrencySplitter from "../../assistants/currencySpliter";
 import ProductForm from "./ProductForm";
 import PriceUpdateModal from "./PriceUpdateModal";
 import StatusUpdateModal from "./StatusUpdateModal";
+import RemoveModal from "./RemoveModal";
 
 export default function SingleTimepiece({ product, getRequestStatus }) {
   const [isShowingDetails, setIsShowingDetails] = useState(false);
   const [isUpdatingPrice, setIsUpdatingPrice] = useState(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+
   const date = dateFormat(product.createdAt, "dd");
   const month = dateFormat(product.createdAt, "mmm");
 
@@ -35,6 +39,12 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
       return (
         <button className="w-40 bg-stone-600 hover:bg-stone-500 rounded-[30px] flex items-center justify-center text-white font-bold py-2">
           SOLD
+        </button>
+      );
+    } else if (product.status === "CANCELED") {
+      return (
+        <button className="w-40 bg-red-600 hover:bg-red-500 rounded-[30px] flex items-center justify-center text-white font-bold py-2">
+          CANCELED
         </button>
       );
     }
@@ -78,14 +88,7 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
         </div>
       ),
       onClick: () => {
-        if (product.status === "AVAILABLE") setIsUpdatingPrice(true);
-        else {
-          message.warning({
-            key: "updatePrice",
-            content: "This watch is being evaluated. Please try again later!",
-            duration: 5,
-          });
-        }
+        setIsUpdatingPrice(true);
       },
       disabled: product.status !== "AVAILABLE",
     },
@@ -106,21 +109,17 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
         </div>
       ),
       onClick: () => {
-        if (product.status === "AVAILABLE") setIsUpdatingStatus(true);
-        else {
-          message.warning({
-            key: "updateStatus",
-            content: "This watch is being evaluated. Please try again later!",
-            duration: 5,
-          });
-        }
+        setIsUpdatingStatus(true);
       },
       disabled: product.status !== "AVAILABLE",
     },
     {
       key: "3",
       label: (
-        <div className="w-full flex items-center gap-2 font-montserrat font-semibold text-red-500">
+        <button
+          disabled={product.status !== "AVAILABLE"}
+          className="w-full flex items-center gap-2 font-montserrat font-semibold text-red-500 disabled:text-red-300 disabled:cursor-not-allowed"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -131,8 +130,12 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
             <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
           </svg>
           Remove
-        </div>
+        </button>
       ),
+      onClick: () => {
+        setIsRemoving(true);
+      },
+      disabled: product.status !== "AVAILABLE",
     },
   ];
 
@@ -171,10 +174,12 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
                 </p>
                 <p
                   className={`text-red-600 text-md font-semibold ${
-                    product.status === "IN APPRAISAL" && "invisible"
+                    (product.status === "IN APPRAISAL" ||
+                      product.status === "CANCELED") &&
+                    "invisible"
                   }`}
                 >
-                  ${Math.round(product.price * 100) / 100}
+                  $ {CurrencySplitter(Math.round(product.price * 100) / 100)}
                 </p>
               </div>
             </span>
@@ -184,11 +189,7 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
         <div className="w-full flex items-center justify-end gap-2 lg:gap-8">
           <div className="w-full flex justify-end">{getStatus()}</div>
 
-          <div
-            className={`${
-              product.status === "SOLD" && "invisible"
-            } flex items-center gap-8 px-8`}
-          >
+          <div className={`flex items-center gap-8 px-8`}>
             <Dropdown
               menu={{ items: menuOptions }}
               trigger={["click"]}
@@ -222,6 +223,12 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
               product={product}
               open={isUpdatingStatus}
               setOpen={setIsUpdatingStatus}
+              getRequestStatus={(value) => getRequestStatus(value)}
+            />
+            <RemoveModal
+              product={product}
+              open={isRemoving}
+              setOpen={setIsRemoving}
               getRequestStatus={(value) => getRequestStatus(value)}
             />
           </div>

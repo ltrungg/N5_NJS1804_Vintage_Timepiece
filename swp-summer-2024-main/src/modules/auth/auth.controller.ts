@@ -22,7 +22,7 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(
-    @Inject('AUTH_SERVICE_TIENNT') private readonly authService: AuthService,
+    @Inject('AUTH_SERVICE') private readonly authService: AuthService,
   ) {}
 
   //GET ALL ACCOUNTS WITHOUT AUTHORIZATION
@@ -36,9 +36,19 @@ export class AuthController {
     return this.authService.getAccountByEmail(email);
   }
 
+  @Get('search/:key')
+  getSearchList(@Param('key') key: string) {
+    return this.authService.getSearchList(key);
+  }
+
   @Patch('/active_status/:id')
   updateActiveStatus(@Param('id') id: string) {
     return this.authService.updateActiveStatus(id);
+  }
+
+  @Patch(':id')
+  updateAccount(@Param('id') id: string, @Body() data: any) {
+    return this.authService.updateAccount(id, data);
   }
 
   @Post('create-account')

@@ -12,12 +12,11 @@ export default function page() {
   const [currentList, setCurrentList] = useState([]);
   const [searchKey, setSearchKey] = useState("");
 
-  const fetchAccountData = async () => {
+  const fetchProductData = async () => {
     setIsLoading(true);
     await axios
       .get("http://localhost:3000/product")
       .then((res) => {
-        console.log("Data: ", res.data);
         setTimepieceList(res.data);
         setCurrentList(res.data);
         setIsLoading(false);
@@ -37,7 +36,7 @@ export default function page() {
   };
 
   useEffect(() => {
-    fetchAccountData();
+    fetchProductData();
   }, []);
 
   useEffect(() => {
@@ -63,14 +62,17 @@ export default function page() {
           </svg>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search by product name or brand..."
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
             className="rounded-[2em] w-[40em] px-4 py-2"
           />
         </div>
       </div>
-      <TimepieceListTable timepieceList={currentList} />
+      <TimepieceListTable
+        timepieceList={currentList}
+        getEditStatus={() => fetchProductData()}
+      />
     </div>
   );
 }

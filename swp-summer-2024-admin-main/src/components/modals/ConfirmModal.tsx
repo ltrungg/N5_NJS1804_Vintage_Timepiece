@@ -22,28 +22,34 @@ export default function ConfirmModal({
     setOpen("");
   };
 
+  const status = action?.match("approve");
+
   return (
     <Modal
-      title={<p className="font-black text-sky-700">CONFIRM</p>}
+      title={
+        <p className="font-bold text-lg">CONFIRM TO {action?.toUpperCase()}</p>
+      }
       open={open}
       footer={null}
       onCancel={(e) => {
         e.stopPropagation();
         setOpen("");
       }}
+      centered
     >
-      <p className="font-semibold text-gray-700 text-lg">
-        Are you sure you want to do this?
-      </p>
+      <p className="text-gray-700 text-md italic">Are you sure you want to do this?</p>
       <div className="w-full flex items-center justify-end gap-8 px-2 pt-8">
-        <button onClick={() => setOpen(false)} className="hover:underline">
-          Cancel
+        <button
+          onClick={() => setOpen(false)}
+          className="text-xs hover:underline"
+        >
+          CANCEL
         </button>
         <button
           onClick={handleConfirm}
-          className="px-8 py-2 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-semibold text-nowrap"
+          className={`px-8 py-2 rounded-xl ${status ? "bg-green-600 hover:bg-green-800" : "bg-red-600 hover:bg-red-800"} duration-200 text-white font-semibold text-nowrap`}
         >
-          Confirm
+          CONFIRM
         </button>
       </div>
     </Modal>

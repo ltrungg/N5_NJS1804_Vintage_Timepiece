@@ -1,9 +1,10 @@
 import React, { useEffect, useState, createRef } from "react";
-import { Avatar, Tooltip, Modal, Checkbox } from "antd";
+import { Avatar, Tooltip, Modal, Checkbox, message } from "antd";
 import ScrollableFeed from "react-scrollable-feed";
 import { generateNumericCode } from "../../assistants/generators";
 import {
   addDoc,
+  deleteDoc,
   collection,
   onSnapshot,
   serverTimestamp,
@@ -15,8 +16,11 @@ import { db } from "../../firebase-config";
 import axios from "axios";
 import dateFormat from "../../assistants/date.format";
 import moment from "moment";
+import MessageBubbleImage from "../../assets/images/chat/message_bubble-removebg-preview.png";
+import Loading from "../loading/Loading";
+import SendFileModal from "./SendFileModal";
 
-export default function ChatRoom({ user, chatRoomId }) {
+export default function ChatRoom({ user, chatRoomId, getDeleteStatus }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [groupedMessageList, setGroupedMessageList] = useState([
@@ -30,9 +34,15 @@ export default function ChatRoom({ user, chatRoomId }) {
   const [isConfirmDeleteOn, setIsConfirmDeleteOn] = useState(false);
   const [checkedConfirmDelete, setCheckedConfirmDelete] = useState(false);
 
+  const [currentFile, setCurrentFile] = useState(null);
+  const [currentFileUrl, setCurrentFileUrl] = useState("");
+  const [isSendingFile, setIsSendingFile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const scrollableRef = createRef();
 
   const fetchChatRoomParticipant = async () => {
+    setIsLoading(true);
     await axios
       .get(
         `http://localhost:3000/chatRoom/butUser/code/${user.id}/${chatRoomId}`
@@ -40,16 +50,17 @@ export default function ChatRoom({ user, chatRoomId }) {
       .then((res) => {
         if (!res.data) {
           sessionStorage.setItem("notFoundChatRoom", "yes");
-          window.location.replace("/chat");
+          window.location.reload();
         }
         setCurrentChatRoom(res.data);
+        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    return () => fetchChatRoomParticipant();
-  }, []);
+    fetchChatRoomParticipant();
+  }, [chatRoomId]);
 
   const messageRef = collection(db, "messages");
 
@@ -60,7 +71,6 @@ export default function ChatRoom({ user, chatRoomId }) {
         room: chatRoomId,
         author: user.username,
         authorId: user.id,
-        avatar: user.avatar,
         message: currentMessage,
         date:
           (new Date(Date.now()).getDate() < 10 ? "0" : "") +
@@ -76,12 +86,19 @@ export default function ChatRoom({ user, chatRoomId }) {
           (new Date(Date.now()).getMinutes() < 10 ? "0" : "") +
           new Date(Date.now()).getMinutes(),
         createdAt: serverTimestamp(),
+        isFile: false,
       };
-      console.log("Message: ", messageData.date);
       await addDoc(messageRef, messageData);
+      setCurrentMessage("");
+
+      await axios
+        .patch(
+          `http://localhost:3000/chatRoom/last_active/${currentChatRoom.id}`
+        )
+        .catch((err) => console.log(err));
+
       setMessageList((current) => [...current, messageData]);
     }
-    setCurrentMessage("");
   };
 
   const handleScroll = (isBottom) => {
@@ -99,12 +116,13 @@ export default function ChatRoom({ user, chatRoomId }) {
   };
 
   useEffect(() => {
+    setGroupedMessageList([]);
     const queryMessages = query(
       messageRef,
       where("room", "==", chatRoomId),
       orderBy("createdAt", "asc")
     );
-    const realTimeHandler = onSnapshot(queryMessages, (snapshot) => {
+    const realTimeHandler = onSnapshot(queryMessages, async (snapshot) => {
       let tempMessages = [];
       snapshot.forEach((doc) => {
         tempMessages.push({ ...doc.data(), id: doc.id });
@@ -118,7 +136,7 @@ export default function ChatRoom({ user, chatRoomId }) {
     });
 
     return () => realTimeHandler();
-  }, []);
+  }, [chatRoomId]);
 
   const groupMessageByDate = (list) => {
     if (list.length === 0) {
@@ -166,15 +184,79 @@ export default function ChatRoom({ user, chatRoomId }) {
   };
 
   const handleDeleteChatRoom = async () => {
+    const queryMessages = query(messageRef, where("room", "==", chatRoomId));
+    onSnapshot(queryMessages, (snapshot) => {
+      snapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+    });
+
     await axios
       .delete(`http://localhost:3000/chatRoom/${currentChatRoom.chatRoom.id}`)
       .then(() => {
-        sessionStorage.setItem("deleteChat", "deleted");
-        window.location.replace("/chat");
+        message.info({
+          key: "deleteChat",
+          content: "Successfully deleted chat.",
+          duration: 5,
+        });
+        getDeleteStatus();
       })
       .catch((err) => console.log(err));
   };
 
+  const handleFileUpload = (e) => {
+    const uploaded = e.target.files[0];
+    setCurrentFile(uploaded);
+    if (uploaded) {
+      console.log("Uploaded: ", uploaded);
+      var reader = new FileReader();
+      reader.onload = (e) => {
+        setCurrentFileUrl(e.target.result);
+      };
+      reader.readAsDataURL(uploaded);
+    }
+    setIsSendingFile(true);
+  };
+
+  const handleSendFile = async (value) => {
+    console.log("Send file: ", value);
+    const messageData = {
+      id: generateNumericCode(20),
+      room: chatRoomId,
+      author: user.username,
+      authorId: user.id,
+      message: value,
+      date:
+        (new Date(Date.now()).getDate() < 10 ? "0" : "") +
+        new Date(Date.now()).getDate() +
+        "/" +
+        (new Date(Date.now()).getMonth() + 1 < 10 ? "0" : "") +
+        (new Date(Date.now()).getMonth() + 1) +
+        "/" +
+        new Date(Date.now()).getFullYear(),
+      time:
+        new Date(Date.now()).getHours() +
+        ":" +
+        (new Date(Date.now()).getMinutes() < 10 ? "0" : "") +
+        new Date(Date.now()).getMinutes(),
+      createdAt: serverTimestamp(),
+      isFile: true,
+    };
+
+    await addDoc(messageRef, messageData);
+
+    await axios
+      .patch(`http://localhost:3000/chatRoom/last_active/${currentChatRoom.id}`)
+      .catch((err) => console.log(err));
+
+    setMessageList((current) => [...current, messageData]);
+    setIsSendingFile(false);
+  };
+
+  if (isLoading) return;
+  <div className="w-1/2 h-[85vh] rounded-r-xl bg-white drop-shadow-xl border-l border-gray-400 py-2">
+    <Loading />
+  </div>;
   if (!currentChatRoom)
     return (
       <div className="w-1/2 h-[85vh] rounded-r-xl bg-white drop-shadow-xl border-l border-gray-400 py-2"></div>
@@ -230,86 +312,114 @@ export default function ChatRoom({ user, chatRoomId }) {
             </svg>
           </button>
         </div>
-        <ScrollableFeed
-          ref={scrollableRef}
-          forceScroll
-          onScroll={handleScroll}
-          className="w-full"
-        >
-          <div className="grow w-full min-h-[65vh] flex flex-col items-start justify-end gap-8 py-2 overflow-y-auto">
-            {groupedMessageList.map((group, index) => {
-              return (
-                <div
-                  key={index}
-                  className="w-full flex flex-col items-start justify-start gap-2 overflow-x-hidden"
-                >
-                  <p className="w-full text-center text-[0.65em] font-light">
-                    {group.messages[0]?.time}
-                    {group.date === dateFormat(new Date(), "dd/mm/yyyy")
-                      ? ""
-                      : `, ${group.date}`}
-                  </p>
-                  <div className="w-full flex flex-col gap-1">
-                    {group.messages?.map((mes, i) => {
-                      return (
-                        <div key={i} className="w-full flex flex-col">
-                          <p
-                            className={`w-full text-center text-[0.65em] font-light ${
-                              (i > 0 &&
-                                compareTime(
-                                  group.messages[i - 1].time,
-                                  mes.time
-                                ) < 1) ||
-                              i == 0
-                                ? "hidden"
-                                : "inline"
-                            }`}
-                          >
-                            {mes.time}
-                          </p>
-                          <div
-                            key={i}
-                            className={`px-2 w-full flex items-center ${
-                              mes.authorId === user.id
-                                ? "justify-end"
-                                : "justify-start"
-                            }`}
-                          >
-                            <div
-                              className={`flex ${
-                                mes.authorId === user.id
-                                  ? "flex-row-reverse"
-                                  : "flex-row"
-                              } items-center gap-2`}
+        {messageList.length === 0 ? (
+          <div className="grow w-full min-h-[65vh] flex flex-col items-center justify-center gap-4 opacity-50">
+            <img src={MessageBubbleImage} alt="" width={96} />
+            <p>START THE CONVERSATION NOW!</p>
+          </div>
+        ) : (
+          <ScrollableFeed
+            ref={scrollableRef}
+            forceScroll={true}
+            onScroll={handleScroll}
+            className="w-full"
+          >
+            <div className="grow w-full min-h-[65vh] flex flex-col items-start justify-end gap-8 pr-2 py-2 overflow-y-auto">
+              {groupedMessageList.map((group, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="w-full flex flex-col items-start justify-start gap-2 overflow-x-hidden"
+                  >
+                    <p className="w-full text-center text-[0.65em] font-light">
+                      {group.messages[0]?.time}
+                      {group.date === dateFormat(new Date(), "dd/mm/yyyy")
+                        ? ""
+                        : ` ${group.date}`}
+                    </p>
+                    <div className="w-full flex flex-col gap-1">
+                      {group.messages?.map((mes, i) => {
+                        const firstMessageIndexToShowAvatar =
+                          group.messages.findIndex(
+                            (item) =>
+                              item.authorId === currentChatRoom.participant.id
+                          );
+                        return (
+                          <div key={i} className="w-full flex flex-col">
+                            <p
+                              className={`w-full text-center text-[0.65em] font-light ${
+                                (i > 0 &&
+                                  compareTime(
+                                    group.messages[i - 1].time,
+                                    mes.time
+                                  ) < 1) ||
+                                i == 0
+                                  ? "hidden"
+                                  : "inline"
+                              }`}
                             >
-                              <Tooltip
-                                title={mes.time}
-                                placement={
-                                  mes.authorId === user.id ? "left" : "right"
-                                }
-                                mouseEnterDelay={0.5}
+                              {mes.time}
+                            </p>
+                            <div
+                              key={i}
+                              className={`px-2 w-full flex items-start gap-2 ${
+                                mes.authorId === user.id
+                                  ? "justify-end"
+                                  : "justify-start"
+                              }`}
+                            >
+                              <Avatar
+                                src={currentChatRoom.participant.avatar}
+                                size={32}
+                                className={`${
+                                  i !== firstMessageIndexToShowAvatar &&
+                                  "invisible"
+                                }`}
+                              />
+                              <div
+                                className={`flex ${
+                                  mes.authorId === user.id
+                                    ? "flex-row-reverse"
+                                    : "flex-row"
+                                } items-center gap-2 max-w-64`}
                               >
-                                <p
-                                  className={`px-4 py-2 rounded-[30px] max-w-96 break-words ${
-                                    mes.authorId === user.id
-                                      ? "bg-sky-800 text-white"
-                                      : "bg-slate-200 text-black"
-                                  }`}
+                                <Tooltip
+                                  title={mes.time}
+                                  placement={
+                                    mes.authorId === user.id ? "left" : "right"
+                                  }
+                                  mouseEnterDelay={0.5}
                                 >
-                                  {mes.message}
-                                </p>
-                              </Tooltip>
+                                  {mes.isFile ? (
+                                    <img
+                                      src={mes.message}
+                                      alt=""
+                                      className="object-scale-down rounded-[30px] my-2 border border-gray-300"
+                                    />
+                                  ) : (
+                                    <p
+                                      className={`px-4 py-2 rounded-[30px] max-w-96 break-words ${
+                                        mes.authorId === user.id
+                                          ? "bg-sky-800 text-white"
+                                          : "bg-slate-200 text-black"
+                                      }`}
+                                    >
+                                      {mes.message}
+                                    </p>
+                                  )}
+                                </Tooltip>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </ScrollableFeed>
+                );
+              })}
+            </div>
+          </ScrollableFeed>
+        )}
 
         <button
           onClick={() => {
@@ -329,8 +439,37 @@ export default function ChatRoom({ user, chatRoomId }) {
             <path d="M13.0001 16.1716L18.3641 10.8076L19.7783 12.2218L12.0001 20L4.22192 12.2218L5.63614 10.8076L11.0001 16.1716V4H13.0001V16.1716Z"></path>
           </svg>
         </button>
+        <SendFileModal
+          open={isSendingFile}
+          setOpen={setIsSendingFile}
+          file={currentFile}
+          url={currentFileUrl}
+          handleSendFile={handleSendFile}
+        />
 
         <div className="w-full flex items-center justify-center gap-1 px-4">
+          <button
+            onClick={() => document.getElementById("file-upload").click()}
+            className="p-2 rounded-full text-gray-400 hover:text-gray-600 duration-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="currentColor"
+            >
+              <path d="M21 15V18H24V20H21V23H19V20H16V18H19V15H21ZM21.0082 3C21.556 3 22 3.44495 22 3.9934V13H20V5H4V18.999L14 9L17 12V14.829L14 11.8284L6.827 19H14V21H2.9918C2.44405 21 2 20.5551 2 20.0066V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082ZM8 7C9.10457 7 10 7.89543 10 9C10 10.1046 9.10457 11 8 11C6.89543 11 6 10.1046 6 9C6 7.89543 6.89543 7 8 7Z"></path>
+            </svg>
+          </button>
+          <input
+            id="file-upload"
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleFileUpload}
+          />
+
           <input
             id="message-input"
             type="text"
@@ -380,14 +519,11 @@ export default function ChatRoom({ user, chatRoomId }) {
             checked={checkedConfirmDelete}
             onChange={() => setCheckedConfirmDelete(!checkedConfirmDelete)}
           />
-          <p className="inline ml-2">
-            By deleting, you and&nbsp;
-            <span className="font-bold">
-              {currentChatRoom.participant.username}
-            </span>
-            &nbsp;will be disconnected from discussing about this product.
+          <p className="inline ml-2 font-bold">
+            By deleting, you and {currentChatRoom.participant.username} will be
+            disconnected from discussing about this product.
           </p>
-          <p className="text-xs italic text-gray-600 mt-2">
+          <p className="text-xs italic text-red-500 mt-2">
             Chat history will be deleted permanently.
           </p>
           <div className="w-full flex items-center justify-end gap-8 mt-8">

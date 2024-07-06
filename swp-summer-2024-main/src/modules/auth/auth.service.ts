@@ -55,6 +55,8 @@ export class AuthService {
       phone: account.phone,
       role: account.role,
       avatar: account.avatar,
+      lastActive: account.lastActive,
+      status: account.status,
     });
   }
 
@@ -149,7 +151,11 @@ export class AuthService {
         'role',
         'avatar',
         'lastActive',
+        'status',
       ],
+      order: {
+        updatedAt: -1,  
+      },
     });
   }
 
@@ -167,10 +173,33 @@ export class AuthService {
         'role',
         'avatar',
         'lastActive',
+        'status',
       ],
     });
     if (found) return found;
     else throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
+  }
+
+  async getSearchList(key: string): Promise<AccountEntity[]> {
+    return await this.repositoryAccount
+      .createQueryBuilder('account')
+      .where('account.email ILIKE :key OR account.username ILIKE :key', {
+        key: `%${key}%`,
+      })
+      .select([
+        'account.id',
+        'account.createdAt',
+        'account.updatedAt',
+        'account.deletedAt',
+        'account.username',
+        'account.email',
+        'account.phone',
+        'account.role',
+        'account.avatar',
+        'account.lastActive',
+        'account.status',
+      ])
+      .getMany();
   }
 
   async updateActiveStatus(id: string): Promise<any> {
@@ -181,6 +210,10 @@ export class AuthService {
       message: 'Updated active status successfully.',
       metadata: update,
     };
+  }
+
+  async updateAccount(id: string, update: any) {
+    return await this.repositoryAccount.update(id, update);
   }
 
   async softDeleteAccount(id: string): Promise<any> {

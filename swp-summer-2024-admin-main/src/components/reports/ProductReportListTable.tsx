@@ -36,13 +36,16 @@ export default function ProductReportListTable({
       ),
       cell: (row: any) => {
         return (
-          <div className="w-full flex items-center justify-center gap-2">
+          <div className="w-full flex items-center justify-start gap-2">
             <Avatar src={row.account.avatar} alt="" size={32} />
             <p className="font-semibold">{row.account.username}</p>
           </div>
         );
       },
       sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.account.username.localeCompare(b.account.username);
+      },
       grow: 1,
     },
     {
@@ -56,14 +59,23 @@ export default function ProductReportListTable({
           (item: any) => item.id === row.reportedId
         );
         return (
-          <div className="w-full flex items-center justify-center py-2 gap-2">
+          <div className="w-full flex items-center justify-start py-2 gap-2">
             <Avatar src={product?.image} alt="" size={64} />
             <p className="font-semibold">{product?.name}</p>
           </div>
         );
       },
       sortable: true,
-      grow: 1,
+      sortFunction: (a: any, b: any) => {
+        const product = productList.find(
+          (item: any) => item.id === a.reportedId
+        );
+        const product2 = productList.find(
+          (item: any) => item.id === b.reportedId
+        );
+        return product.name.localeCompare(product2.name);
+      },
+      grow: 2,
     },
     {
       name: (
@@ -94,6 +106,23 @@ export default function ProductReportListTable({
         else return a.criteria.length > b.criteria.length ? 1 : -1;
       },
       grow: 1,
+    },
+    {
+      name: (
+        <p className="w-full text-center font-semibold text-tremor-default">
+          Sent at
+        </p>
+      ),
+      selector: (row: any) => row.createdAt,
+      cell: (row: any) => (
+        <p className="w-full text-center">
+          {dateFormat(row.createdAt, "HH:MM dd/mm/yyyy")}
+        </p>
+      ),
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
+      },
     },
     {
       name: (

@@ -1,16 +1,43 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import NavigationPane from "./NavigationPane";
 import axios from "axios";
 import dateFormat from "@/assistants/date.format";
+import { Avatar, message } from "antd";
+import ConfirmModal from "../modals/ConfirmModal";
 
 export default function AccountListTable({
   accountList,
+  getUpdateStatus,
 }: {
   accountList: any;
+  getUpdateStatus: Function;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isBanningAccount, setIsBanningAccount] = useState("");
+  const [isActivatingAccount, setIsActivatingAccount] = useState("");
+
+  const handleAccountStatusUpdate = async (value: any) => {
+    await axios
+      .patch(`http://localhost:3000/auth/${value.object.id}`, {
+        status: !value.object.status,
+      })
+      .then((res) => {
+        getUpdateStatus("statusUpdated");
+        message.success({
+          key: "statusUpdated",
+          content: (
+            <p className="inline">
+              <span className="font-semibold">{value.object.username}</span>'s
+              account has been{" "}
+              {value.object.status ? "deactivated" : "activated"}.
+            </p>
+          ),
+          duration: 5,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
   const columns = [
     {
@@ -25,12 +52,15 @@ export default function AccountListTable({
     {
       name: (
         <p className="w-full text-center font-semibold text-tremor-default">
-          Email
+          Avatar
         </p>
       ),
-      selector: (row: any) => row.email,
-      sortable: true,
-      grow: 2,
+      cell: (row: any) => (
+        <span className="py-2">
+          <Avatar src={row.avatar} alt="" size={40} />
+        </span>
+      ),
+      grow: 0,
     },
     {
       name: (
@@ -40,6 +70,16 @@ export default function AccountListTable({
       ),
       cell: (row: any) => <p className="w-full text-start">{row.username}</p>,
       sortable: true,
+    },
+    {
+      name: (
+        <p className="w-full text-center font-semibold text-tremor-default">
+          Email
+        </p>
+      ),
+      selector: (row: any) => row.email,
+      sortable: true,
+      grow: 2,
     },
     {
       name: (
@@ -66,6 +106,9 @@ export default function AccountListTable({
       ),
       selector: (row: any) => dateFormat(row.createdAt, "dd/mm/yyyy"),
       sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
+      },
     },
     {
       name: (
@@ -76,7 +119,7 @@ export default function AccountListTable({
       selector: (row: any) => dateFormat(row.lastActive, "HH:MM dd/mm/yyyy"),
       sortable: true,
       sortFunction: (a: any, b: any) => {
-        return new Date(a.lastActive) > new Date(b.lastActive);
+        return new Date(a.lastActive) < new Date(b.lastActive) ? 1 : -1;
       },
     },
     {
@@ -94,7 +137,7 @@ export default function AccountListTable({
           );
         } else if (row.role === "admin") {
           return (
-            <p className="w-full text-center text-nowrap text-[0.8em] p-2 rounded-lg bg-red-600 text-white">
+            <p className="w-full min-w-fit text-center text-nowrap text-[0.8em] p-2 rounded-lg bg-red-600 text-white">
               ADMINISTRATOR
             </p>
           );
@@ -155,6 +198,9 @@ export default function AccountListTable({
           );
       },
       sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return Number(a.status) - Number(b.status);
+      },
       grow: 0,
     },
     {
@@ -165,24 +211,57 @@ export default function AccountListTable({
       ),
       cell: (row: any) => (
         <div className="w-full flex flex-row gap-4 items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="steelblue"
-          >
-            <path d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"></path>
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="red"
-          >
-            <path d="M16.9057 5.68009L5.68009 16.9057C4.62644 15.5506 4 13.8491 4 12C4 7.58172 7.58172 4 12 4C13.8491 4 15.5506 4.62644 16.9057 5.68009ZM7.0943 18.3199L18.3199 7.0943C19.3736 8.44939 20 10.1509 20 12C20 16.4183 16.4183 20 12 20C10.1509 20 8.44939 19.3736 7.0943 18.3199ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5223 6.47771 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47771 17.5223 2 12 2Z"></path>
-          </svg>
+          {row.status === true ? (
+            <>
+              <button
+                onClick={() => setIsBanningAccount(row.id)}
+                className="flex flex-col items-center gap 2 text-[0.8em] text-red-500 hover:text-red-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                >
+                  <path d="M16.9057 5.68009L5.68009 16.9057C4.62644 15.5506 4 13.8491 4 12C4 7.58172 7.58172 4 12 4C13.8491 4 15.5506 4.62644 16.9057 5.68009ZM7.0943 18.3199L18.3199 7.0943C19.3736 8.44939 20 10.1509 20 12C20 16.4183 16.4183 20 12 20C10.1509 20 8.44939 19.3736 7.0943 18.3199ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5223 6.47771 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47771 17.5223 2 12 2Z"></path>
+                </svg>
+                DEACTIVATE
+              </button>
+              <ConfirmModal
+                action="ban"
+                object={row}
+                open={isBanningAccount === row.id}
+                setOpen={setIsBanningAccount}
+                getConfirm={handleAccountStatusUpdate}
+              />
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setIsActivatingAccount(row.id)}
+                className="flex flex-col items-center gap 2 text-[0.8em] text-green-500 hover:text-green-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                >
+                  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11.0026 16L6.75999 11.7574L8.17421 10.3431L11.0026 13.1716L16.6595 7.51472L18.0737 8.92893L11.0026 16Z"></path>
+                </svg>
+                ACTIVATE
+              </button>
+              <ConfirmModal
+                action="activate"
+                object={row}
+                open={isActivatingAccount === row.id}
+                setOpen={setIsActivatingAccount}
+                getConfirm={handleAccountStatusUpdate}
+              />
+            </>
+          )}
         </div>
       ),
       grow: 1,
@@ -191,7 +270,6 @@ export default function AccountListTable({
 
   return (
     <>
-      <NavigationPane />
       <div className="flex flex-col">
         <DataTable
           columns={columns as any}
@@ -209,7 +287,6 @@ export default function AccountListTable({
           }
           striped
           highlightOnHover
-          pointerOnHover
           progressPending={isLoading}
           progressComponent={
             <svg

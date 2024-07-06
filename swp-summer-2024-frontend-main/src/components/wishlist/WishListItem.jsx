@@ -3,16 +3,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { generateChatRoomId } from "../../assistants/generators";
 
-export default function WishListItem({ user, product, getRemoveItem }) {
+export default function WishListItem({
+  user,
+  product,
+  getRemoveItem,
+  isLoading,
+}) {
   const handleRemove = () => {
     getRemoveItem(product);
   };
 
   const handleChat = async () => {
+    isLoading();
     await axios
       .get(`http://localhost:3000/chatRoom/user/${user.id}`)
       .then(async (res) => {
-        console.log("LIST OF USER CHAT ROOMS: ", res.data);
         res.data.map(async (item) => {
           await axios
             .get(
@@ -23,14 +28,18 @@ export default function WishListItem({ user, product, getRemoveItem }) {
                 res.data.participant.id === product.owner.id &&
                 res.data.chatRoom.product.id === product.id
               ) {
-                window.location.href = `/chat/${res.data.chatRoom.code}`;
+                sessionStorage.setItem(
+                  "createChatRoomRedirect",
+                  res.data.chatRoom.code
+                );
+                window.location.href = `/chat`;
                 return;
               }
             });
         });
         setTimeout(async () => {
           const newRoomCode = generateChatRoomId();
-          console.log("New room code: ", newRoomCode);
+          sessionStorage.setItem("createChatRoomRedirect", newRoomCode);
           await axios
             .post("http://localhost:3000/chatRoom", {
               code: newRoomCode,
@@ -38,8 +47,7 @@ export default function WishListItem({ user, product, getRemoveItem }) {
               participants: [user.id, product.owner.id],
             })
             .then((res) => {
-              console.log("CREATE ROOM CHAT: ", res.data);
-              window.location.href = `/chat/${newRoomCode}`;
+              window.location.href = `/chat`;
             })
             .catch((err) => console.log(err));
         }, 2000);

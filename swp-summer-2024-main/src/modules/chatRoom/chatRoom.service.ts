@@ -17,7 +17,7 @@ export class ChatRoomService {
     return await this.chatRoomToUserRepository.find({
       relations: ['participant', 'chatRoom', 'chatRoom.product'],
       order: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
@@ -38,7 +38,7 @@ export class ChatRoomService {
       ],
       relations: ['participant', 'chatRoom', 'chatRoom.product'],
       order: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
@@ -65,7 +65,7 @@ export class ChatRoomService {
       ],
       relations: ['participant', 'chatRoom', 'chatRoom.product'],
       order: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
@@ -83,7 +83,7 @@ export class ChatRoomService {
 
       relations: ['participant', 'chatRoom', 'chatRoom.product'],
       order: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
@@ -97,7 +97,7 @@ export class ChatRoomService {
       },
       relations: ['participant', 'chatRoom', 'chatRoom.product'],
       order: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }
@@ -126,6 +126,12 @@ export class ChatRoomService {
     } catch (err) {
       return err;
     }
+  }
+
+  async updateLastActive(id: string) {
+    return await this.chatRoomToUserRepository.update(id, {
+      updatedAt: new Date(Date.now()),
+    });
   }
 
   async deleteChatRoom(id: string) {

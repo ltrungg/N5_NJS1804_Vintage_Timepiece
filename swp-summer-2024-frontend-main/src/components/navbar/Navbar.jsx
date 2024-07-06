@@ -238,8 +238,9 @@ export default function Navbar() {
             menu={{
               items,
             }}
-            placement="bottom"
+            placement="bottomLeft"
             trigger={["click"]}
+            autoAdjustOverflow
             className="flex items-center border border-white md:p-2 rounded-full"
           >
             <button className="flex items-center gap-2 bg-white text-black hover:text-slate-600">

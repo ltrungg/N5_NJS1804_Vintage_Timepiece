@@ -26,7 +26,9 @@ export enum ProductStatus {
   name: 'PRODUCT',
 })
 export class ProductEntity extends BaseEntity {
-  @ManyToOne(() => AccountEntity, (account) => account.products)
+  @ManyToOne(() => AccountEntity, (account) => account.products, {
+    eager: true,
+  })
   @JoinColumn()
   owner: AccountEntity;
 
@@ -111,8 +113,7 @@ export class ProductEntity extends BaseEntity {
 
   @Column({
     name: 'waterResistance',
-    type: 'decimal',
-    precision: 10,
+    type: 'int',
     nullable: false,
     default: 0,
   })
@@ -128,10 +129,9 @@ export class ProductEntity extends BaseEntity {
 
   @Column({
     name: 'caseSize',
-    type: 'decimal',
-    precision: 10,
+    type: 'int',
     nullable: false,
-    default: 0,
+    default: 40,
   })
   caseSize: number;
 

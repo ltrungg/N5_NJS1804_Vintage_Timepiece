@@ -30,17 +30,25 @@ export class SellerRequestEntity extends BaseEntity {
   update: Object;
 
   @Column({
+    name: 'details',
+    type: 'varchar',
+    nullable: true,
+  })
+  details: string;
+
+  @Column({
+    name: 'status',
+    type: 'enum',
+    enum: ['pending', 'approved', 'rejected'],
+    nullable: false,
+    default: 'pending',
+  })
+  status: string;
+
+  @Column({
     name: 'note',
     type: 'text',
     nullable: true,
   })
   note: string;
-
-  @Column({
-    name: 'status',
-    type: 'bool',
-    nullable: false,
-    default: false,
-  })
-  status: boolean;
 }

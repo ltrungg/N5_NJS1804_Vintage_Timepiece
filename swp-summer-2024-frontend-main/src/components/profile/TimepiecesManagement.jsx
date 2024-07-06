@@ -73,7 +73,13 @@ export default function TimepiecesManagement({ list, getRequestStatus }) {
         list.filter((item) => item.status.toUpperCase() === "SOLD")
       );
       setTemp(list.filter((item) => item.status.toUpperCase() === "SOLD"));
+    } else if (listState === "canceled") {
+      setCurrentList(
+        list.filter((item) => item.status.toUpperCase() === "CANCELED")
+      );
+      setTemp(list.filter((item) => item.status.toUpperCase() === "CANCELED"));
     }
+
     setPagingState({
       min: 0,
       max: defaultPageSize,
@@ -161,6 +167,16 @@ export default function TimepiecesManagement({ list, getRequestStatus }) {
               }`}
             >
               Sold
+            </button>
+            <button
+              onClick={() => setListState("canceled")}
+              className={`px-4 py-2 rounded-full duration-100 ${
+                listState === "canceled"
+                  ? "bg-gray-700 text-white"
+                  : "hover:bg-slate-200 text-black"
+              }`}
+            >
+              Canceled
             </button>
           </div>
 

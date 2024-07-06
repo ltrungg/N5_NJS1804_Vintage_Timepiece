@@ -1,12 +1,14 @@
-import { message } from "antd";
-import React, { useEffect } from "react";
+import { Avatar, message } from "antd";
+import React, { useEffect, useState } from "react";
+import EditProfileModal from "./EditProfileModal";
 
 export default function UserProfile() {
   const user = sessionStorage.signInUser
     ? JSON.parse(sessionStorage.signInUser)
     : null;
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
-  const [messageApi, contextHolder] = message.useMessage();
+  const getEditStatus = async (value) => {};
 
   useEffect(() => {
     console.log("User profile: ", user);
@@ -14,10 +16,9 @@ export default function UserProfile() {
 
   return (
     <div className="w-full bg-white flex flex-col items-center justify-center gap-4 rounded-xl px-8 py-8">
-      {contextHolder}
       <div className="w-full flex flex-col items-start justify-center gap-2">
-        <div className="w-1/2 flex items-center gap-2">
-          <img src={user.avatar} alt="" className="w-8" />
+        <div className="w-1/2 min-w-fit flex items-center gap-2">
+          <Avatar src={user.avatar} alt="" size={40} />
           <p className="text-lg font-bold min-w-fit max-w-96 text-nowrap text-ellipsis overflow-hidden">
             {user.username}
           </p>
@@ -38,14 +39,7 @@ export default function UserProfile() {
         </div>
       </div>
       <button
-        onClick={() => {
-          messageApi.open({
-            key: "editProfile",
-            type: "warning",
-            content: "Profile editing is in developing process...",
-            duration: 5,
-          });
-        }}
+        onClick={() => setIsEditingProfile(true)}
         className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-8 py-3 font-semibold text-white rounded-3xl duration-300"
       >
         <svg
@@ -59,6 +53,12 @@ export default function UserProfile() {
         </svg>
         EDIT PROFILE
       </button>
+      <EditProfileModal
+        user={user}
+        open={isEditingProfile}
+        setOpen={setIsEditingProfile}
+        getEditStatus={getEditStatus}
+      />
     </div>
   );
 }

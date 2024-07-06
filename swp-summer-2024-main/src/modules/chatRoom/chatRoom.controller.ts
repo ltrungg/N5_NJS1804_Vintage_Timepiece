@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ChatRoomService } from './chatRoom.service';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
@@ -45,6 +53,11 @@ export class ChatRoomController {
     @Body() data: { code: string; product: UUID; participants: string[] },
   ) {
     return this.chatRoomService.createChatRoom(data);
+  }
+
+  @Patch('/last_active/:id')
+  updateLastActive(@Param('id') id: string) {
+    return this.chatRoomService.updateLastActive(id);
   }
 
   @Delete(':id')

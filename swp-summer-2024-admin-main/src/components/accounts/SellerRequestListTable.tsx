@@ -7,6 +7,7 @@ import { Avatar, Image, message } from "antd";
 import ProductInformation from "../timepieces/ProductInformation";
 import CurrencySplitter from "@/assistants/currencySpliter";
 import ConfirmModal from "../modals/ConfirmModal";
+import dateFormat from "@/assistants/date.format";
 
 export default function SellerRequestListTable({
   list,
@@ -67,7 +68,7 @@ export default function SellerRequestListTable({
             .patch(
               `http://localhost:3000/product/${request.product.id}`,
               Object.hasOwn(request.update, "price")
-                ? { price: request.update.price }
+                ? { price: request.update.price, status: "AVAILABLE" }
                 : { status: "SOLD" }
             )
             .then((res) => {
@@ -103,15 +104,6 @@ export default function SellerRequestListTable({
   };
 
   const columns = [
-    {
-      name: (
-        <p className="w-fit text-center font-semibold text-tremor-default">
-          No
-        </p>
-      ),
-      cell: (row: any, index: any) => <p className="w-fit">{index + 1}</p>,
-      grow: 0,
-    },
     {
       name: (
         <p className="w-full text-center font-semibold text-tremor-default">
@@ -165,51 +157,19 @@ export default function SellerRequestListTable({
     {
       name: (
         <p className="w-full text-center font-semibold text-tremor-default">
-          Request details
+          Created date
         </p>
       ),
-      cell: (row: any) => {
-        switch (row.type) {
-          case "create": {
-            return (
-              <div className="mx-auto font-semibold text-green-500">
-                Start selling
-              </div>
-            );
-          }
-          case "update": {
-            if (Object.hasOwn(row.update, "price"))
-              return (
-                <div className="mx-auto font-semibold text-sky-500">
-                  <p className="pb-2">
-                    Update price from ${" "}
-                    {CurrencySplitter(
-                      Math.round(row.product.price * 100) / 100
-                    )}{" "}
-                    to ${" "}
-                    {CurrencySplitter(Math.round(row.update.price * 100) / 100)}
-                  </p>
-                </div>
-              );
-            else
-              return (
-                <div className="mx-auto font-semibold text-amber-500">
-                  Update status to sold
-                </div>
-              );
-          }
-          case "delete": {
-            return (
-              <div className="mx-auto font-semibold text-red-500">
-                Stop selling
-              </div>
-            );
-          }
-        }
-      },
+      cell: (row: any) => (
+        <p className="">{dateFormat(row.createdAt, "HH:MM dd/mm/yyyy")}</p>
+      ),
       sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
+      },
       grow: 1,
     },
+
     {
       name: <p className="mx-auto font-semibold text-tremor-default">Status</p>,
       cell: (row: any) => {
@@ -234,6 +194,54 @@ export default function SellerRequestListTable({
         }
       },
       sortable: true,
+      sortFunction: (a: any, b: any) => {
+        const ordering: any = { pending: 0, approved: 1, rejected: 2 };
+        return (
+          ordering[a.status] - ordering[b.status] ||
+          new Date(a.updatedAt) < new Date(b.updatedAt)
+        );
+      },
+      grow: 1,
+    },
+    {
+      name: (
+        <p className="w-full text-center font-semibold text-tremor-default">
+          Request details
+        </p>
+      ),
+      cell: (row: any) => {
+        switch (row.type) {
+          case "create": {
+            return (
+              <div className="mx-auto font-semibold text-green-500">
+                {row.details && ""}
+              </div>
+            );
+          }
+          case "update": {
+            if (Object.hasOwn(row.update, "price"))
+              return (
+                <div className="mx-auto font-semibold text-sky-500">
+                  <p className="pb-2">{row.details}</p>
+                </div>
+              );
+            else
+              return (
+                <div className="mx-auto font-semibold text-amber-500">
+                  {row.details}
+                </div>
+              );
+          }
+          case "delete": {
+            return (
+              <div className="mx-auto font-semibold text-red-500">
+                {row.details}
+              </div>
+            );
+          }
+        }
+      },
+      sortable: true,
       grow: 1,
     },
     {
@@ -244,19 +252,23 @@ export default function SellerRequestListTable({
       ),
       cell: (row: any) => {
         if (row.status !== "pending")
-          return <p className="mx-auto font-light">DONE</p>;
+          return (
+            <p className="w-full text-center font-light">
+              ACTION MADE AT {dateFormat(row.updatedAt, "HH:MM dd/mm/yyyy")}
+            </p>
+          );
         else
           return (
             <div className="w-full flex flex-row gap-2 items-center justify-center">
               <button
                 onClick={() => setIsApprovingOne(row.id)}
-                className="px-4 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold text-nowrap"
+                className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-800 text-white font-semibold text-nowrap"
               >
                 Approve
               </button>
               <button
                 onClick={() => setIsRejectingOne(row.id)}
-                className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-nowrap"
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-800 text-white font-semibold text-nowrap"
               >
                 Reject
               </button>
@@ -282,7 +294,6 @@ export default function SellerRequestListTable({
   ];
 
   const handleChange = ({ selectedRows }: { selectedRows: any }) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
     setSelectedRows(selectedRows);
   };
 
@@ -302,13 +313,13 @@ export default function SellerRequestListTable({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsRejectingAll(true)}
-                  className="px-8 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-nowrap"
+                  className="px-8 py-2 rounded-xl bg-red-600 hover:bg-red-800 text-white font-semibold text-nowrap"
                 >
                   Reject all selected
                 </button>
                 <button
                   onClick={() => setIsApprovingAll(true)}
-                  className="px-8 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold text-nowrap"
+                  className="px-8 py-2 rounded-xl bg-green-600 hover:bg-green-800 text-white font-semibold text-nowrap"
                 >
                   Approve all selected
                 </button>
@@ -333,6 +344,7 @@ export default function SellerRequestListTable({
           )}
         </div>
         <DataTable
+          responsive={true}
           columns={columns as any}
           data={list}
           sortIcon={
@@ -354,10 +366,11 @@ export default function SellerRequestListTable({
           onSelectedRowsChange={handleChange}
           progressPending={isLoading}
           pagination
-          paginationPerPage={7}
+          paginationPerPage={10}
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
+          className="overflow-x-hidden"
         />
       </div>
     </>

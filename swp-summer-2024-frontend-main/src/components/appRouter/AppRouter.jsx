@@ -17,6 +17,7 @@ import StaffDashboard from "../StaffDashboard";
 import SellRequestDetail from "../SellRequestDetail";
 import ReportPage from "../ReportPage";
 import TestProductEdit from "../../pages/TestProductEdit";
+import ViewSellerProfile from "../../pages/ViewSellerProfile";
 
 export default function AppRouter() {
   return (
@@ -41,6 +42,7 @@ export default function AppRouter() {
         <Route path="/staffDashboard" element={<StaffDashboard />} />
         <Route path="/sell-request/:id" element={<SellRequestDetail />} />
         <Route path="/reportPage" element={<ReportPage />} />
+        <Route path="/viewsellerprofile/:id" element={<ViewSellerProfile />} />
       </Routes>
     </div>
   );

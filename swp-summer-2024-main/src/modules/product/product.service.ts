@@ -14,6 +14,9 @@ export class ProductService {
   async findAll(): Promise<ProductEntity[]> {
     return await this.productRepository.find({
       relations: ['owner'],
+      order: {
+        updatedAt: -1,
+      },
     });
   }
   async findAllAvailable(userId: string): Promise<ProductEntity[]> {

@@ -30,9 +30,15 @@ export class SellerRequestController {
       product: UUID;
       type: string;
       update: Object;
+      details: string;
       status?: boolean;
     },
   ) {
     return this.sellerRequestService.createSellerRequest(data);
+  }
+
+  @Patch(':id')
+  updateSellerRequest(@Param('id') id: string, @Body() data: any) {
+    return this.sellerRequestService.updateRequest(id, data);
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import WishListItem from "../components/wishlist/WishListItem";
 import EmptyList from "../assets/images/profile/empty-order.webp";
 import { message } from "antd";
+import Loading from "../components/loading/Loading";
 
 export default function WishList() {
   const user = sessionStorage.signInUser
@@ -74,6 +75,9 @@ export default function WishList() {
                 user={user}
                 product={product}
                 getRemoveItem={getRemoveItem}
+                isLoading={() => {
+                  return <Loading />;
+                }}
               />
             );
           })}

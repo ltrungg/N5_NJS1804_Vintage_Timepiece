@@ -19,13 +19,13 @@ dotenv.config();
   controllers: [AuthController],
   providers: [
     {
-      provide: 'AUTH_SERVICE_TIENNT',
+      provide: 'AUTH_SERVICE',
       useClass: AuthService,
     },
   ],
   exports: [
     {
-      provide: 'AUTH_SERVICE_TIENNT',
+      provide: 'AUTH_SERVICE',
       useClass: AuthService,
     },
   ],

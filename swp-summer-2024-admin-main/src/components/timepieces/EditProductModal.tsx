@@ -1,59 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Input, Select, Image } from "antd";
-import PlaceholderImage from "../../assets/images/profile/placeholder_image.svg";
-import { imageDb } from "../../firebase-config";
+import { Modal, Input, Select, Image, message } from "antd";
+import { Montserrat } from "next/font/google";
+import { imageDb } from "@/firebase-config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import axios from "axios";
 
-export default function ProductForm({
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  style: "normal",
+  weight: ["200", "400", "600", "800"],
+});
+
+export default function EditProductModal({
   open,
   setOpen,
   product,
-  editable,
-  getProductData,
-}) {
-  const user = sessionStorage.signInUser
-    ? JSON.parse(sessionStorage.signInUser)
-    : null;
-
-  const [isEditing, setIsEditing] = useState(editable ? true : false);
-
-  const [name, setName] = useState(product ? product.name : "");
-  const [brand, setBrand] = useState(product ? product.brand : "");
-  const [description, setDescription] = useState(
-    product ? product.description : ""
-  );
-  const [image, setImage] = useState(
-    product ? product.image : PlaceholderImage
-  );
-  const [price, setPrice] = useState(
-    product ? (Math.round(product.price) * 100) / 100 : 0
-  );
+  getEditStatus,
+}: any) {
+  const [name, setName] = useState(product.name);
+  const [brand, setBrand] = useState(product.brand);
+  const [description, setDescription] = useState(product.description);
+  const [image, setImage] = useState(product.image);
+  const [price, setPrice] = useState((Math.round(product.price) * 100) / 100);
   const [type, setType] = useState(product && product.type);
-  const [dialColor, setDialColor] = useState(product ? product.dialColor : "");
+  const [dialColor, setDialColor] = useState(product.dialColor);
   const [dialColorList, setDialColorList] = useState(
-    product ? product.dialColor.split(",") : []
+    product.dialColor.split(",")
   );
   const [waterResistance, setWaterResistance] = useState(
-    product && product.waterResistance
+    product.waterResistance
   );
-
-  const [box, setBox] = useState(product ? product.box : null);
-  const [papers, setPapers] = useState(product ? product.papers : null);
-
-  const [caseMaterial, setCaseMaterial] = useState(
-    product && product.caseMaterial
-  );
-  const [caseSize, setCaseSize] = useState(product ? product.caseSize : "");
+  const [box, setBox] = useState(product.box);
+  const [papers, setPapers] = useState(product.papers);
+  const [caseMaterial, setCaseMaterial] = useState(product.caseMaterial);
+  const [caseSize, setCaseSize] = useState(product.caseSize);
   const [yearOfProduction, setYearOfProduction] = useState(
-    product && product.yearOfProduction
+    product.yearOfProduction
   );
-  const [pastUsageTime, setPastUsageTime] = useState(
-    product ? product.pastUsageTime : ""
-  );
+  const [pastUsageTime, setPastUsageTime] = useState(product.pastUsageTime);
   const [remainingInsurance, setRemainingInsurance] = useState(
-    product ? product.remainingInsurance : ""
+    product.remainingInsurance
   );
+  const [status, setStatus] = useState(product.status);
 
   const [isValidForm, setIsValidForm] = useState(false);
 
@@ -201,44 +190,54 @@ export default function ProductForm({
     },
   ];
 
-  const mergeDialColor = (value) => {
+  const mergeDialColor = (value: any) => {
     setDialColorList(value);
     let temp = "";
-    value.forEach((item, index) => {
+    value.forEach((item: any, index: number) => {
       if (index !== value.length - 1) temp += `${item}, `;
       else temp += item;
     });
     setDialColor(temp);
   };
 
-  const handleConfirmForm = () => {
-    if (!user) window.location.href("/signin");
-    else {
-      //Complete product data
-      const productData = {
-        owner: user.id,
-        name,
-        brand,
-        price: 0,
-        description,
-        image,
-        type,
-        dialColor,
-        waterResistance,
-        caseMaterial,
-        caseSize,
-        box,
-        papers,
-        yearOfProduction,
-        pastUsageTime,
-        remainingInsurance,
-      };
-      console.log("Product: ", productData);
-      getProductData(productData);
-
-      //Do anything with the product here...
-      setOpen(false);
-    }
+  const handleConfirmForm = async () => {
+    const productData = {
+      owner: product.owner.id,
+      name,
+      brand,
+      price,
+      description,
+      image,
+      type,
+      dialColor,
+      waterResistance,
+      caseMaterial,
+      caseSize,
+      box,
+      papers,
+      yearOfProduction,
+      pastUsageTime,
+      remainingInsurance,
+      status,
+    };
+    console.log("Product: ", productData);
+    await axios
+      .patch(`http://localhost:3000/product/${product.id}`, productData)
+      .then((res) => {
+        message.success({
+          key: "editProduct",
+          content: (
+            <p className="inline">
+              <span className="font-bold text-sky-800">{name}</span> has been
+              successfully updated.
+            </p>
+          ),
+          duration: 5,
+        });
+        getEditStatus("edited");
+        setOpen(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   const resetData = () => {
@@ -258,21 +257,6 @@ export default function ProductForm({
       setYearOfProduction(product.yearOfProduction);
       setPastUsageTime(product.pastUsageTime);
       setRemainingInsurance(product.remainingInsurance);
-    } else {
-      setName("");
-      setBrand("");
-      setImage(PlaceholderImage);
-      setDescription("");
-      setType(null);
-      setDialColorList([]);
-      setWaterResistance(null);
-      setCaseMaterial(null);
-      setCaseSize("");
-      setBox(null);
-      setPapers(null);
-      setYearOfProduction("");
-      setPastUsageTime("");
-      setRemainingInsurance("");
     }
   };
 
@@ -280,6 +264,8 @@ export default function ProductForm({
     if (
       name.length > 0 &&
       brand.length > 0 &&
+      image.length > 0 &&
+      price > 0 &&
       description.length > 0 &&
       type &&
       dialColorList.length > 0 &&
@@ -287,7 +273,20 @@ export default function ProductForm({
       caseMaterial &&
       caseSize > 0 &&
       (box === true || box === false) &&
-      (papers === true || papers === false)
+      (papers === true || papers === false) &&
+      (name !== product.name ||
+        brand !== product.brand ||
+        image !== product.image ||
+        price !== parseFloat(product.price) ||
+        description !== product.description ||
+        type !== product.type ||
+        dialColor !== product.dialColor ||
+        waterResistance !== product.waterResistance ||
+        caseMaterial !== product.caseMaterial ||
+        caseSize !== product.caseSize ||
+        box !== product.box ||
+        papers !== product.papers ||
+        status !== product.status)
     )
       setIsValidForm(true);
     else setIsValidForm(false);
@@ -298,6 +297,7 @@ export default function ProductForm({
   }, [
     name,
     brand,
+    image,
     description,
     type,
     dialColorList,
@@ -306,9 +306,10 @@ export default function ProductForm({
     caseSize,
     box,
     papers,
+    status,
   ]);
 
-  const handleFileUpload = async (e) => {
+  const handleFileUpload = async (e: any) => {
     const uploaded = e.target.files[0];
     //Upload image
     if (uploaded) {
@@ -320,14 +321,20 @@ export default function ProductForm({
     }
   };
 
+  const handleImageUrl = () => {
+    const url = prompt("Enter new image url:");
+    if (url) setImage(url);
+  };
+
   return (
     <Modal
-      title=<h1 className="text-xl font-bold text-sky-800">
-        Product Information
-      </h1>
+      title={
+        <h1 className="text-xl font-bold text-sky-800">Product Information</h1>
+      }
       open={open}
       onCancel={(e) => {
         e.stopPropagation();
+        resetData();
         setOpen(false);
       }}
       footer={null}
@@ -336,76 +343,151 @@ export default function ProductForm({
       }}
       width={1000}
     >
-      <div className="w-full flex items-start justify-center gap-8 p-8 font-montserrat overflow-x-hidden">
+      <div
+        className={`w-full flex items-start justify-center gap-8 p-8 ${montserrat.className} overflow-x-hidden`}
+      >
         <div className="flex flex-col items-center justify-start gap-8">
-          <Image src={image} alt="" width={300} preview={!editable} />
-          {isEditing && (
-            <>
-              <input type="file" onChange={handleFileUpload} accept="image/*" />
-            </>
+          {image.length === 0 && (
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/800px-No-Image-Placeholder.svg.png"
+              className="w-48 h-48 rounded-full"
+            />
           )}
+          <Image
+            src={image}
+            alt=""
+            width={300}
+            preview={{ maskClassName: "rounded-full" }}
+            className="rounded-full"
+          />
+          <button
+            onClick={() => {
+              document.getElementById("image-upload")?.click();
+            }}
+            className="px-4 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold"
+          >
+            Upload image
+          </button>
+          <p className="text-gray-500 text-[0.8em]">
+            or{" "}
+            <span
+              onClick={handleImageUrl}
+              className="underline cursor-pointer hover:text-black"
+            >
+              use a URL instead
+            </span>
+          </p>
+          <input
+            id="image-upload"
+            type="file"
+            hidden
+            onChange={handleFileUpload}
+          />
         </div>
         <div className="w-2/3 flex flex-col items-start gap-2">
+          <div className="w-full flex flex-col items-start justify-start gap-1">
+            <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
+              STATUS <span className="text-red-600">*</span>
+            </p>
+            <div className="w-full flex justify-between">
+              <button
+                onClick={() => setStatus("IN APPRAISAL")}
+                className={`grow border py-2 duration-200 ${
+                  status === "IN APPRAISAL"
+                    ? "bg-amber-600 text-white font-semibold"
+                    : "hover:bg-amber-500 hover:text-white text-gray-400"
+                } rounded-l-lg`}
+              >
+                IN APPRAISAL
+              </button>
+              <button
+                onClick={() => setStatus("AVAILABLE")}
+                className={`grow border border-l-0 py-2 duration-200 ${
+                  status === "AVAILABLE"
+                    ? "bg-green-600 text-white font-semibold"
+                    : "hover:bg-green-500 hover:text-white text-gray-400"
+                }`}
+              >
+                AVAILABLE
+              </button>
+              <button
+                onClick={() => setStatus("UPDATE_REQUESTED")}
+                className={`grow border border-l-0 py-2 duration-200 ${
+                  status === "UPDATE_REQUESTED"
+                    ? "bg-sky-600 text-white font-semibold"
+                    : "hover:bg-sky-500 hover:text-white text-gray-400"
+                }`}
+              >
+                UPDATING
+              </button>
+              <button
+                onClick={() => setStatus("SOLD")}
+                className={`grow border border-l-0 py-2 duration-200 ${
+                  status === "SOLD"
+                    ? "bg-stone-600 text-white font-semibold"
+                    : "hover:bg-stone-500 hover:text-white text-gray-400"
+                }`}
+              >
+                SOLD
+              </button>
+              <button
+                onClick={() => setStatus("CANCELED")}
+                className={`grow border border-l-0 py-2 duration-200 ${
+                  status === "CANCELED"
+                    ? "bg-red-600 text-white font-semibold"
+                    : "hover:bg-red-500 hover:text-white text-gray-400"
+                } rounded-r-lg`}
+              >
+                CANCELED
+              </button>
+            </div>
+          </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Name{" "}
-              <span className={`${!editable && "hidden"} text-red-600`}>*</span>
+              Name <span className="text-red-600">*</span>
             </p>
             <input
-              disabled={!isEditing}
               type="text"
               placeholder="e.g. Casio Stainless Steel Classic Digital Watch"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-[35em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[35em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
             />
           </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Brand{" "}
-              <span className={`${!editable && "hidden"} text-red-600`}>*</span>
+              Brand <span className="text-red-600">*</span>
             </p>
             <input
-              disabled={!isEditing}
               placeholder="e.g. Casio"
               type="text"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              className="w-[20em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[20em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
             />
           </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Description{" "}
-              <span className={`${!editable && "hidden"} text-red-600`}>*</span>
+              Description <span className="text-red-600">*</span>
             </p>
-            {isEditing ? (
-              <Input.TextArea
-                disabled={!isEditing}
-                autoSize={{
-                  minRows: 4,
-                  maxRows: 10,
-                }}
-                placeholder="Enter description..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-[35em] border p-2 font-montserrat rounded-xl disabled:border-none disabled:bg-white"
-              />
-            ) : (
-              <p className="text-xs px-2">{description}</p>
-            )}
+            <Input.TextArea
+              autoSize={{
+                minRows: 4,
+                maxRows: 10,
+              }}
+              placeholder="Enter description..."
+              spellCheck={false}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className={`w-[35em] border p-2 font-montserrat rounded-xl disabled:border-none disabled:bg-white ${montserrat.className}`}
+            />
           </div>
-          <div
-            className={`${
-              editable && "hidden"
-            } flex flex-col items-start justify-start gap-1`}
-          >
+          <div className={`flex flex-col items-start justify-start gap-1`}>
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
               Price <span className="font-light">($)</span>{" "}
-              <span className={`${!editable && "hidden"} text-red-600`}>*</span>
+              <span className="text-red-600">*</span>
             </p>
             <input
-              disabled={!isEditing}
               value={price}
               onChange={(e) => {
                 if (e.target.value.length === 0) setPrice(0);
@@ -416,124 +498,98 @@ export default function ProductForm({
                 )
                   setPrice(Math.round(parseFloat(e.target.value) * 100) / 100);
               }}
-              className="w-[10em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
             />
           </div>
 
           <div className="w-full flex items-center justify-between gap-1">
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Type{" "}
-                <span className={`${!editable && "hidden"} text-red-600`}>
-                  *
-                </span>
+                Type <span className="text-red-600">*</span>
               </p>
-              {isEditing ? (
-                <Select
-                  showSearch
-                  placeholder="Select type..."
-                  popupMatchSelectWidth={200}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
-                  value={type}
-                  options={watchTypeOptions}
-                  onSelect={(value) => {
-                    setType(value);
-                  }}
-                  className="min-w-[8em]"
-                />
-              ) : (
-                <p className="px-2">{type}</p>
-              )}
+
+              <Select
+                showSearch
+                placeholder="Select type..."
+                popupMatchSelectWidth={200}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                value={type}
+                options={watchTypeOptions}
+                onSelect={(value) => {
+                  setType(value);
+                }}
+                className="min-w-[8em]"
+              />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Dial color{" "}
-                <span className={`${!editable && "hidden"} text-red-600`}>
-                  *
-                </span>
+                Dial color <span className="text-red-600">*</span>
               </p>
-              {isEditing ? (
-                <Select
-                  mode="tags"
-                  maxTagTextLength={5}
-                  maxCount={3}
-                  placeholder="Select dial color(s)... (maximum 3)"
-                  popupMatchSelectWidth={200}
-                  value={dialColorList}
-                  options={dialColorOptions}
-                  onChange={mergeDialColor}
-                  className="min-w-[8em]"
-                />
-              ) : (
-                <p className="px-2">{dialColor}</p>
-              )}
+
+              <Select
+                mode="tags"
+                maxTagTextLength={5}
+                maxCount={3}
+                placeholder="Select dial color(s)... (maximum 3)"
+                popupMatchSelectWidth={200}
+                value={dialColorList}
+                options={dialColorOptions}
+                onChange={mergeDialColor}
+                className="min-w-[8em]"
+              />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
                 Water resistance <span className="font-light">(mm)</span>{" "}
-                <span className={`${!editable && "hidden"} text-red-600`}>
-                  *
-                </span>
+                <span className="text-red-600">*</span>
               </p>
-              {isEditing ? (
-                <Select
-                  placeholder="Select water resistance level..."
-                  popupMatchSelectWidth={200}
-                  value={waterResistance}
-                  options={waterResistanceOptions}
-                  onSelect={(value) => {
-                    setWaterResistance(value);
-                  }}
-                  className="min-w-[8em]"
-                />
-              ) : (
-                <p className="px-2">{waterResistance}</p>
-              )}
+
+              <Select
+                placeholder="Select water resistance level..."
+                popupMatchSelectWidth={200}
+                value={waterResistance}
+                options={waterResistanceOptions}
+                onSelect={(value) => {
+                  setWaterResistance(value);
+                }}
+                className="min-w-[8em]"
+              />
             </div>
           </div>
 
           <div className="w-full flex items-center justify-between">
             <div className="grow flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Case material{" "}
-                <span className={`${!editable && "hidden"} text-red-600`}>
-                  *
-                </span>
+                Case material <span className="text-red-600">*</span>
               </p>
-              {isEditing ? (
-                <Select
-                  showSearch
-                  placeholder="Select case material..."
-                  popupMatchSelectWidth={200}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
-                  value={caseMaterial}
-                  options={caseMaterialOptions}
-                  onSelect={(value) => {
-                    setCaseMaterial(value);
-                  }}
-                  className="min-w-[10em]"
-                />
-              ) : (
-                <p className="px-2">{caseMaterial}</p>
-              )}
+
+              <Select
+                showSearch
+                placeholder="Select case material..."
+                popupMatchSelectWidth={200}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                value={caseMaterial}
+                options={caseMaterialOptions}
+                onSelect={(value) => {
+                  setCaseMaterial(value);
+                }}
+                className="min-w-[10em]"
+              />
             </div>
             <div className="grow flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
                 Case size <span className="font-light">(mm)</span>{" "}
-                <span className={`${!editable && "hidden"} text-red-600`}>
-                  *
-                </span>
+                <span className="text-red-600">*</span>
               </p>
               <input
-                disabled={!isEditing}
                 placeholder="e.g. 42, 50"
                 value={caseSize}
                 maxLength={3}
@@ -542,7 +598,7 @@ export default function ProductForm({
                   else if (e.target.value.match(/^[0-9]*$/))
                     setCaseSize(e.target.value);
                 }}
-                className="w-[10em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
               />
             </div>
             <div className="grow"></div>
@@ -552,15 +608,12 @@ export default function ProductForm({
             <div className="w-full flex items-center justify-between gap-8">
               <div className="w-1/2 flex flex-col items-start justify-start gap-1">
                 <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                  Box{" "}
-                  <span className={`${!editable && "hidden"} text-red-600`}>
-                    *
-                  </span>
+                  Box <span className="text-red-600">*</span>
                 </p>
                 <div className="w-full flex items-center justify-start">
                   <button
                     onClick={() => {
-                      if (isEditing) setBox(true);
+                      setBox(true);
                     }}
                     className={`${
                       box === true
@@ -572,7 +625,7 @@ export default function ProductForm({
                   </button>
                   <button
                     onClick={() => {
-                      if (isEditing) setBox(false);
+                      setBox(false);
                     }}
                     className={`${
                       box === false
@@ -586,15 +639,12 @@ export default function ProductForm({
               </div>
               <div className="w-1/2 flex flex-col items-start justify-start gap-1">
                 <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                  Papers{" "}
-                  <span className={`${!editable && "hidden"} text-red-600`}>
-                    *
-                  </span>
+                  Papers <span className="text-red-600">*</span>
                 </p>
                 <div className="w-full flex items-center justify-start">
                   <button
                     onClick={() => {
-                      if (isEditing) setPapers(true);
+                      setPapers(true);
                     }}
                     className={`${
                       papers === true
@@ -606,7 +656,7 @@ export default function ProductForm({
                   </button>
                   <button
                     onClick={() => {
-                      if (isEditing) setPapers(false);
+                      setPapers(false);
                     }}
                     className={`${
                       papers === false
@@ -627,7 +677,6 @@ export default function ProductForm({
                 Year of manufacture
               </p>
               <input
-                disabled={!isEditing}
                 placeholder="e.g. 1999, 2024"
                 value={yearOfProduction}
                 maxLength={4}
@@ -639,7 +688,7 @@ export default function ProductForm({
                   )
                     setYearOfProduction(e.target.value);
                 }}
-                className="w-[10em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
               />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
@@ -647,7 +696,6 @@ export default function ProductForm({
                 Past usage time <span className="font-light">(month)</span>
               </p>
               <input
-                disabled={!isEditing}
                 placeholder="e.g. 3, 6, 12"
                 value={pastUsageTime}
                 maxLength={3}
@@ -659,7 +707,7 @@ export default function ProductForm({
                   )
                     setPastUsageTime(e.target.value);
                 }}
-                className="w-[10em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
               />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
@@ -667,7 +715,6 @@ export default function ProductForm({
                 Remaining insurance <span className="font-light">(month)</span>
               </p>
               <input
-                disabled={!isEditing}
                 placeholder="e.g. 3, 6, 12"
                 value={remainingInsurance}
                 maxLength={3}
@@ -679,23 +726,19 @@ export default function ProductForm({
                   )
                     setRemainingInsurance(e.target.value);
                 }}
-                className="w-[10em] border p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
               />
             </div>
           </div>
-          <p
-            className={`${!editable && "hidden"} text-xs font-light italic p-2`}
-          >
-            Note: Please fulfill every field that are marked by{" "}
-            <span className="text-red-500">*</span> and upload an image.
+          <p className={`text-sm font-light italic p-2`}>
+            Note: Please make sure every field that are marked by{" "}
+            <span className="text-red-500">*</span> and the image are fulfilled.
           </p>
         </div>
       </div>
 
       <div
-        className={`${
-          !editable && "hidden"
-        } w-full flex items-center justify-end gap-8 font-montserrat`}
+        className={`${montserrat.className} w-full flex items-center justify-end gap-8 font-montserrat`}
       >
         <button onClick={() => resetData()} className="hover:underline">
           Reset

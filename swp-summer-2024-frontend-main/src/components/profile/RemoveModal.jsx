@@ -2,7 +2,7 @@ import { Avatar, Checkbox, Input, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function StatusUpdateModal({
+export default function RemoveModal({
   product,
   open,
   setOpen,
@@ -18,11 +18,8 @@ export default function StatusUpdateModal({
       .post("http://localhost:3000/sellerRequest", {
         account: user.id,
         product: product.id,
-        type: "update",
-        update: {
-          status: "SOLD",
-        },
-        details: "Update status to SOLD",
+        type: "delete",
+        details: "Stop selling",
       })
       .then(async (res) => {
         await axios
@@ -35,8 +32,7 @@ export default function StatusUpdateModal({
           .catch((err) => console.log(err));
         message.success({
           key: "updateStatus",
-          content:
-            "Your sale status update request has been successfully recorded.",
+          content: "Your remove request has been successfully recorded.",
           duration: 5,
         });
         getRequestStatus("updated");
@@ -54,8 +50,8 @@ export default function StatusUpdateModal({
 
   return (
     <Modal
-      title=<p className="text-sky-800 font-semibold font-montserrat">
-        Request to update status
+      title=<p className="text-red-700 font-semibold font-montserrat">
+        Are you sure to request to remove this product?
       </p>
       open={open}
       onCancel={(e) => {
@@ -80,20 +76,13 @@ export default function StatusUpdateModal({
           onChange={() => setCheckedConfirm(!checkedConfirm)}
         />
         <p className="inline ml-2 font-montserrat">
-          By checking, you are confirming that this product has already been
-          sold, all of the required steps of the transaction are completely
-          finished.
+          By checking, you are confirming remove this product out of Vintage
+          Timepiece System.
         </p>
       </div>
 
-      <p className="text-[0.9em] text-red-500 py-2 font-montserrat">
-        Once you have confirmed, this action CANNOT be reverted and this product
-        CANNOT be sold unless you once again own it.
-      </p>
-
-      <p className="text-[0.8em] italic pb-2 font-montserrat">
-        This product will be set to SOLD once our staffs' verification is
-        finished.
+      <p className="text-[0.8em] italic text-red-500 py-2 font-montserrat">
+        This action CANNOT be reverted.
       </p>
 
       <div className="w-full flex items-center justify-end gap-8 font-montserrat pt-4">
@@ -103,7 +92,7 @@ export default function StatusUpdateModal({
         <button
           disabled={!checkedConfirm}
           onClick={handleConfirmUpdatePrice}
-          className="px-8 py-2 bg-green-500 hover:bg-green-600 font-semibold text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="px-8 py-2 bg-red-500 hover:bg-red-600 font-semibold text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           Confirm
         </button>
