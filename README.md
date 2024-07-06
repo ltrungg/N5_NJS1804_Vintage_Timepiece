@@ -146,7 +146,7 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 | Phong | UC-40, UC-39,UC-12          | Member |
 | Nghĩa | UC-36, UC-13,UC-29          | Member |
 
-chạy backend: npm run start:dev
+chạy backend: npm run start:dev - 
 chạy frontend: npm run dev 
 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
