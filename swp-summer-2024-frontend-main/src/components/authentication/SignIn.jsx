@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Checkbox, Divider, Input, Modal, message } from "antd";
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
 import { EmailForm, CodeForm, ResetPasswordForm } from "./ForgotForm";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
@@ -23,7 +23,7 @@ export default function SignIn() {
 
   const [messageApi, contextHolder] = message.useMessage();
   const [cookies, setCookie, removeCookie] = useCookies(["signInUser"]);
-
+  const navigate = useNavigate();
   const handleRedirect = () => {
     const passwordResetAccount = sessionStorage.passwordReset;
     if (passwordResetAccount) {
@@ -138,11 +138,35 @@ export default function SignIn() {
                 duration: 5,
               });
               setIsLoading(false);
-              if (sessionStorage.signInRedirect) {
-                window.location.replace(`${sessionStorage.signInRedirect}`);
-                sessionStorage.removeItem("signInRedirect");
+
+              //       if (sessionStorage.signInRedirect) {
+              //         window.location.replace(`${sessionStorage.signInRedirect}`);
+              //         sessionStorage.removeItem("signInRedirect");
+              //       } else {
+              //         window.location.replace("/");
+              //       }
+              //     }, 2000);
+              //   }
+              // })
+              // .catch((err) => {
+              //   console.log("Sign in failed: ", err);
+              //   messageApi.open({
+              //     key: "signInStatus",
+              //     type: "error",
+              //     content: "Incorrect credentials. Please try again.",
+              //     duration: 5,
+              //   });
+              //   setIsLoading(false);
+              // });
+              if (account.role === "appraiser") {
+                navigate("/appraisal");
               } else {
-                window.location.replace("/");
+                if (sessionStorage.signInRedirect) {
+                  window.location.replace(`${sessionStorage.signInRedirect}`);
+                  sessionStorage.removeItem("signInRedirect");
+                } else {
+                  navigate("/");
+                }
               }
             }, 2000);
           }

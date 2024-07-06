@@ -6,7 +6,6 @@ import SignUp from "../../pages/SignUp";
 import Home from "../../pages/Home";
 import ProductDetail from "../../pages/ProductDetail";
 import ProductList from "../../pages/ProductsList";
-import Appraisers from "../profile/Appraisers";
 import ContactPage from "../../pages/ContactPage";
 import WishList from "../../pages/WishList";
 import Chat from "../../pages/Chat";
@@ -17,7 +16,11 @@ import StaffDashboard from "../StaffDashboard";
 import SellRequestDetail from "../SellRequestDetail";
 import ReportPage from "../ReportPage";
 import TestProductEdit from "../../pages/TestProductEdit";
+
+import Appraisal from "../../pages/Appraisal";
+
 import ViewSellerProfile from "../../pages/ViewSellerProfile";
+
 
 export default function AppRouter() {
   return (
@@ -37,7 +40,7 @@ export default function AppRouter() {
         <Route path="/chat/:id" element={<Chat />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/sell" element={<Sell />} />
-        <Route path="/appraisers" element={<Appraisers />} />
+        <Route path="/appraisal" element={<Appraisal />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/staffDashboard" element={<StaffDashboard />} />
         <Route path="/sell-request/:id" element={<SellRequestDetail />} />
