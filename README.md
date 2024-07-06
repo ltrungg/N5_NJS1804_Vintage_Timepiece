@@ -120,12 +120,7 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 | Phong | UC-01                       | Member |
 | Nghĩa | UC-25                       | Member |
 ## Sprint 2:   
-UC-35, UC-37
-UC-30, UC-17 
-UC-28, UC-39
-UC-20
-| UC-10       | Monitor Transactions       | Administrator          |
-| UC-11       | View appraiser's requests  | Administrator          |
+
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-02                       | Leader |
