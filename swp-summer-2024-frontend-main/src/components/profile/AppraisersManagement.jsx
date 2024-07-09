@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import EmptyOrderImage from "../../assets/images/profile/empty-order.webp";
 import SingleTimepiece from "./SingleTimepiece";
-import { Pagination,Modal, Input } from "antd";
+import { Pagination, Modal, Input } from "antd";
 
-export default function Appraisers({ list, getRequestStatus }) {
+export default function Appraisers({ list }) {
   const [currentList, setCurrentList] = useState([]);
   const [reason, setReason] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [startingPrice, setStartingPrice] = useState("");
+  const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
+  const [isAcceptModalVisible, setIsAcceptModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
   const defaultPageSize = 8;
@@ -23,29 +25,44 @@ export default function Appraisers({ list, getRequestStatus }) {
   };
 
   const approveItem = (item) => {
-    console.log("Approved item:", item);
-    getRequestStatus({ id: item.id, status: "approved" });
+    setSelectedItem(item);
+    setIsAcceptModalVisible(true);
   };
 
   const rejectItem = (item) => {
     setSelectedItem(item);
-    setIsModalVisible(true);
+    setIsRejectModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleRejectOk = async () => {
     if (selectedItem) {
-      console.log("Rejected item:", selectedItem, "Reason:", reason);
-      getRequestStatus({ id: selectedItem.id, status: "rejected", reason });
+      await getRequestStatus({ id: selectedItem.id, status: "rejected", reason });
       setReason("");
       setSelectedItem(null);
-      setIsModalVisible(false);
+      setIsRejectModalVisible(false);
     }
   };
 
-  const handleCancel = () => {
+  const handleRejectCancel = () => {
     setReason("");
     setSelectedItem(null);
-    setIsModalVisible(false);
+    setIsRejectModalVisible(false);
+  };
+
+  const handleAcceptOk = async () => {
+    if (selectedItem) {
+      await getRequestStatus({ id: selectedItem.id, status: "approved", startingPrice });
+      await generateCertificate(selectedItem.id, { startingPrice });
+      setStartingPrice("");
+      setSelectedItem(null);
+      setIsAcceptModalVisible(false);
+    }
+  };
+
+  const handleAcceptCancel = () => {
+    setStartingPrice("");
+    setSelectedItem(null);
+    setIsAcceptModalVisible(false);
   };
 
   useEffect(() => {
@@ -113,15 +130,28 @@ export default function Appraisers({ list, getRequestStatus }) {
 
       <Modal
         title="Reject Reason"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        visible={isRejectModalVisible}
+        onOk={handleRejectOk}
+        onCancel={handleRejectCancel}
       >
         <Input.TextArea
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           rows={4}
           placeholder="Enter the reason for rejection"
+        />
+      </Modal>
+
+      <Modal
+        title="Approve Request"
+        visible={isAcceptModalVisible}
+        onOk={handleAcceptOk}
+        onCancel={handleAcceptCancel}
+      >
+        <Input
+          value={startingPrice}
+          onChange={(e) => setStartingPrice(e.target.value)}
+          placeholder="Enter starting price"
         />
       </Modal>
     </div>

@@ -27,7 +27,7 @@
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.24.1",
     "react-scrollable-feed": "^2.0.2",
     "react-slick": "^0.30.2",
     "react-tsparticles": "^2.12.2",
