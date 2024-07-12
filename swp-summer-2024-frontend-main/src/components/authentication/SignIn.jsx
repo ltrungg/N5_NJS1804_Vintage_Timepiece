@@ -159,7 +159,7 @@ export default function SignIn() {
               //   setIsLoading(false);
               // });
               if (account.role === "appraiser") {
-                navigate("/appraisal");
+                navigate("/allAppraisal");
               } else {
                 if (sessionStorage.signInRedirect) {
                   window.location.replace(`${sessionStorage.signInRedirect}`);

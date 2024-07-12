@@ -28,7 +28,7 @@ export default function ReportModal({ on, object, open, setOpen }) {
     await axios
       .post("http://localhost:3000/report", {
         account: user.id,
-        on: "product",
+        on: on,
         reportedId: object.id,
         criteria: reportList,
         note: note,
@@ -67,7 +67,67 @@ export default function ReportModal({ on, object, open, setOpen }) {
       footer={null}
       className="font-montserrat"
     >
-      {on === "product" ? (
+      {on === "user" ? (
+        <div className="flex flex-col gap-8">
+          <p>Please tell us which of these standards this user violates:</p>
+          <div className="flex flex-col gap-2">
+            <div className="w-full">
+              <button
+                onClick={() => handleAddStandard("Pretending to be someone")}
+                className={`text-start py-2 px-4 rounded-[30px] border border-gray-400 duration-200 ${
+                  checkChosen("Pretending to be someone")
+                    ? "bg-sky-800 text-white hover:bg-sky-900"
+                    : "bg-white text-black hover:bg-slate-100"
+                }`}
+              >
+                Pretending to be someone
+              </button>
+            </div>
+            <div className="w-full">
+              <button
+                onClick={() =>
+                  handleAddStandard(
+                    "Selling fake or not similar to the described products"
+                  )
+                }
+                className={`text-start py-2 px-4 rounded-[30px] border border-gray-400 duration-200 ${
+                  checkChosen(
+                    "Selling fake or not similar to the described products"
+                  )
+                    ? "bg-sky-800 text-white hover:bg-sky-900"
+                    : "bg-white text-black hover:bg-slate-100"
+                }`}
+              >
+                Selling fake or not similar to the described products
+              </button>
+            </div>
+            <div className="w-full">
+              <button
+                onClick={() => handleAddStandard("Inappropriate name")}
+                className={`text-start py-2 px-4 rounded-[30px] border border-gray-400 duration-200 ${
+                  checkChosen("Inappropriate name")
+                    ? "bg-sky-800 text-white hover:bg-sky-900"
+                    : "bg-white text-black hover:bg-slate-100"
+                }`}
+              >
+                Inappropriate name
+              </button>
+            </div>
+            <div className="w-full">
+              <button
+                onClick={() => handleAddStandard("Harassment or bullying")}
+                className={`text-start py-2 px-4 rounded-[30px] border border-gray-400 duration-200 ${
+                  checkChosen("Harassment or bullying")
+                    ? "bg-sky-800 text-white hover:bg-sky-900"
+                    : "bg-white text-black hover:bg-slate-100"
+                }`}
+              >
+                Harassment or bullying
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
         <div className="flex flex-col gap-8">
           <p>Please tell us which of these standards this product violates:</p>
           <div className="flex flex-col gap-2">
@@ -131,8 +191,6 @@ export default function ReportModal({ on, object, open, setOpen }) {
             </div>
           </div>
         </div>
-      ) : (
-        <div></div>
       )}
 
       <div className="w-full mt-4">
@@ -141,7 +199,9 @@ export default function ReportModal({ on, object, open, setOpen }) {
             minRows: 4,
             maxRows: 10,
           }}
-          placeholder="Tell us more about how this product dissatisfied you..."
+          placeholder={`Tell us more about how this ${
+            on === "user" ? "user" : "product"
+          } dissatisfied you...`}
           value={note}
           onChange={(e) => setNote(e.target.value)}
           className="font-montserrat"

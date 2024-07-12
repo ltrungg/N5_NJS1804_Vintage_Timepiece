@@ -39,6 +39,7 @@ export default function UserProfile() {
         </div>
       </div>
       <button
+        id="edit-profile"
         onClick={() => setIsEditingProfile(true)}
         className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 px-8 py-3 font-semibold text-white rounded-3xl duration-300"
       >

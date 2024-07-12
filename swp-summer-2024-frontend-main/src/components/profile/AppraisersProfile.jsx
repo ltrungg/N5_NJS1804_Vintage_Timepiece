@@ -30,7 +30,7 @@ export default function AppraisersProfile() {
         <ul className="space-y-2">
           <li>
             <Link
-              to="/appraisal/Appraisers"
+              to="/allAppraisal/appraisalHistory"
               className={`block px-6 py-3 text-sm font-medium ${
                 location.pathname === "/appraisal/all-requests"
                   ? "bg-sky-600 text-white"
@@ -42,7 +42,7 @@ export default function AppraisersProfile() {
           </li>
           <li>
             <Link
-              to="/appraisal/new-request"
+              to="/allAppraisal/appraisal"
               className={`block px-6 py-3 text-sm font-medium ${
                 location.pathname === "/appraisal/new-request"
                   ? "bg-sky-600 text-white"

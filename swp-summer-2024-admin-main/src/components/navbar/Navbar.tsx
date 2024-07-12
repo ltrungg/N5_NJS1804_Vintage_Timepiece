@@ -1,9 +1,18 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const [user, setUser] = useState({
+    role: null,
+  });
+
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    if (!sessionStorage.adminSignin && !window.location.pathname.match("/")) {
+    if (sessionStorage.adminSignIn)
+      setUser(JSON.parse(sessionStorage.adminSignIn));
+
+    if (!user && !window.location.pathname.match("/")) {
       window.location.replace("/");
     }
   }, []);
@@ -65,20 +74,31 @@ export default function Navbar() {
           VINTAGE TIMEPIECE ADMINISTRATIVE SYSTEM
         </p>
       </div>
-      <div
-        onClick={signOut}
-        className="flex items-center gap-2 px-8 cursor-pointer hover:text-gray-400"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="32"
-          height="32"
-          fill="currentColor"
+      <div className="flex items-center gap-8">
+        <p
+          className={`${
+            !user && "hidden"
+          } px-4 py-2 rounded-xl text-white font-semibold ${
+            user && user.role === "admin" ? "bg-red-700" : "bg-sky-700"
+          }`}
         >
-          <path d="M4 18H6V20H18V4H6V6H4V3C4 2.44772 4.44772 2 5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V18ZM6 11H13V13H6V16L1 12L6 8V11Z"></path>
-        </svg>
-        <p>Sign out</p>
+          {user && user.role === "admin" ? "ADMINISTRATOR" : "STAFF"}
+        </p>
+        <button
+          onClick={signOut}
+          className="flex items-center gap-2 px-8 hover:text-gray-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="32"
+            height="32"
+            fill="currentColor"
+          >
+            <path d="M4 18H6V20H18V4H6V6H4V3C4 2.44772 4.44772 2 5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V18ZM6 11H13V13H6V16L1 12L6 8V11Z"></path>
+          </svg>
+          <p>Sign out</p>
+        </button>
       </div>
     </div>
   );

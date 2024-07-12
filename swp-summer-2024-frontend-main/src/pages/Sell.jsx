@@ -29,7 +29,7 @@ export default function Sell() {
   // const [fileList, setFileList] = useState([]);
   const [formData, setFormData] = useState({
     watchName: "",
-    name: "",
+    email: "",
     phoneNumber: "",
     box: "",
     documents: null,
@@ -82,6 +82,7 @@ export default function Sell() {
   };
 
   const handleNext = () => {
+    console.log("Form data:", formData);
     setFormData({
       ...formData,
       currentStep: formData.box === "yes" ? 2 : 1,
@@ -121,6 +122,7 @@ export default function Sell() {
       let newForm;
       if (box === "yes") {
         newForm = {
+          watchBrand,
           watchName,
           name,
           phoneNumber,
@@ -134,6 +136,7 @@ export default function Sell() {
         };
       } else {
         newForm = {
+          watchBrand,
           watchName,
           name,
           phoneNumber,
@@ -179,25 +182,13 @@ export default function Sell() {
       content: (
         <div className="flex flex-col space-y-4">
           <div className="grid grid-cols-3 gap-4">
-            <label className="col-span-1 self-center">Watch Name</label>
+            <label className="col-span-1 self-center">Email address</label>
             <div className="col-span-2">
               <Input
                 size="large"
-                name="watchName"
+                name="email"
                 style={{ width: "70%" }}
-                value={formData.watchName}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-4">
-            <label className="col-span-1 self-center">Your Name</label>
-            <div className="col-span-2">
-              <Input
-                size="large"
-                name="name"
-                style={{ width: "70%" }}
-                value={formData.name}
+                value={formData.email}
                 onChange={handleChange}
               />
             </div>

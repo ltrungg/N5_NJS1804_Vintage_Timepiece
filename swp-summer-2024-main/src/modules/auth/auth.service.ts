@@ -154,7 +154,7 @@ export class AuthService {
         'status',
       ],
       order: {
-        updatedAt: -1,  
+        updatedAt: -1,
       },
     });
   }
@@ -180,12 +180,36 @@ export class AuthService {
     else throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
   }
 
+  async getAccountById(id: string): Promise<any> {
+    const found = await this.repositoryAccount.findOne({
+      where: { id: id },
+      select: [
+        'id',
+        'createdAt',
+        'updatedAt',
+        'deletedAt',
+        'username',
+        'email',
+        'phone',
+        'role',
+        'avatar',
+        'lastActive',
+        'status',
+      ],
+    });
+    if (found) return found;
+    else throw new HttpException('Account not found', HttpStatus.NOT_FOUND);
+  }
+
   async getSearchList(key: string): Promise<AccountEntity[]> {
     return await this.repositoryAccount
       .createQueryBuilder('account')
-      .where('account.email ILIKE :key OR account.username ILIKE :key', {
-        key: `%${key}%`,
-      })
+      .where(
+        'account.email ILIKE :key OR account.username ILIKE :key OR account.phone LIKE :key ',
+        {
+          key: `%${key}%`,
+        },
+      )
       .select([
         'account.id',
         'account.createdAt',
@@ -200,6 +224,29 @@ export class AuthService {
         'account.status',
       ])
       .getMany();
+  }
+
+  async getTodayActiveAccounts() {
+    const accounts: AccountEntity[] = await this.getAllAccounts();
+    const todayDate = new Date(Date.now());
+    const today =
+      todayDate.getDate().toString() +
+      todayDate.getMonth().toString() +
+      todayDate.getFullYear().toString();
+    console.log('Today: ', today);
+
+    var temp: AccountEntity[] = [];
+    accounts.filter((acc: AccountEntity) => {
+      if (
+        acc.lastActive.getUTCDate().toString() +
+          acc.lastActive.getMonth().toString() +
+          acc.lastActive.getFullYear().toString() ===
+        today
+      ) {
+        temp.push(acc);
+      }
+    });
+    return temp;
   }
 
   async updateActiveStatus(id: string): Promise<any> {

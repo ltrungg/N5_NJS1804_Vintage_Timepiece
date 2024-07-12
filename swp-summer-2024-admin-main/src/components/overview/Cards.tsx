@@ -4,10 +4,16 @@ import { Card } from "@tremor/react";
 
 export default function Cards({
   totalAccount,
+  totalTodayActiveAccount,
   totalTimepiece,
+  totalRequest,
+  totalReport,
 }: {
-  totalAccount: any;
-  totalTimepiece: any;
+  totalAccount: any[];
+  totalTodayActiveAccount: any[];
+  totalTimepiece: any[];
+  totalRequest: any[];
+  totalReport: any[];
 }) {
   const [isShowingMore, setIsShowingMore] = useState(false);
 
@@ -18,11 +24,12 @@ export default function Cards({
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="flex flex-row items-center justify-center w-full">
+        <div className="w-full flex flex-row items-center justify-center gap-2">
           <Card
-            className="m-2 max-w-md min-w-fit inline-block cursor-pointer"
+            className="grow min-w-fit inline-block cursor-pointer"
             decoration="top"
             decorationColor="cyan"
+            onClick={() => (window.location.href = "/user/accounts")}
           >
             <h4 className="text-tremor-default text-gray-300">Total account</h4>
             <p className="text-tremor-metric font-semibold text-white">
@@ -30,21 +37,23 @@ export default function Cards({
             </p>
           </Card>
           <Card
-            className="m-2 max-w-md min-w-fit !bg-lime-950 inline-block"
+            className="grow min-w-fit !bg-teal-950 inline-block cursor-pointer"
             decoration="top"
-            decorationColor="green"
+            decorationColor="teal"
+            onClick={() => (window.location.href = "/user/accounts")}
           >
             <h4 className="text-tremor-default text-gray-300">
-              Total income earned
+              Total today active account
             </h4>
             <p className="text-tremor-metric font-semibold text-white">
-              7,385 $
+              {totalTodayActiveAccount.length}
             </p>
           </Card>
           <Card
-            className="w-[50%] m-2 max-w-md min-w-fit inline-block !bg-purple-950"
+            className="grow min-w-fit inline-block !bg-purple-950"
             decoration="top"
             decorationColor="indigo"
+            onClick={() => (window.location.href = "/timepiece")}
           >
             <h4 className="min-w-fit text-tremor-default text-gray-300">
               Total timepiece
@@ -54,17 +63,34 @@ export default function Cards({
             </p>
           </Card>
           <Card
-            className="w-[50%] m-2 max-w-md min-w-fit inline-block !bg-rose-950"
+            className="grow min-w-fit !bg-lime-950 inline-block"
             decoration="top"
-            decorationColor="orange"
+            decorationColor="green"
+            onClick={() => (window.location.href = "/user/sellers")}
           >
             <h4 className="text-tremor-default text-gray-300">
-              Total transaction made
+              Total pending request
             </h4>
-            <p className="text-tremor-metric font-semibold text-white">139</p>
+            <p className="text-tremor-metric font-semibold text-white">
+              {totalRequest.length}
+            </p>
+          </Card>
+
+          <Card
+            className="grow min-w-fit inline-block !bg-rose-950"
+            decoration="top"
+            decorationColor="orange"
+            onClick={() => (window.location.href = "/report/product")}
+          >
+            <h4 className="text-tremor-default text-gray-300">
+              Total report recorded
+            </h4>
+            <p className="text-tremor-metric font-semibold text-white">
+              {totalReport.length}
+            </p>
           </Card>
         </div>
-        {isShowingMore ? (
+        {/* {isShowingMore ? (
           <div className="flex flex-row items-center justify-center w-full">
             <Card
               className="m-2 max-w-md inline-block !bg-white"
@@ -139,10 +165,10 @@ export default function Cards({
               </p>
             </Card>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
 
-      <button
+      {/* <button
         onClick={showStatistics}
         className="flex items-center gap-1 absolute text-xs right-8 text-gray-600 hover:underline hover:text-black "
       >
@@ -162,7 +188,7 @@ export default function Cards({
             Show more statistics
           </>
         )}
-      </button>
+      </button> */}
     </>
   );
 }

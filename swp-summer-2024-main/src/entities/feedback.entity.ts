@@ -6,10 +6,14 @@ import { AccountEntity } from './account.entity';
   name: 'FEEDBACK',
 })
 export class FeedbackEntity extends BaseEntity {
-  @ManyToOne(() => AccountEntity, (account) => account.sentFeedbacks)
+  @ManyToOne(() => AccountEntity, (account) => account.sentFeedbacks, {
+    eager: true,
+  })
   evaluator: AccountEntity;
 
-  @ManyToOne(() => AccountEntity, (account) => account.receivedFeedbacks)
+  @ManyToOne(() => AccountEntity, (account) => account.receivedFeedbacks, {
+    eager: true,
+  })
   evaluated: AccountEntity;
 
   @Column({

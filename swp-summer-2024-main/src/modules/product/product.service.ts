@@ -61,6 +61,7 @@ export class ProductService {
     return await this.productRepository.findOne({
       where: { id },
       relations: ['owner'],
+      select: ['id','status','createdAt'],
     });
   }
 
@@ -161,6 +162,22 @@ export class ProductService {
   }
 
   async updateProduct(id: string, update: any): Promise<any> {
+    console.log(update)
     return this.productRepository.update(id, update);
   }
+
+  // async updateProductStatus(id: string, update: { status: ProductStatus; price?: number }) {
+  //   const product = await this.productRepository.findOne({ where: { id } });
+  //   if (!product) {
+  //     throw new Error('Product not found');
+  //   }
+
+  //   product.status = update.status;
+  //   if (update.price !== undefined) {
+  //     product.price = update.price;
+  //   }
+
+  //   await this.productRepository.save(product);
+  //   return product;
+  // }
 }

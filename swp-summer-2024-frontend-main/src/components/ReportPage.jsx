@@ -7,40 +7,40 @@ import ReportPDF from './ReportPDF';
 import { StyleSheet } from '@react-pdf/renderer';
 
 const ReportPage = () => {
-  const [sellRequest, setSellRequest] = useState(null);
+  const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
-    const fetchSellRequest = async () => {
+    const fetchProductData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/sell-request/${id}`);
-        setSellRequest(response.data);
+        // const response = await axios.get(`http://localhost:3000/product/${id}`);
+        const response = await axios.get(`http://localhost:3000/product/3d153d7a-b27d-45e7-988f-b610b7257c67`);
+        setProductData(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Failed to fetch sell request:', error);
+        console.error('Failed to fetch product data:', error);
         setLoading(false);
       }
     };
 
-    fetchSellRequest();
+    fetchProductData();
   }, [id]);
 
   if (loading) {
     return <Spin size="large" />;
   }
 
-  // Define inline styles using StyleSheet.create
   const styles = StyleSheet.create({
     reportContainer: {
       fontFamily: 'Arial, sans-serif',
       padding: '20px',
-      minHeight: '100vh', // Ensure the container takes up at least the full viewport height
-      width: '100%', // Take up full width
+      minHeight: '100vh',
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#f0f2f5', // Example background color
+      backgroundColor: '#f0f2f5',
     },
     report: {
       backgroundColor: '#fff',
@@ -48,7 +48,7 @@ const ReportPage = () => {
       borderRadius: '8px',
       boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
       width: '100%',
-      maxWidth: '800px', // Example: Limiting max width to 800px
+      maxWidth: '800px',
     },
     section: {
       marginBottom: '20px',
@@ -88,18 +88,15 @@ const ReportPage = () => {
     },
   });
 
-  // Function to handle PDF download
   const handleDownloadPDF = () => {
-    // Create a Blob URL for the PDF blob
-    const pdfBlobUrl = URL.createObjectURL(new Blob([<ReportPDF sellRequest={sellRequest} />], { type: 'application/pdf' }));
+    const pdfBlobUrl = URL.createObjectURL(new Blob([<ReportPDF productData={productData} />], { type: 'application/pdf' }));
 
-    // Create an anchor element to trigger the download
     const anchorElement = document.createElement('a');
     anchorElement.href = pdfBlobUrl;
     anchorElement.download = 'report.pdf';
-    document.body.appendChild(anchorElement); // Append anchor to body
-    anchorElement.click(); // Click on anchor to start download
-    document.body.removeChild(anchorElement); // Clean up anchor element after download
+    document.body.appendChild(anchorElement);
+    anchorElement.click();
+    document.body.removeChild(anchorElement);
   };
 
   return (
@@ -108,24 +105,22 @@ const ReportPage = () => {
         <h2>Rolex Watch Appraisal Report</h2>
 
         <PDFViewer style={styles.pdfViewer}>
-          <ReportPDF sellRequest={sellRequest} />
+          <ReportPDF productData={productData} />
         </PDFViewer>
 
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <div
             style={styles.actionButton}
-            // onClick={handleDownloadPDF}
+            onClick={handleDownloadPDF}
           >
-            Other
+            Download PDF
           </div>
 
           <div
             style={styles.actionButton}
-            // onClick={handleDownloadPDF}
           >
             Other
           </div>
-
         </div>
 
         <Divider />

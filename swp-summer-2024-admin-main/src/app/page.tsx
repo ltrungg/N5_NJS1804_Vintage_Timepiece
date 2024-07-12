@@ -11,11 +11,15 @@ import ActionList from "@/components/overview/ActionList";
 export default function Home() {
   const [signInFormOpen, setSignInFormOpen] = useState(false);
   const [accountList, setAccountList] = useState([]);
+  const [todayActiveAccountList, setTodayActiveAccountList] = useState([]);
   const [timepieceList, setTimepieceList] = useState([]);
+  const [requestList, setRequestList] = useState([]);
+  const [reportList, setReportList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const adminSignIn = sessionStorage.adminSignIn
-    ? JSON.parse(sessionStorage.adminSignIn)
-    : null;
+
+  const [adminSignIn, setAdminSignIn] = useState();
+
+  useEffect(() => {}, []);
 
   const getAccountData = async () => {
     setIsLoading(true);
@@ -23,6 +27,17 @@ export default function Home() {
       .get("http://localhost:3000/auth/accounts")
       .then((res) => {
         setAccountList(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getTodayActiveAccountData = async () => {
+    setIsLoading(true);
+    await axios
+      .get("http://localhost:3000/auth/active_today")
+      .then((res) => {
+        setTodayActiveAccountList(res.data);
         setIsLoading(false);
       })
       .catch((err) => console.log(err));
@@ -39,12 +54,39 @@ export default function Home() {
       .catch((err) => console.log(err));
   };
 
+  const getRequestData = async () => {
+    setIsLoading(true);
+    await axios
+      .get("http://localhost:3000/sellerRequest/pending")
+      .then((res) => {
+        setRequestList(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getReportData = async () => {
+    setIsLoading(true);
+    await axios
+      .get("http://localhost:3000/report")
+      .then((res) => {
+        setReportList(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
-    if (!adminSignIn) {
+    if (sessionStorage.adminSignIn)
+      setAdminSignIn(JSON.parse(sessionStorage.adminSignIn));
+    else {
       setSignInFormOpen(true);
     }
     getAccountData();
+    getTodayActiveAccountData();
     getTimepieceData();
+    getRequestData();
+    getReportData();
   }, []);
 
   if (isLoading) return <Loading />;
@@ -56,7 +98,13 @@ export default function Home() {
       {adminSignIn === null ? null : (
         <div className="flex flex-col items-start justify-start gap-4 p-4">
           <p className="font-bold text-xl px-4">OVERVIEW STATISTICS</p>
-          <Cards totalAccount={accountList} totalTimepiece={timepieceList} />
+          <Cards
+            totalAccount={accountList}
+            totalTodayActiveAccount={todayActiveAccountList}
+            totalTimepiece={timepieceList}
+            totalRequest={requestList}
+            totalReport={reportList}
+          />
           <p className="font-bold text-xl px-4 mt-8">GENERAL</p>
           <div className="w-full flex justify-center">
             <ActionList />

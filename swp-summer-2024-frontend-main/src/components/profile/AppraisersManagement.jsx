@@ -2,20 +2,56 @@ import React, { useEffect, useState } from "react";
 import EmptyOrderImage from "../../assets/images/profile/empty-order.webp";
 import SingleTimepiece from "./SingleTimepiece";
 import { Pagination, Modal, Input } from "antd";
+import { getRequestStatus } from "../certificate/getRequestStatus";
+import axios from "axios";
 
-export default function Appraisers({ list }) {
+export default function Appraisers() {
+  const [list, setList] = useState([]);
   const [currentList, setCurrentList] = useState([]);
   const [reason, setReason] = useState("");
   const [startingPrice, setStartingPrice] = useState("");
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [isAcceptModalVisible, setIsAcceptModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
   const defaultPageSize = 8;
   const [pagingState, setPagingState] = useState({
     min: 0,
     max: defaultPageSize,
   });
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/product');
+      setList(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  const getStatus = (product) => {
+    switch (product.status) {
+      case "IN APPRAISAL":
+        return (
+          <button className="w-40 bg-amber-600 hover:bg-amber-500 rounded-[30px] flex items-center justify-center text-white font-bold py-2">
+            IN APPRAISAL
+          </button>
+        );
+      case "APPROVED":
+        return (
+          <button className="w-40 bg-green-600 hover:bg-green-500 rounded-[30px] flex items-center justify-center text-white font-bold py-2">
+            APPROVED
+          </button>
+        );
+      case "REJECTED":
+        return (
+          <button className="w-40 bg-red-600 hover:bg-red-500 rounded-[30px] flex items-center justify-center text-white font-bold py-2">
+            REJECTED
+          </button>
+        );
+      default:
+        return null;
+    }
+  };
 
   const handlePageChange = (page) => {
     setPagingState({
@@ -36,10 +72,11 @@ export default function Appraisers({ list }) {
 
   const handleRejectOk = async () => {
     if (selectedItem) {
-      await getRequestStatus({ id: selectedItem.id, status: "rejected", reason });
-      setReason("");
+      await getRequestStatus(selectedItem.id, 'REJECTED', reason);
+      setReason('');
       setSelectedItem(null);
       setIsRejectModalVisible(false);
+      fetchProducts(); 
     }
   };
 
@@ -51,11 +88,11 @@ export default function Appraisers({ list }) {
 
   const handleAcceptOk = async () => {
     if (selectedItem) {
-      await getRequestStatus({ id: selectedItem.id, status: "approved", startingPrice });
-      await generateCertificate(selectedItem.id, { startingPrice });
-      setStartingPrice("");
+      await getRequestStatus(selectedItem.id, 'APPROVED', startingPrice);
+      setStartingPrice('');
       setSelectedItem(null);
       setIsAcceptModalVisible(false);
+      fetchProducts(); 
     }
   };
 
@@ -66,8 +103,12 @@ export default function Appraisers({ list }) {
   };
 
   useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
     const filteredList = list.filter(
-      (item) => item.status.toUpperCase() === "IN APPRAISAL"
+      (item) => ["IN APPRAISAL", "APPROVED", "REJECTED"].includes(item.status.toUpperCase())
     );
     setCurrentList(filteredList);
     setPagingState({
@@ -85,20 +126,15 @@ export default function Appraisers({ list }) {
         </div>
       ) : (
         <div className="w-full flex flex-col items-start justify-start gap-2 p-4">
-          {currentList.length === 0 ? (
-            <div className="w-full flex flex-col items-center justify-center gap-4 my-16">
-              <img src={EmptyOrderImage} alt="" className="w-24" />
-              <p>No product!</p>
-            </div>
-          ) : (
-            <div className="w-full min-h-[40vh] flex flex-col items-center justify-start">
-              {currentList
-                .slice(pagingState.min, pagingState.max)
-                .map((item) => {
-                  return (
-                    <div key={item.id} className="w-full flex flex-col items-start gap-4 border-b border-gray-300 py-4">
-                      <SingleTimepiece product={item} />
-                      <div className="flex items-center gap-4">
+          <div className="w-full min-h-[40vh] flex flex-col items-center justify-start">
+            {currentList
+              .slice(pagingState.min, pagingState.max)
+              .map((item) => (
+                <div key={item.id} className="w-full flex flex-col items-start gap-4 border-b border-gray-300 py-4">
+                  <SingleTimepiece product={item} getStatus={getStatus} />
+                  <div className="flex items-center gap-4">
+                    {item.status === "IN APPRAISAL" && (
+                      <>
                         <button
                           onClick={() => approveItem(item)}
                           className="bg-green-600 hover:bg-green-800 text-white rounded-xl px-4 py-2"
@@ -111,20 +147,20 @@ export default function Appraisers({ list }) {
                         >
                           Reject
                         </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              <Pagination
-                total={currentList.length}
-                pageSize={defaultPageSize}
-                hideOnSinglePage
-                size="default"
-                onChange={handlePageChange}
-                className="mt-8"
-              />
-            </div>
-          )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            <Pagination
+              total={currentList.length}
+              pageSize={defaultPageSize}
+              hideOnSinglePage
+              size="default"
+              onChange={handlePageChange}
+              className="mt-8"
+            />
+          </div>
         </div>
       )}
 

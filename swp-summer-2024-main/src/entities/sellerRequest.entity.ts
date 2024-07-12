@@ -8,10 +8,14 @@ import { AccountEntity } from './account.entity';
   name: 'SELLER_REQUEST',
 })
 export class SellerRequestEntity extends BaseEntity {
-  @ManyToOne(() => AccountEntity, (account) => account.sellerRequests)
+  @ManyToOne(() => AccountEntity, (account) => account.sellerRequests, {
+    eager: true,
+  })
   account: AccountEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.sellerRequests)
+  @ManyToOne(() => ProductEntity, (product) => product.sellerRequests, {
+    eager: true,
+  })
   product: ProductEntity;
 
   @Column({

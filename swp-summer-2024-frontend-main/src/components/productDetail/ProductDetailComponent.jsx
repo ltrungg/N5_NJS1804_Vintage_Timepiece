@@ -1,11 +1,12 @@
-import { Avatar, message } from "antd";
+import { Avatar, message, Modal, Tooltip } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { generateChatRoomId } from "../../assistants/generators";
 import Loading from "../loading/Loading";
 import CurrencySplitter from "../../assistants/currencySpliter";
 import ReportModal from "./ReportModal";
-import ColumnGroup from "antd/es/table/ColumnGroup";
+import moment from "moment";
+import ProductForm from "../profile/ProductForm";
 
 export default function ProductDetailComponent({
   user,
@@ -15,6 +16,19 @@ export default function ProductDetailComponent({
   const [wishListState, setWishListState] = useState(isInWishList);
   const [isReporting, setIsReporting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowingPhoneNumber, setIsShowingPhoneNumber] = useState(false);
+  const [isShowingDetails, setIsShowingDetails] = useState(false);
+
+  const copyPhoneNumber = () => {
+    const phone = document.getElementById("phone-number");
+    phone.select();
+    navigator.clipboard.writeText(phone.value);
+    message.success({
+      key: "copyPhoneNumber",
+      content: "Copied phone number to clipboard!",
+      duration: 5,
+    });
+  };
 
   const addToFavorite = () => {
     const wishList = sessionStorage.wishList
@@ -96,19 +110,89 @@ export default function ProductDetailComponent({
       <div className="w-full flex items-center justify-between">
         <img src={product.image} alt="" className="w-[400px]" />
         <div className="w-1/2 flex flex-col items-start justify-between text-xl gap-8">
-          <div className="ml-4 flex flex-col gap-3">
+          <div className="w-full flex flex-col justify-start gap-2">
+            <div className="w-full flex items-start text-sm gap-4 p-2 border-b">
+              <Avatar src={product.owner.avatar} size={40} alt="" />
+              <span className="flex flex-col gap-1">
+                <p>{product.owner.username}</p>
+                <p className="text-[0.7em] text-gray-500">
+                  Active {moment(product.owner.lastActive).fromNow()}
+                </p>
+              </span>
+              <div className="self-center ml-auto flex items-center gap-1 ">
+                <button
+                  onClick={() =>
+                    (window.location.href = `/profile/${product.owner.id}`)
+                  }
+                  className="text-white font-semibold px-6 py-2 bg-gray-700 hover:bg-gray-800 rounded-full duration-200"
+                >
+                  View profile
+                </button>
+                <Tooltip title="Show phone number" mouseEnterDelay={0.5}>
+                  <button
+                    onClick={() => {
+                      if (product.owner.phone === "") {
+                        message.warning({
+                          key: "emptyPhoneNumber",
+                          content: "This user yet provided a phone number.",
+                          duration: 5,
+                        });
+                        return;
+                      } else setIsShowingPhoneNumber(true);
+                    }}
+                    className="text-gray-500 p-2 border border-gray-300 rounded-xl hover:bg-sky-700 hover:text-white duration-200"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                    >
+                      <path d="M9.36556 10.6821C10.302 12.3288 11.6712 13.698 13.3179 14.6344L14.2024 13.3961C14.4965 12.9845 15.0516 12.8573 15.4956 13.0998C16.9024 13.8683 18.4571 14.3353 20.0789 14.4637C20.599 14.5049 21 14.9389 21 15.4606V19.9234C21 20.4361 20.6122 20.8657 20.1022 20.9181C19.5723 20.9726 19.0377 21 18.5 21C9.93959 21 3 14.0604 3 5.5C3 4.96227 3.02742 4.42771 3.08189 3.89776C3.1343 3.38775 3.56394 3 4.07665 3H8.53942C9.0611 3 9.49513 3.40104 9.5363 3.92109C9.66467 5.54288 10.1317 7.09764 10.9002 8.50444C11.1427 8.9484 11.0155 9.50354 10.6039 9.79757L9.36556 10.6821ZM6.84425 10.0252L8.7442 8.66809C8.20547 7.50514 7.83628 6.27183 7.64727 5H5.00907C5.00303 5.16632 5 5.333 5 5.5C5 12.9558 11.0442 19 18.5 19C18.667 19 18.8337 18.997 19 18.9909V16.3527C17.7282 16.1637 16.4949 15.7945 15.3319 15.2558L13.9748 17.1558C13.4258 16.9425 12.8956 16.6915 12.3874 16.4061L12.3293 16.373C10.3697 15.2587 8.74134 13.6303 7.627 11.6707L7.59394 11.6126C7.30849 11.1044 7.05754 10.5742 6.84425 10.0252Z"></path>
+                    </svg>
+                  </button>
+                </Tooltip>
+                <Modal
+                  open={isShowingPhoneNumber}
+                  onCancel={(e) => {
+                    e.stopPropagation();
+                    setIsShowingPhoneNumber(false);
+                  }}
+                  footer={null}
+                  centered
+                  closeIcon={null}
+                >
+                  <div className="w-full flex items-center justify-center gap-4">
+                    <button onClick={copyPhoneNumber}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        className="fill-gray-500 hover:fill-black"
+                      >
+                        <path d="M7 4V2H17V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H7ZM7 6H5V20H19V6H17V8H7V6ZM9 4V6H15V4H9Z"></path>
+                      </svg>
+                    </button>
+                    <p className="font-semibold text-2xl font-montserrat">
+                      {product.owner.phone}
+                    </p>
+                    <input
+                      id="phone-number"
+                      type="text"
+                      value={product.owner.phone}
+                      hidden
+                    />
+                  </div>
+                </Modal>
+              </div>
+            </div>
             <p className="font-light">{product.brand}</p>
-            <p className="text-[2em] font-semibold leading-[1.2em]">
+            <p className="text-[1.5em] font-semibold leading-[1.2em]">
               {product.name}
             </p>
-            <p className="w-full text-xs text-end pr-4">
-              owned by &ensp;
-              <span className="opacity-70 cursor-pointer hover:opacity-100">
-                <Avatar size={16} src={product.owner.avatar} />{" "}
-                {product.owner.username}
-              </span>
-            </p>
-            <p className="text-[30px] font-bold">
+            <p className="text-red-500 font-bold">
               $ {CurrencySplitter(Math.round(product.price * 100) / 100)}
             </p>
           </div>
@@ -225,7 +309,17 @@ export default function ProductDetailComponent({
         </div>
       </div>
       <div className="flex flex-col ml-8 gap-8">
-        <p className="text-2xl font-bold">SPECIFICATIONS</p>
+        <p className="text-2xl font-bold flex items-center gap-8">
+          SPECIFICATIONS{" "}
+          <button
+            onClick={() => {
+              setIsShowingDetails(true);
+            }}
+            className="text-xs font-light p-2 rounded-lg bg-sky-800 hover:bg-sky-900 text-white"
+          >
+            View details
+          </button>
+        </p>
         <div className="flex flex-wrap justify-start gap-x-4 gap-y-2 text-sm">
           <div className="flex flex-row items-center justify-between flex-[100%] sm:flex-[45%] md:flex-[30%] lg:flex-[20%]">
             <p className="font-bold">Type:</p>
@@ -264,6 +358,12 @@ export default function ProductDetailComponent({
             <p className="font-light">{product.caseSize} mm</p>
           </div>
         </div>
+        <ProductForm
+          product={product}
+          open={isShowingDetails}
+          setOpen={setIsShowingDetails}
+          editable={false}
+        />
       </div>
     </div>
   );

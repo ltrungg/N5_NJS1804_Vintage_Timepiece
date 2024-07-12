@@ -41,7 +41,12 @@ export default function EditProfileModal({
             sessionStorage.setItem("signInUser", JSON.stringify(res.data));
             sessionStorage.setItem("profile_updated", "true");
             setOpen(false);
-            window.location.reload();
+            if (sessionStorage.updatePhoneNumber) {
+              sessionStorage.removeItem("updatePhoneNumber");
+              window.location.href = "/sell";
+            } else {
+              window.location.reload();
+            }
           })
           .catch((err) => console.log(err));
       })

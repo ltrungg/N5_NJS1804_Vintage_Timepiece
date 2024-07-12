@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, HttpException, HttpStatus } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
@@ -135,4 +135,7 @@ export class ProductController {
           message: 'Failed to update product ',
         };
   }
+
+  
+
 }

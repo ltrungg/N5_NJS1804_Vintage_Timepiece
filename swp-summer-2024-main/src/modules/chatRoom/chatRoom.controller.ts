@@ -7,14 +7,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 import { ChatRoomService } from './chatRoom.service';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 @Controller('chatRoom')
 export class ChatRoomController {
   constructor(private readonly chatRoomService: ChatRoomService) {}
 
-  @Get('/chat_room_to_user')
+  @Get('')
   getAllChatRoomToUser() {
     return this.chatRoomService.getAllChatRoomToUser();
   }

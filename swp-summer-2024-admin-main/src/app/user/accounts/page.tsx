@@ -62,7 +62,7 @@ export default function page() {
           </svg>
           <input
             type="text"
-            placeholder="Search account by email or username..."
+            placeholder="Search account by email, username or phone number..."
             value={searchKey}
             onChange={(e) => setSearchKey(e.target.value)}
             className="rounded-[2em] w-[40em] px-4 py-2"

@@ -71,7 +71,7 @@ export default function TimepieceListTable({
         </p>
       ),
       cell: (row: any) => (
-        <p className="font-semibold w-full text-center">
+        <p className="font-semibold w-full text-center text-red-600">
           $ {CurrencySplitter(Math.round(row.price * 100) / 100)}
         </p>
       ),
@@ -125,7 +125,7 @@ export default function TimepieceListTable({
     },
     {
       name: (
-        <p className="w-full text-center font-semibold text-tremor-default">
+        <p className="w-full min-w-fit text-center font-semibold text-tremor-default">
           Last updated at
         </p>
       ),

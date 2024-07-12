@@ -26,9 +26,11 @@ export class AppraisalReportService {
     });
   }
 
-  async updateStatus(id: string, status: boolean): Promise<AppraisalReportEntity> {
+  async updateStatus(id: string, status: string, note?: string, startingPrice?: number): Promise<AppraisalReportEntity> {
     const report = await this.findById(id);
-    report.status = status;
+    report.appraisalResult = status;
+    report.note = note || null;
+    report.status = status === 'APPROVED' ? true : false;
     return this.appraisalReportRepository.save(report);
   }
 }

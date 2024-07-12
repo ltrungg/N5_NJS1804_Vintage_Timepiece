@@ -30,7 +30,7 @@ export default function Navbar() {
             key: "3",
             label: (
               <div
-                onClick={() => (window.location.href = "/appraisal")}
+                onClick={() => (window.location.href = "/allAppraisal")}
                 className="w-full min-w-fit flex items-center gap-2"
               >
                 <svg

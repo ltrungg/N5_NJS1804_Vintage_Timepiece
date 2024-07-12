@@ -13,7 +13,7 @@ export default function page() {
   const getRequestListData = async () => {
     setIsLoading(true);
     await axios
-      .get("http://localhost:3000/sellerRequest")
+      .get("http://localhost:3000/sellerRequest/seller")
       .then((res) => {
         let temp = res.data;
         const ordering: any = { pending: 0, approved: 1, rejected: 2 };

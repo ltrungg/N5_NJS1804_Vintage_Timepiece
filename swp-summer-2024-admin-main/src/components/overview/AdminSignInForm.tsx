@@ -12,6 +12,14 @@ export default function AdminSignInForm({ modalOpen }: { modalOpen: boolean }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleSignIn = async () => {
+    if (email.length === 0 || password.length === 0) {
+      message.warning({
+        key: "emptyInput",
+        content: "Please enter both your email and password!",
+        duration: 5,
+      });
+      return;
+    }
     setIsLoading(true);
     await axios
       .post("http://localhost:3000/auth/login", {
@@ -24,7 +32,7 @@ export default function AdminSignInForm({ modalOpen }: { modalOpen: boolean }) {
           .patch(`http://localhost:3000/auth/active_status/${account.id}`)
           .catch((err) => console.log(err));
         setTimeout(() => {
-          if ((account as any).role === "admin") {
+          if (account.role === "admin" || account.role === "staff") {
             sessionStorage.setItem("adminSignIn", JSON.stringify(account));
             window.location.reload();
           } else {
@@ -67,7 +75,7 @@ export default function AdminSignInForm({ modalOpen }: { modalOpen: boolean }) {
       <Input
         size="large"
         placeholder="Email"
-        autoComplete="off"
+        autoComplete={"off"}
         className="rounded-lg border-gray-300 mt-6"
         prefix={
           <svg
@@ -106,6 +114,9 @@ export default function AdminSignInForm({ modalOpen }: { modalOpen: boolean }) {
         value={password}
         onChange={(e) => {
           setPassword(e.target.value);
+        }}
+        onPressEnter={() => {
+          handleSignIn();
         }}
       />
 

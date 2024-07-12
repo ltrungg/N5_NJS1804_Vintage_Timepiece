@@ -39,13 +39,6 @@ export default function Sidebar() {
       >
         Sellers' requests
       </Link>
-      <Link
-        href="/user/appraisers"
-        className={`flex items-center w-[92%] h-[6vh] text-xs px-4 my-2 rounded-md ml-4 mb-[-10%] hover:bg-cyan-800 hover:text-white
-        ${path === "/user/appraisers" ? "bg-cyan-800 text-white" : ""}`}
-      >
-        Appraisers' requests
-      </Link>
 
       <div className="w-full border-b border-black mt-2 mb-[-5%]" />
       <Link
@@ -54,14 +47,6 @@ export default function Sidebar() {
         ${path === "/timepiece" ? "bg-gray-800 text-white" : ""}`}
       >
         Timepiece Management
-      </Link>
-      <div className="w-full border-b border-black my-[-5%]" />
-      <Link
-        href="/transaction"
-        className={`flex items-center w-full h-[8vh] text-sm font-bold px-4 rounded-md hover:bg-gray-800 hover:text-white
-        ${path === "/transaction" ? "bg-gray-800 text-white" : ""}`}
-      >
-        Transactions
       </Link>
       <div className="w-full border-b border-black my-[-5%]" />
       <Link

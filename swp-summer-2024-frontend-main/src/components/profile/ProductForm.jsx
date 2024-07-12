@@ -320,6 +320,11 @@ export default function ProductForm({
     }
   };
 
+  const handleImageUrl = () => {
+    const url = prompt("Enter new image url:");
+    if (url) setImage(url);
+  };
+
   return (
     <Modal
       title=<h1 className="text-xl font-bold text-sky-800">
@@ -328,6 +333,7 @@ export default function ProductForm({
       open={open}
       onCancel={(e) => {
         e.stopPropagation();
+        resetData();
         setOpen(false);
       }}
       footer={null}
@@ -338,10 +344,39 @@ export default function ProductForm({
     >
       <div className="w-full flex items-start justify-center gap-8 p-8 font-montserrat overflow-x-hidden">
         <div className="flex flex-col items-center justify-start gap-8">
+          {image.length === 0 && (
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/800px-No-Image-Placeholder.svg.png"
+              className="w-48 h-48 rounded-full"
+            />
+          )}
           <Image src={image} alt="" width={300} preview={!editable} />
           {isEditing && (
             <>
-              <input type="file" onChange={handleFileUpload} accept="image/*" />
+              <button
+                onClick={() => {
+                  document.getElementById("image-upload")?.click();
+                }}
+                className="px-4 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold"
+              >
+                Upload image
+              </button>
+              <p className="text-gray-500 text-[0.8em]">
+                or{" "}
+                <span
+                  onClick={handleImageUrl}
+                  className="underline cursor-pointer hover:text-black"
+                >
+                  use a URL instead
+                </span>
+              </p>
+              <input
+                id="image-upload"
+                type="file"
+                onChange={handleFileUpload}
+                accept="image/*"
+                hidden
+              />
             </>
           )}
         </div>

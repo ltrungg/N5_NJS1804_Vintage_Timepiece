@@ -21,7 +21,6 @@ export enum ProductStatus {
   UPDATE_REQUESTED = 'UPDATE_REQUESTED',
   CANCELED = 'CANCELED',
 }
-@Unique(['name'])
 @Entity({
   name: 'PRODUCT',
 })
@@ -82,7 +81,7 @@ export class ProductEntity extends BaseEntity {
   @Column({
     name: 'type',
     type: 'varchar',
-    length: 20,
+    length: 50,
     nullable: false,
   })
   type: string;
@@ -90,7 +89,7 @@ export class ProductEntity extends BaseEntity {
   @Column({
     name: 'dialColor',
     type: 'varchar',
-    length: 20,
+    length: 50,
     nullable: false,
   })
   dialColor: string;

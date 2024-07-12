@@ -46,88 +46,62 @@ export class FeedbackService {
     private feedbackRepository: Repository<FeedbackEntity>,
   ) {}
 
-  async createFeedback(feedback: Partial<FeedbackEntity>): Promise<FeedbackEntity> {
+  async createFeedback(
+    feedback: Partial<FeedbackEntity>,
+  ): Promise<FeedbackEntity> {
     const newFeedback = this.feedbackRepository.create(feedback);
     return this.feedbackRepository.save(newFeedback);
   }
 
   async findAll(): Promise<FeedbackEntity[]> {
-    return this.feedbackRepository.find({ relations: ['evaluator', 'evaluated'] });
+    return this.feedbackRepository.find({
+      order: {
+        createdAt: -1,
+      },
+    });
   }
 
   async findAllByEvaluated(evaluatedId: string): Promise<any[]> {
-    const feedbacks = await this.feedbackRepository.find({
+    return await this.feedbackRepository.find({
       where: { evaluated: { id: evaluatedId } },
-      relations: ['evaluator', 'evaluated'],
-      select: ['id', 'rating', 'comment'],
+      order: {
+        createdAt: -1,
+      },
     });
-
-    return feedbacks.map(feedback => ({
-      id: feedback.id,
-      rating: feedback.rating,
-      comment: feedback.comment,
-      evaluator: {
-        id: feedback.evaluator.id,
-        username: feedback.evaluator.username,
-        email: feedback.evaluator.email,
-        avatar: feedback.evaluator.avatar,
-      },
-      evaluated: {
-        id: feedback.evaluated.id,
-        username: feedback.evaluated.username,
-        email: feedback.evaluated.email,
-        phone: feedback.evaluated.phone,
-        avatar: feedback.evaluated.avatar,
-      },
-    }));
   }
 
   async findAllByEvaluator(evaluatorId: string): Promise<any[]> {
-    const feedbacks = await this.feedbackRepository.find({
+    return await this.feedbackRepository.find({
       where: { evaluator: { id: evaluatorId } },
-      relations: ['evaluator', 'evaluated'],
-      select: ['id', 'rating', 'comment'],
+      order: {
+        createdAt: -1,
+      },
     });
-
-    return feedbacks.map(feedback => ({
-      id: feedback.id,
-      rating: feedback.rating,
-      comment: feedback.comment,
-      evaluator: {
-        id: feedback.evaluator.id,
-        username: feedback.evaluator.username,
-        email: feedback.evaluator.email,
-        avatar: feedback.evaluator.avatar,
-      },
-      evaluated: {
-        id: feedback.evaluated.id,
-        username: feedback.evaluated.username,
-        email: feedback.evaluated.email,
-        phone: feedback.evaluated.phone,
-        avatar: feedback.evaluated.avatar,
-      },
-    }));
   }
 
   async showAverageRate(evaluatedId: string): Promise<any> {
     const feedbacks = await this.feedbackRepository.find({
       where: { evaluated: { id: evaluatedId } },
-      relations: ['evaluator'],
-      select: ['rating'],
+      order: {
+        createdAt: -1,
+      },
     });
 
-    const averageRate = feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0) / feedbacks.length;
+    const countRating = await this.feedbackRepository
+      .createQueryBuilder('feedback')
+      .where('feedback.evaluated.id = :id', {
+        id: evaluatedId,
+      })
+      .getCount();
 
-    const evaluators = feedbacks.map(feedback => ({
-      id: feedback.evaluator.id,
-      username: feedback.evaluator.username,
-      email: feedback.evaluator.email,
-      avatar: feedback.evaluator.avatar,
-    }));
+    const averageRate =
+      feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0) /
+      feedbacks.length;
 
     return {
-      evaluators,
+      feedbacks,
       averageRate,
+      countRating,
     };
   }
 }

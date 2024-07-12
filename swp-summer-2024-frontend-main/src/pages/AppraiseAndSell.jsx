@@ -1,50 +1,62 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Input, Select, Image, message } from "antd";
-import { Montserrat } from "next/font/google";
-import { imageDb } from "@/firebase-config";
+import { Input, Select, Image, message, Avatar } from "antd";
+import PlaceholderImage from "../assets/images/profile/placeholder_image.svg";
+import { imageDb } from "../firebase-config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import axios from "axios";
+import UpdatePhoneModal from "../components/appraiseAndSell/UpdatePhoneModal";
+import PreviewModal from "../components/appraiseAndSell/PreviewModal";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  style: "normal",
-  weight: ["200", "400", "600", "800"],
-});
+export default function AppraiseAndSell() {
+  const user = sessionStorage.signInUser
+    ? JSON.parse(sessionStorage.signInUser)
+    : null;
 
-export default function EditProductModal({
-  open,
-  setOpen,
-  product,
-  getEditStatus,
-}: any) {
-  const [name, setName] = useState(product.name);
-  const [brand, setBrand] = useState(product.brand);
-  const [description, setDescription] = useState(product.description);
-  const [image, setImage] = useState(product.image);
-  const [price, setPrice] = useState((Math.round(product.price) * 100) / 100);
-  const [type, setType] = useState(product && product.type);
-  const [dialColor, setDialColor] = useState(product.dialColor);
+  const tempProduct = sessionStorage.tempProduct
+    ? JSON.parse(sessionStorage.tempProduct)
+    : null;
+
+  const [completeProduct, setCompleteProduct] = useState(null);
+  const [name, setName] = useState(tempProduct ? tempProduct.name : "");
+  const [brand, setBrand] = useState(tempProduct ? tempProduct.brand : "");
+  const [description, setDescription] = useState(
+    tempProduct ? tempProduct.description : ""
+  );
+  const [image, setImage] = useState(tempProduct ? tempProduct.image : "");
+  const [type, setType] = useState(tempProduct ? tempProduct.type : "");
+  const [dialColor, setDialColor] = useState(
+    tempProduct ? tempProduct.dialColor : ""
+  );
   const [dialColorList, setDialColorList] = useState(
-    product.dialColor.split(",")
+    tempProduct ? tempProduct.dialColor.split(", ") : []
   );
   const [waterResistance, setWaterResistance] = useState(
-    product.waterResistance
+    tempProduct ? tempProduct.waterResistance : null
   );
-  const [box, setBox] = useState(product.box);
-  const [papers, setPapers] = useState(product.papers);
-  const [caseMaterial, setCaseMaterial] = useState(product.caseMaterial);
-  const [caseSize, setCaseSize] = useState(product.caseSize);
+
+  const [box, setBox] = useState(tempProduct ? tempProduct.box : null);
+  const [papers, setPapers] = useState(tempProduct ? tempProduct.papers : null);
+
+  const [caseMaterial, setCaseMaterial] = useState(
+    tempProduct ? tempProduct.caseMaterial : ""
+  );
+  const [caseSize, setCaseSize] = useState(
+    tempProduct ? tempProduct.caseSize : ""
+  );
   const [yearOfProduction, setYearOfProduction] = useState(
-    product.yearOfProduction
+    tempProduct ? tempProduct.yearOfProduction : ""
   );
-  const [pastUsageTime, setPastUsageTime] = useState(product.pastUsageTime);
+  const [pastUsageTime, setPastUsageTime] = useState(
+    tempProduct ? tempProduct.pastUsageTime : ""
+  );
   const [remainingInsurance, setRemainingInsurance] = useState(
-    product.remainingInsurance
+    tempProduct ? tempProduct.remainingInsurance : ""
   );
-  const [status, setStatus] = useState(product.status);
 
   const [isValidForm, setIsValidForm] = useState(false);
+
+  const [phoneWarning, setPhoneWarning] = useState(false);
+  const [isPreviewing, setIsPreviewing] = useState(false);
 
   const watchTypeOptions = [
     {
@@ -190,83 +202,95 @@ export default function EditProductModal({
     },
   ];
 
-  const mergeDialColor = (value: any) => {
+  useEffect(() => {
+    const temp = sessionStorage.tempProduct
+      ? JSON.parse(sessionStorage.tempProduct)
+      : null;
+    if (temp)
+      if (sessionStorage.appraisalSucceeded) {
+        message.success({
+          key: "succeeded",
+          content: (
+            <p className="inline">
+              Your request on <Avatar src={temp.image} alt="" size={32} />{" "}
+              <span className="font-semibold">{temp.name}</span> has been
+              recorded. Updates will be shown in your timepiece management.
+            </p>
+          ),
+          duration: 8,
+        });
+        sessionStorage.removeItem("appraisalSucceeded");
+        sessionStorage.removeItem("tempProduct");
+        resetData();
+      }
+  }, []);
+
+  const mergeDialColor = (value) => {
     setDialColorList(value);
     let temp = "";
-    value.forEach((item: any, index: number) => {
+    value.forEach((item, index) => {
       if (index !== value.length - 1) temp += `${item}, `;
       else temp += item;
     });
     setDialColor(temp);
   };
 
-  const handleConfirmForm = async () => {
+  const handleConfirmForm = () => {
+    //Complete product data
     const productData = {
-      owner: product.owner.id,
+      owner: user.id,
       name,
       brand,
-      price,
       description,
+      price: 0,
       image,
       type,
       dialColor,
-      waterResistance,
+      waterResistance: parseInt(waterResistance),
       caseMaterial,
-      caseSize,
+      caseSize: caseSize.length === 0 ? 0 : parseInt(caseSize),
       box,
       papers,
-      yearOfProduction,
-      pastUsageTime,
-      remainingInsurance,
-      status,
+      yearOfProduction:
+        yearOfProduction.length === 0 ? 0 : parseInt(yearOfProduction),
+      pastUsageTime: pastUsageTime.length === 0 ? 0 : parseInt(pastUsageTime),
+      remainingInsurance:
+        remainingInsurance.length === 0 ? 0 : parseInt(remainingInsurance),
     };
     console.log("Product: ", productData);
-    await axios
-      .patch(`http://localhost:3000/product/${product.id}`, productData)
-      .then((res) => {
-        message.success({
-          key: "editProduct",
-          content: (
-            <p className="inline">
-              <span className="font-bold text-sky-800">{name}</span> has been
-              successfully updated.
-            </p>
-          ),
-          duration: 5,
-        });
-        getEditStatus("edited");
-        setOpen(false);
-      })
-      .catch((err) => console.log(err));
+    setCompleteProduct(productData);
+    sessionStorage.setItem("tempProduct", JSON.stringify(productData));
+
+    if (user.phone.length === 0) {
+      setPhoneWarning(true);
+    } else {
+      setIsPreviewing(true);
+    }
   };
 
   const resetData = () => {
-    if (product) {
-      setName(product.name);
-      setBrand(product.brand);
-      setImage(product.image);
-      setDescription(product.description);
-      setPrice(product.price);
-      setType(product.type);
-      setDialColorList(product.dialColor.split(","));
-      setWaterResistance(product.waterResistance);
-      setCaseMaterial(product.caseMaterial);
-      setCaseSize(product.caseSize);
-      setBox(product.box);
-      setPapers(product.papers);
-      setYearOfProduction(product.yearOfProduction);
-      setPastUsageTime(product.pastUsageTime);
-      setRemainingInsurance(product.remainingInsurance);
-      setStatus(product.status);
-    }
+    setImage("");
+    setName("");
+    setBrand("");
+    setImage("");
+    setDescription("");
+    setType(null);
+    setDialColorList([]);
+    setWaterResistance(null);
+    setCaseMaterial(null);
+    setCaseSize("");
+    setBox(null);
+    setPapers(null);
+    setYearOfProduction("");
+    setPastUsageTime("");
+    setRemainingInsurance("");
   };
 
   const checkFormValidity = () => {
     if (
+      image.length > 0 &&
       name.length > 0 &&
       brand.length > 0 &&
-      image.length > 0 &&
-      price > 0 &&
       description.length > 0 &&
       type &&
       dialColorList.length > 0 &&
@@ -274,20 +298,7 @@ export default function EditProductModal({
       caseMaterial &&
       caseSize > 0 &&
       (box === true || box === false) &&
-      (papers === true || papers === false) &&
-      (name !== product.name ||
-        brand !== product.brand ||
-        image !== product.image ||
-        price !== parseFloat(product.price) ||
-        description !== product.description ||
-        type !== product.type ||
-        dialColor !== product.dialColor ||
-        waterResistance !== product.waterResistance ||
-        caseMaterial !== product.caseMaterial ||
-        caseSize !== product.caseSize ||
-        box !== product.box ||
-        papers !== product.papers ||
-        status !== product.status)
+      (papers === true || papers === false)
     )
       setIsValidForm(true);
     else setIsValidForm(false);
@@ -296,9 +307,9 @@ export default function EditProductModal({
   useEffect(() => {
     checkFormValidity();
   }, [
+    image,
     name,
     brand,
-    image,
     description,
     type,
     dialColorList,
@@ -307,10 +318,9 @@ export default function EditProductModal({
     caseSize,
     box,
     papers,
-    status,
   ]);
 
-  const handleFileUpload = async (e: any) => {
+  const handleFileUpload = async (e) => {
     const uploaded = e.target.files[0];
     //Upload image
     if (uploaded) {
@@ -328,39 +338,27 @@ export default function EditProductModal({
   };
 
   return (
-    <Modal
-      title={
-        <h1 className="text-xl font-bold text-sky-800">Product Information</h1>
-      }
-      open={open}
-      onCancel={(e) => {
-        resetData();
-        e.stopPropagation();
-        setOpen(false);
-      }}
-      footer={null}
-      style={{
-        top: 20,
-      }}
-      width={1000}
+    <div
+      className={`w-full lg:w-2/3 border border-gray-400 rounded-[30px] p-8 my-8`}
     >
-      <div
-        className={`w-full flex items-start justify-center gap-8 p-8 ${montserrat.className} overflow-x-hidden`}
-      >
+      <p className="w-fit mx-auto mb-8 font-bold text-white text-[2em] bg-teal-900 px-8 py-2 rounded-xl">
+        APPRAISE YOUR WATCH
+      </p>
+      <UpdatePhoneModal open={phoneWarning} setOpen={setPhoneWarning} />
+      <PreviewModal
+        open={isPreviewing}
+        setOpen={setIsPreviewing}
+        user={user}
+        product={completeProduct}
+      />
+
+      <div className="w-full flex items-start justify-center gap-8 p-8 font-montserrat overflow-x-hidden">
         <div className="flex flex-col items-center justify-start gap-8">
           {image.length === 0 && (
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/800px-No-Image-Placeholder.svg.png"
-              className="w-48 h-48 rounded-full"
-            />
+            <img src={PlaceholderImage} className="w-48 h-48 rounded-full" />
           )}
-          <Image
-            src={image}
-            alt=""
-            width={300}
-            preview={{ maskClassName: "rounded-full" }}
-            className="rounded-full"
-          />
+          <Image src={image} alt="" width={300} preview={true} />
+
           <button
             onClick={() => {
               document.getElementById("image-upload")?.click();
@@ -381,95 +379,40 @@ export default function EditProductModal({
           <input
             id="image-upload"
             type="file"
-            hidden
             onChange={handleFileUpload}
+            accept="image/*"
+            hidden
           />
         </div>
+
         <div className="w-2/3 flex flex-col items-start gap-2">
-          <div className="w-full flex flex-col items-start justify-start gap-1">
-            <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              STATUS <span className="text-red-600">*</span>
-            </p>
-            <div className="w-full flex justify-between">
-              <button
-                onClick={() => setStatus("IN APPRAISAL")}
-                className={`grow border py-2 duration-200 ${
-                  status === "IN APPRAISAL"
-                    ? "bg-amber-600 text-white font-semibold"
-                    : "hover:bg-amber-500 hover:text-white text-gray-400"
-                } rounded-l-lg`}
-              >
-                IN APPRAISAL
-              </button>
-              <button
-                onClick={() => setStatus("AVAILABLE")}
-                className={`grow border border-l-0 py-2 duration-200 ${
-                  status === "AVAILABLE"
-                    ? "bg-green-600 text-white font-semibold"
-                    : "hover:bg-green-500 hover:text-white text-gray-400"
-                }`}
-              >
-                AVAILABLE
-              </button>
-              <button
-                onClick={() => setStatus("UPDATE_REQUESTED")}
-                className={`grow border border-l-0 py-2 duration-200 ${
-                  status === "UPDATE_REQUESTED"
-                    ? "bg-sky-600 text-white font-semibold"
-                    : "hover:bg-sky-500 hover:text-white text-gray-400"
-                }`}
-              >
-                UPDATING
-              </button>
-              <button
-                onClick={() => setStatus("SOLD")}
-                className={`grow border border-l-0 py-2 duration-200 ${
-                  status === "SOLD"
-                    ? "bg-stone-600 text-white font-semibold"
-                    : "hover:bg-stone-500 hover:text-white text-gray-400"
-                }`}
-              >
-                SOLD
-              </button>
-              <button
-                onClick={() => setStatus("CANCELED")}
-                className={`grow border border-l-0 py-2 duration-200 ${
-                  status === "CANCELED"
-                    ? "bg-red-600 text-white font-semibold"
-                    : "hover:bg-red-500 hover:text-white text-gray-400"
-                } rounded-r-lg`}
-              >
-                CANCELED
-              </button>
-            </div>
-          </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Name <span className="text-red-600">*</span>
+              Name <span className={`text-red-600`}>*</span>
             </p>
             <input
               type="text"
               placeholder="e.g. Casio Stainless Steel Classic Digital Watch"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-[35em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[35em] border p-2 rounded-xl"
             />
           </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Brand <span className="text-red-600">*</span>
+              Brand <span className={`text-red-600`}>*</span>
             </p>
             <input
               placeholder="e.g. Casio"
               type="text"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              className="w-[20em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[20em] border p-2 rounded-xl"
             />
           </div>
           <div className="flex flex-col items-start justify-start gap-1">
             <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Description <span className="text-red-600">*</span>
+              Description <span className={`text-red-600`}>*</span>
             </p>
             <Input.TextArea
               autoSize={{
@@ -477,38 +420,17 @@ export default function EditProductModal({
                 maxRows: 10,
               }}
               placeholder="Enter description..."
-              spellCheck={false}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`w-[35em] border p-2 font-montserrat rounded-xl disabled:border-none disabled:bg-white ${montserrat.className}`}
-            />
-          </div>
-          <div className={`flex flex-col items-start justify-start gap-1`}>
-            <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-              Price <span className="font-light">($)</span>{" "}
-              <span className="text-red-600">*</span>
-            </p>
-            <input
-              value={price}
-              onChange={(e) => {
-                if (e.target.value.length === 0) setPrice(0);
-                else if (
-                  e.target.value.match(/[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)/) &&
-                  parseFloat(e.target.value) > 0 &&
-                  parseFloat(e.target.value) < 100000
-                )
-                  setPrice(Math.round(parseFloat(e.target.value) * 100) / 100);
-              }}
-              className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+              className="w-[35em] border p-2 font-montserrat rounded-xl"
             />
           </div>
 
           <div className="w-full flex items-center justify-between gap-1">
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Type <span className="text-red-600">*</span>
+                Type <span className={`text-red-600`}>*</span>
               </p>
-
               <Select
                 showSearch
                 placeholder="Select type..."
@@ -528,9 +450,8 @@ export default function EditProductModal({
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Dial color <span className="text-red-600">*</span>
+                Dial color <span className={`text-red-600`}>*</span>
               </p>
-
               <Select
                 mode="tags"
                 maxTagTextLength={5}
@@ -546,9 +467,8 @@ export default function EditProductModal({
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
                 Water resistance <span className="font-light">(mm)</span>{" "}
-                <span className="text-red-600">*</span>
+                <span className={`text-red-600`}>*</span>
               </p>
-
               <Select
                 placeholder="Select water resistance level..."
                 popupMatchSelectWidth={200}
@@ -565,9 +485,8 @@ export default function EditProductModal({
           <div className="w-full flex items-center justify-between">
             <div className="grow flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                Case material <span className="text-red-600">*</span>
+                Case material <span className={`text-red-600`}>*</span>
               </p>
-
               <Select
                 showSearch
                 placeholder="Select case material..."
@@ -588,7 +507,7 @@ export default function EditProductModal({
             <div className="grow flex flex-col items-start justify-start gap-1">
               <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
                 Case size <span className="font-light">(mm)</span>{" "}
-                <span className="text-red-600">*</span>
+                <span className={`text-red-600`}>*</span>
               </p>
               <input
                 placeholder="e.g. 42, 50"
@@ -599,7 +518,7 @@ export default function EditProductModal({
                   else if (e.target.value.match(/^[0-9]*$/))
                     setCaseSize(e.target.value);
                 }}
-                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border p-2 rounded-xl"
               />
             </div>
             <div className="grow"></div>
@@ -609,7 +528,7 @@ export default function EditProductModal({
             <div className="w-full flex items-center justify-between gap-8">
               <div className="w-1/2 flex flex-col items-start justify-start gap-1">
                 <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                  Box <span className="text-red-600">*</span>
+                  Box <span className={`text-red-600`}>*</span>
                 </p>
                 <div className="w-full flex items-center justify-start">
                   <button
@@ -640,7 +559,7 @@ export default function EditProductModal({
               </div>
               <div className="w-1/2 flex flex-col items-start justify-start gap-1">
                 <p className="text-[0.7em] text-sky-800 font-semibold pl-2">
-                  Papers <span className="text-red-600">*</span>
+                  Papers <span className={`text-red-600`}>*</span>
                 </p>
                 <div className="w-full flex items-center justify-start">
                   <button
@@ -689,7 +608,7 @@ export default function EditProductModal({
                   )
                     setYearOfProduction(e.target.value);
                 }}
-                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border p-2 rounded-xl"
               />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
@@ -708,7 +627,7 @@ export default function EditProductModal({
                   )
                     setPastUsageTime(e.target.value);
                 }}
-                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border p-2 rounded-xl"
               />
             </div>
             <div className="flex flex-col items-start justify-start gap-1">
@@ -727,19 +646,19 @@ export default function EditProductModal({
                   )
                     setRemainingInsurance(e.target.value);
                 }}
-                className="w-[10em] border border-gray-300 p-2 rounded-xl disabled:border-none disabled:bg-white"
+                className="w-[10em] border p-2 rounded-xl"
               />
             </div>
           </div>
-          <p className={`text-sm font-light italic p-2`}>
-            Note: Please make sure every field that are marked by{" "}
-            <span className="text-red-500">*</span> and the image are fulfilled.
+          <p className={`text-xs font-light italic p-2`}>
+            Note: Please fulfill every field that are marked by{" "}
+            <span className="text-red-500">*</span> and upload an image.
           </p>
         </div>
       </div>
 
       <div
-        className={`${montserrat.className} w-full flex items-center justify-end gap-8 font-montserrat`}
+        className={`w-full flex items-center justify-end gap-8 font-montserrat`}
       >
         <button onClick={() => resetData()} className="hover:underline">
           Reset
@@ -752,6 +671,6 @@ export default function EditProductModal({
           Confirm
         </button>
       </div>
-    </Modal>
+    </div>
   );
 }

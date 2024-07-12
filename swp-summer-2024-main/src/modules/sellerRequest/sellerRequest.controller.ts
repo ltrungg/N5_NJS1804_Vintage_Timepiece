@@ -17,6 +17,21 @@ export class SellerRequestController {
     return this.sellerRequestService.findAll();
   }
 
+  @Get('seller')
+  getAllSellerRequest() {
+    return this.sellerRequestService.getAllSellerRequest();
+  }
+
+  @Get('appraiser')
+  getAllAppraiserRequest() {
+    return this.sellerRequestService.getAllAppraiserRequest();
+  }
+
+  @Get('pending')
+  getAllPending() {
+    return this.sellerRequestService.getAllPending();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.sellerRequestService.findOne(id);

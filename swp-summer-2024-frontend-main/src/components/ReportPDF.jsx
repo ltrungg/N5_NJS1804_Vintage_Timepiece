@@ -1,8 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import axios from 'axios';
 
-const ReportPDF = ({ sellRequest }) => {
+const ReportPDF = ({ productData }) => {
   // Define styles using StyleSheet
   const styles = StyleSheet.create({
     page: {
@@ -28,6 +27,7 @@ const ReportPDF = ({ sellRequest }) => {
       fontSize: 14,
       margin: 5,
       padding: 5,
+      color: "red",
     },
     image: {
       width: 200,
@@ -35,8 +35,24 @@ const ReportPDF = ({ sellRequest }) => {
     },
   });
 
-  // Function to fetch image as Blob
-  const imageUrl = sellRequest.watchForm.image;
+  // Extract data from productData
+  const {
+    name,
+    brand,
+    price,
+    description,
+    type,
+    dialColor,
+    box,
+    papers,
+    waterResistance,
+    caseMaterial,
+    caseSize,
+    pastUsageTime,
+    yearOfProduction,
+    remainingInsurance,
+    image,
+  } = productData;
 
   return (
     <Document>
@@ -46,52 +62,30 @@ const ReportPDF = ({ sellRequest }) => {
 
           <View style={styles.section}>
             <Text>Watch Information:</Text>
-            <Text>Watch Name: {sellRequest.watchForm.name}</Text>
-            <Text>Model Number: {sellRequest.watchForm.modelNumber}</Text>
-            <Text>Serial Number: {sellRequest.watchForm.serialNumber}</Text>
-            <Text>Year of Manufacture: {sellRequest.watchForm.year}</Text>
-            <Text>Type: {sellRequest.watchForm.type}</Text>
-            <Text>Case Color: {sellRequest.watchForm.caseColor}</Text>
-            <Text>Case Size: {sellRequest.watchForm.caseSize}</Text>
-            <Text>Dial Color: {sellRequest.watchForm.dialColor}</Text>
-            <Text>Strap Material: {sellRequest.watchForm.strapMaterial}</Text>
-            <Text>Brand: {sellRequest.watchForm.brand}</Text>
-            <Text>Description: {sellRequest.watchForm.description}</Text>
-            <Text>Market Value: {sellRequest.watchForm.marketValue}</Text>
-            <Text>Production Limit: {sellRequest.watchForm.productionLimit}</Text>
+            <Text>Watch Name: {name}</Text>
+            <Text>Brand: {brand}</Text>
+            <Text>Price: {price}</Text>
+            <Text>Description: {description}</Text>
+            <Text>Type: {type}</Text>
+            <Text>Dial Color: {dialColor}</Text>
+            <Text>Box: {box ? 'Yes' : 'No'}</Text>
+            <Text>Papers: {papers ? 'Yes' : 'No'}</Text>
+            <Text>Water Resistance: {waterResistance}</Text>
+            <Text>Case Material: {caseMaterial}</Text>
+            <Text>Case Size: {caseSize}</Text>
+            <Text>Past Usage Time: {pastUsageTime}</Text>
+            <Text>Year of Production: {yearOfProduction}</Text>
+            <Text>Remaining Insurance: {remainingInsurance}</Text>
           </View>
 
-          <View style={styles.section}>
-            <Text>Seller Information:</Text>
-            <Text>Name: {sellRequest.sellForm.firstName} {} {sellRequest.sellForm.lastName}</Text>
-
-            
-            <Text>Phone Number: {sellRequest.sellForm.phoneNumber}</Text>
-            <Text>Email: {sellRequest.sellForm.email}</Text>
-          </View>
-
-          <View style={styles.section}>
-            <Text>Quote Information:</Text>
-            <Text>Initial Price: {sellRequest.sellForm.initialPrice}</Text>
-            <Text>Minimum Maintenance Fee: {sellRequest.sellForm.maintenanceFee}</Text>
-            <Text>Total Price: {sellRequest.sellForm.totalPrice}</Text>
-          </View>
-
-          <View style={styles.section}>
-            <Text>Attachments:</Text>
-            <Text>Original Contract: {sellRequest.sellForm.originalContract ? 'Yes' : 'No'}</Text>
-            <Text>User Manual: {sellRequest.sellForm.userManual ? 'Yes' : 'No'}</Text>
-            <Text>Factory Label: {sellRequest.sellForm.factoryLabel ? 'Yes' : 'No'}</Text>
-          </View>
-
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text>Watch Image:</Text>
-            {imageUrl ? (
-              <Image style={styles.image} src={imageUrl} />
+            {image ? (
+              <Image style={styles.image} src={image} />
             ) : (
               <Text>No Image Available</Text>
             )}
-          </View>
+          </View> */}
         </View>
       </Page>
     </Document>

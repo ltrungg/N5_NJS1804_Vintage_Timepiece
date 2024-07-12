@@ -13,6 +13,10 @@ export default function AccountListTable({
   accountList: any;
   getUpdateStatus: Function;
 }) {
+  const user = sessionStorage.adminSignIn
+    ? JSON.parse(sessionStorage.adminSignIn)
+    : null;
+
   const [isLoading, setIsLoading] = useState(false);
   const [isBanningAccount, setIsBanningAccount] = useState("");
   const [isActivatingAccount, setIsActivatingAccount] = useState("");
@@ -42,11 +46,11 @@ export default function AccountListTable({
   const columns = [
     {
       name: (
-        <p className="w-fit text-center font-semibold text-tremor-default">
+        <p className="w-min text-center font-semibold text-tremor-default">
           No
         </p>
       ),
-      cell: (row: any, index: any) => <p className="w-fit">{index + 1}</p>,
+      cell: (row: any, index: any) => <p className="w-min">{index + 1}</p>,
       grow: 0,
     },
     {
