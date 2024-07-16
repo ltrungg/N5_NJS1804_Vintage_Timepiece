@@ -74,8 +74,7 @@ Focus on Seller and Buyer functionalities.
 | UC-35       | View Available Product     | Customer   |
 | UC-36       | View Updating Product      | Customer               |
 | UC-37       | View Sold Product          | Customer   |
-| UC-10       | Manage Transactions       | Administrator          |
-| UC-11       | View appraiser's requests  | Administrator          |
+
 
 ## Sprint 3
 Focus on Appraiser and Buyer functionalities.
@@ -123,9 +122,9 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 |-------|-----------------------------|--------|
 | Trung | UC-02                       | Leader |
 | Phát  | UC-09                       | Member |
-| Khiêm | UC-26, UC-29, UC-23         | Member |
-| Phong | UC-31, UC-35, UC-36, UC-37  | Member |
-| Nghĩa | UC-10, UC-11                | Member |
+| Khiêm | UC-20, UC-24, UC-23         | Member |
+| Phong | UC-31, UC-32, UC-33, UC-27  | Member |
+| Nghĩa | UC-08, UC-09                | Member |
 
 ## Sprint 3: 
 | Name  | Use Case                    | Role   |
@@ -148,5 +147,5 @@ Focus on Administrator, Customer Support Agent, and general functionalities.
 
 chạy backend: npm run start:dev - 
 chạy frontend: npm run dev 
-
+chạy admin: npm run dev 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
