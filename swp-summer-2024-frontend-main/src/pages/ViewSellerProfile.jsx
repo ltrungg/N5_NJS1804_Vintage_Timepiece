@@ -79,35 +79,39 @@ const ViewSellerProfile = () => {
   }, [id]);
 
   const handleFeedbackSubmit = async () => {
-    if (rating === 0) {
-      message.warning({
-        key: "rating",
-        content: "Please rate with stars!",
-        duration: 5,
-      });
-      document.getElementById("star-rating").focus();
-      return;
+    if (!user) {
+      window.location.href = "/signin";
     } else {
-      await axios
-        .post(`http://localhost:3000/feedback`, {
-          evaluator: user.id,
-          evaluated: id,
-          comment: newFeedback,
-          rating,
-        })
-        .then((res) => {
-          fetchSellerData();
-          setNewFeedback("");
-          setRating(0);
-          message.success({
-            key: "rating",
-            content: "Your feedback is successfully recorded.",
-            duration: 5,
-          });
-        })
-        .catch((error) => {
-          console.log("Error submitting feedback:", error);
+      if (rating === 0) {
+        message.warning({
+          key: "rating",
+          content: "Please rate with stars!",
+          duration: 5,
         });
+        document.getElementById("star-rating").focus();
+        return;
+      } else {
+        await axios
+          .post(`http://localhost:3000/feedback`, {
+            evaluator: user.id,
+            evaluated: id,
+            comment: newFeedback,
+            rating,
+          })
+          .then((res) => {
+            fetchSellerData();
+            setNewFeedback("");
+            setRating(0);
+            message.success({
+              key: "rating",
+              content: "Your feedback is successfully recorded.",
+              duration: 5,
+            });
+          })
+          .catch((error) => {
+            console.log("Error submitting feedback:", error);
+          });
+      }
     }
   };
 
@@ -142,9 +146,11 @@ const ViewSellerProfile = () => {
         <div className="w-1/4 md:w-1/4 relative flex flex-col gap-4 py-2">
           <div className="w-full flex flex-col items-start gap-2 font-montserrat bg-white p-4 rounded-xl">
             <Avatar src={seller.avatar} alt="" size={160} />
-            <p className="text-[1.5em] font-semibold text-center max-w-[10em] text-nowrap overflow-hidden text-ellipsis font-montserrat">
-              {seller.username}
-            </p>
+            <Tooltip title={seller.username}>
+              <p className="text-[1.2em] font-semibold text-center max-w-[15em] text-nowrap overflow-hidden text-ellipsis font-montserrat">
+                {seller.username}
+              </p>
+            </Tooltip>
             {feedbackSummary && feedbackSummary.countRating === 0 ? (
               <p className="font-light text-xs">There is no rating yet!</p>
             ) : (
@@ -297,7 +303,17 @@ const ViewSellerProfile = () => {
               </p>
             }
           >
-            <div className="w-full space-y-4 font-montserrat">
+            <button
+              onClick={() => (window.location.href = "/signin")}
+              className={`font-montserrat hover:underline ${user && "hidden"}`}
+            >
+              Please sign in to leave any feedbacks!
+            </button>
+            <div
+              className={`w-full space-y-4 font-montserrat ${
+                !user && "hidden"
+              }`}
+            >
               <span>Rate: </span>
               <Rate
                 id="star-rating"
@@ -306,7 +322,7 @@ const ViewSellerProfile = () => {
                 className="px-8"
               />
               <div className="flex">
-                <Avatar size={32} src={user.avatar} />
+                <Avatar size={32} src={user ? user.avatar : ""} />
                 <TextArea
                   rows={4}
                   value={newFeedback}

@@ -15,14 +15,14 @@ export default function page() {
     await axios
       .get("http://localhost:3000/sellerRequest")
       .then((res) => {
-        let temp = res.data;
-        const ordering: any = { pending: 0, approved: 1, rejected: 2 };
-        temp.sort(function (a: any, b: any) {
-          return (
-            ordering[a.status] - ordering[b.status] ||
-            new Date(a.updatedAt) < new Date(b.updatedAt)
-          );
-        });
+        let temp = res.data.filter((item: any) => 
+          item.status === "approved" || item.status === "rejected"
+        );
+        
+        temp.sort((a: any, b: any) => 
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+        
         setSellerRequestList(temp);
         setIsLoading(false);
       })

@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col">
       <HeroSection />
-      <FeatureProducts list={featureProducts} />
+      {/* <FeatureProducts list={featureProducts} /> */}
       <LatestProducts list={latestProducts} />
       <CompanyFeatures />
     </div>

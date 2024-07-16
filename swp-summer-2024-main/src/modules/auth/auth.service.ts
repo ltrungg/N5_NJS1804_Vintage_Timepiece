@@ -233,7 +233,6 @@ export class AuthService {
       todayDate.getDate().toString() +
       todayDate.getMonth().toString() +
       todayDate.getFullYear().toString();
-    console.log('Today: ', today);
 
     var temp: AccountEntity[] = [];
     accounts.filter((acc: AccountEntity) => {

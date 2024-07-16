@@ -263,37 +263,37 @@ export default function SellerRequestListTable({
               ACTION MADE AT {dateFormat(row.updatedAt, "HH:MM dd/mm/yyyy")}
             </p>
           );
-        else
-          return (
-            <div className="w-full flex flex-row gap-2 items-center justify-center">
-              <button
-                onClick={() => setIsApprovingOne(row.id)}
-                className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-800 text-white font-semibold text-nowrap"
-              >
-                Approve
-              </button>
-              <button
-                onClick={() => setIsRejectingOne(row.id)}
-                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-800 text-white font-semibold text-nowrap"
-              >
-                Reject
-              </button>
-              <ConfirmModal
-                action="approve"
-                object={row}
-                open={isApprovingOne === row.id}
-                setOpen={setIsApprovingOne}
-                getConfirm={handleSolveRequest}
-              />
-              <ConfirmModal
-                action="reject"
-                object={row}
-                open={isRejectingOne === row.id}
-                setOpen={setIsRejectingOne}
-                getConfirm={handleSolveRequest}
-              />
-            </div>
-          );
+        // else
+        //   return (
+        //     <div className="w-full flex flex-row gap-2 items-center justify-center">
+        //       <button
+        //         onClick={() => setIsApprovingOne(row.id)}
+        //         className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-800 text-white font-semibold text-nowrap"
+        //       >
+        //         Approve
+        //       </button>
+        //       <button
+        //         onClick={() => setIsRejectingOne(row.id)}
+        //         className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-800 text-white font-semibold text-nowrap"
+        //       >
+        //         Reject
+        //       </button>
+        //       <ConfirmModal
+        //         action="approve"
+        //         object={row}
+        //         open={isApprovingOne === row.id}
+        //         setOpen={setIsApprovingOne}
+        //         getConfirm={handleSolveRequest}
+        //       />
+        //       <ConfirmModal
+        //         action="reject"
+        //         object={row}
+        //         open={isRejectingOne === row.id}
+        //         setOpen={setIsRejectingOne}
+        //         getConfirm={handleSolveRequest}
+        //       />
+        //     </div>
+        //   );
       },
       grow: 1,
     },

@@ -12,6 +12,10 @@ export default function AppraiseAndSell() {
     ? JSON.parse(sessionStorage.signInUser)
     : null;
 
+  if (!user) {
+    window.location.href = "/signin";
+  }
+
   const tempProduct = sessionStorage.tempProduct
     ? JSON.parse(sessionStorage.tempProduct)
     : null;

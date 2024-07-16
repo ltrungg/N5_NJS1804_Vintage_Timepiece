@@ -31,77 +31,85 @@ export default function ProductDetailComponent({
   };
 
   const addToFavorite = () => {
-    const wishList = sessionStorage.wishList
-      ? JSON.parse(sessionStorage.wishList)
-      : [];
-    if (wishList.length === 0) {
-      sessionStorage.setItem("wishList", JSON.stringify([product]));
-      message.success({
-        key: "wishList",
-        content: "Added to your wish list.",
-        duration: 5,
-      });
-      setWishListState(true);
+    if (!user) {
+      window.location.href = "/signin";
     } else {
-      if (wishList.some((item) => item.id === product.id)) {
-        message.info({
-          key: "wishList",
-          content: "Already added to your wish list.",
-          duration: 5,
-        });
-      } else {
-        wishList.push(product);
-        sessionStorage.setItem("wishList", JSON.stringify(wishList));
+      const wishList = sessionStorage.wishList
+        ? JSON.parse(sessionStorage.wishList)
+        : [];
+      if (wishList.length === 0) {
+        sessionStorage.setItem("wishList", JSON.stringify([product]));
         message.success({
           key: "wishList",
           content: "Added to your wish list.",
           duration: 5,
         });
         setWishListState(true);
+      } else {
+        if (wishList.some((item) => item.id === product.id)) {
+          message.info({
+            key: "wishList",
+            content: "Already added to your wish list.",
+            duration: 5,
+          });
+        } else {
+          wishList.push(product);
+          sessionStorage.setItem("wishList", JSON.stringify(wishList));
+          message.success({
+            key: "wishList",
+            content: "Added to your wish list.",
+            duration: 5,
+          });
+          setWishListState(true);
+        }
       }
     }
   };
 
   const handleChat = async () => {
-    setIsLoading(true);
-    await axios
-      .get(`http://localhost:3000/chatRoom/user/${user.id}`)
-      .then(async (res) => {
-        res.data.map(async (item) => {
-          await axios
-            .get(
-              `http://localhost:3000/chatRoom/butUser/${user.id}/${item.chatRoom.id}`
-            )
-            .then((res) => {
-              if (
-                res.data.participant.id === product.owner.id &&
-                res.data.chatRoom.product.id === product.id
-              ) {
-                sessionStorage.setItem(
-                  "createChatRoomRedirect",
-                  res.data.chatRoom.code
-                );
+    if (!user) {
+      window.location.href = "/signin";
+    } else {
+      setIsLoading(true);
+      await axios
+        .get(`http://localhost:3000/chatRoom/user/${user.id}`)
+        .then(async (res) => {
+          res.data.map(async (item) => {
+            await axios
+              .get(
+                `http://localhost:3000/chatRoom/butUser/${user.id}/${item.chatRoom.id}`
+              )
+              .then((res) => {
+                if (
+                  res.data.participant.id === product.owner.id &&
+                  res.data.chatRoom.product.id === product.id
+                ) {
+                  sessionStorage.setItem(
+                    "createChatRoomRedirect",
+                    res.data.chatRoom.code
+                  );
+                  window.location.href = `/chat`;
+                  return;
+                }
+              });
+          });
+          setTimeout(async () => {
+            const newRoomCode = generateChatRoomId();
+            sessionStorage.setItem("createChatRoomRedirect", newRoomCode);
+            await axios
+              .post("http://localhost:3000/chatRoom", {
+                code: newRoomCode,
+                product: product.id,
+                participants: [user.id, product.owner.id],
+              })
+              .then((res) => {
+                setIsLoading(false);
                 window.location.href = `/chat`;
-                return;
-              }
-            });
+              })
+              .catch((err) => console.log(err));
+          }, 2000);
         });
-        setTimeout(async () => {
-          const newRoomCode = generateChatRoomId();
-          sessionStorage.setItem("createChatRoomRedirect", newRoomCode);
-          await axios
-            .post("http://localhost:3000/chatRoom", {
-              code: newRoomCode,
-              product: product.id,
-              participants: [user.id, product.owner.id],
-            })
-            .then((res) => {
-              setIsLoading(false);
-              window.location.href = `/chat`;
-            })
-            .catch((err) => console.log(err));
-        }, 2000);
-      });
+    }
   };
 
   return (
@@ -111,7 +119,11 @@ export default function ProductDetailComponent({
         <img src={product.image} alt="" className="w-[400px]" />
         <div className="w-1/2 flex flex-col items-start justify-between text-xl gap-8">
           <div className="w-full flex flex-col justify-start gap-2">
-            <div className="w-full flex items-start text-sm gap-4 p-2 border-b">
+            <div
+              className={`w-full flex items-start text-sm gap-4 p-2 border-b ${
+                user && user.id === product.owner.id && "hidden"
+              }`}
+            >
               <Avatar src={product.owner.avatar} size={40} alt="" />
               <span className="flex flex-col gap-1">
                 <p>{product.owner.username}</p>
@@ -199,13 +211,13 @@ export default function ProductDetailComponent({
 
           <div className="w-full flex flex-col gap-2">
             <button
-              disabled={user.id === product.owner.id}
+              disabled={user && user.id === product.owner.id}
               onClick={handleChat}
               className={`w-full flex items-center justify-center gap-2 rounded-md font-bold
                text-white text-sm bg-sky-600 hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-gray-400
                mx-auto py-3 transition-all duration-200`}
             >
-              {user.id === product.owner.id ? (
+              {user && user.id === product.owner.id ? (
                 <>Owned</>
               ) : (
                 <>
@@ -247,7 +259,7 @@ export default function ProductDetailComponent({
                 <button
                   onClick={addToFavorite}
                   className={`w-full flex items-center justify-center gap-2 rounded-md border border-red-500 font-bold text-sm text-red-500 hover:bg-stone-100 mx-auto py-3 duration-200 ${
-                    user.id === product.owner.id && "hidden"
+                    user && user.id === product.owner.id && "hidden"
                   }`}
                 >
                   <svg
@@ -265,26 +277,30 @@ export default function ProductDetailComponent({
 
               <button
                 onClick={async () => {
-                  await axios
-                    .get(
-                      `http://localhost:3000/report/check/${user.id}/${product.id}`
-                    )
-                    .then((res) => {
-                      if (res.data)
-                        message.warning({
-                          key: "report",
-                          content:
-                            "Your report on this product has already been recorded.",
-                          duration: 5,
-                        });
-                      else {
-                        setIsReporting(true);
-                      }
-                    })
-                    .catch((err) => console.log(err));
+                  if (!user) {
+                    window.location.href = "/signin";
+                  } else {
+                    await axios
+                      .get(
+                        `http://localhost:3000/report/check/${user.id}/${product.id}`
+                      )
+                      .then((res) => {
+                        if (res.data)
+                          message.warning({
+                            key: "report",
+                            content:
+                              "Your report on this product has already been recorded.",
+                            duration: 5,
+                          });
+                        else {
+                          setIsReporting(true);
+                        }
+                      })
+                      .catch((err) => console.log(err));
+                  }
                 }}
                 className={`w-1/6 flex flex-col items-center gap-1 text-amber-600 hover:text-amber-700 ${
-                  user.id === product.owner.id && "hidden"
+                  user && user.id === product.owner.id && "hidden"
                 }`}
               >
                 <svg

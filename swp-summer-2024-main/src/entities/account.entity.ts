@@ -7,6 +7,7 @@ import { SellerRequestEntity } from './sellerRequest.entity';
 import { ReportEntity } from './report.entity';
 import { FeedbackEntity } from './feedback.entity';
 import { AppraisalReportEntity } from './appraisal-report.entity';
+import { ContactUsEntity } from './contact.entity';
 
 export enum Role {
   admin = 'admin',
@@ -85,6 +86,8 @@ export class AccountEntity extends BaseEntity {
     default: true,
   })
   status: boolean;
+  @OneToMany(() => ContactUsEntity, (contact) => contact.owner)
+  contactReports: ContactUsEntity[];
 
   @OneToMany(() => ProductEntity, (product) => product.owner)
   products: ProductEntity[];

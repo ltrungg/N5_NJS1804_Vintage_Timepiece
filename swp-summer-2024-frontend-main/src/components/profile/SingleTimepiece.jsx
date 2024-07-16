@@ -210,7 +210,7 @@ export default function SingleTimepiece({ product, getRequestStatus }) {
               open={isShowingDetails}
               setOpen={setIsShowingDetails}
               product={product}
-              editable={true}
+              editable={false}
               getProductData={() => {}}
             />
             <PriceUpdateModal

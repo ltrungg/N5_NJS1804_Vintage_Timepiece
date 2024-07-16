@@ -3,7 +3,6 @@ import { Avatar, Dropdown } from "antd";
 import { useCookies } from "react-cookie";
 import logo from "../logoSVG/logo.svg";
 
-
 export default function Navbar() {
   const user = sessionStorage.signInUser
     ? JSON.parse(sessionStorage.signInUser)
@@ -245,7 +244,7 @@ export default function Navbar() {
         <div className="flex items-center gap-8">
           <button
             onClick={() => (window.location.href = "/chat")}
-            className="flex flex-col items-center gap-1 group/chat"
+            className="min-w-8 flex flex-col items-center gap-1 group/chat"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -264,7 +263,7 @@ export default function Navbar() {
 
           <button
             onClick={() => (window.location.href = "/wishlist")}
-            className="flex flex-col items-center gap-1 group/wishlist"
+            className="min-w-8 flex flex-col items-center gap-1 group/wishlist"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +279,46 @@ export default function Navbar() {
               WISHLIST
             </p>
           </button>
-          <Dropdown
+
+          <button
+            onClick={() => (window.location.href = "/profile")}
+            className="min-w-8 flex flex-col items-center gap-1 group/profile"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="currentColor"
+              className="group-hover/profile:fill-gray-400 duration-200"
+            >
+              <path d="M20 22H18V20C18 18.3431 16.6569 17 15 17H9C7.34315 17 6 18.3431 6 20V22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13ZM12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"></path>
+            </svg>
+            <p className="text-[0.6em] group-hover/profile:text-gray-400 duration-200">
+              PROFILE
+            </p>
+          </button>
+
+          <button
+            onClick={signOut}
+            className="min-w-8 flex flex-col items-center gap-1 group/signOut"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="currentColor"
+              className="group-hover/signOut:fill-gray-400 duration-200"
+            >
+              <path d="M4 18H6V20H18V4H6V6H4V3C4 2.44772 4.44772 2 5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V18ZM6 11H13V13H6V16L1 12L6 8V11Z"></path>
+            </svg>
+            <p className="text-[0.6em] group-hover/signOut:text-gray-400 duration-200">
+              SIGN OUT
+            </p>
+          </button>
+
+          {/* <Dropdown
             menu={{
               items,
             }}
@@ -295,7 +333,7 @@ export default function Navbar() {
                 {user ? user.username : " user"}
               </p>
             </button>
-          </Dropdown>
+          </Dropdown> */}
         </div>
       ) : (
         <button

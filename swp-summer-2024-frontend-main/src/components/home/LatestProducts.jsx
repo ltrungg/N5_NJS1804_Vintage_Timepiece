@@ -3,7 +3,7 @@ import ProductCard from "../productDetail/ProductCard";
 
 export default function LatestProducts({ list }) {
   return (
-    <div className="font-poppins pb-16 bg-gray-800 text-white">
+    <div className="font-poppins pb-16 bg-gray-800 text-white my-24">
       <p className="w-full text-center text-[3em] mt-8 font-bold">
         LATEST PRODUCTS
       </p>

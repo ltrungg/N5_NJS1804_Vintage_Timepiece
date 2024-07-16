@@ -24,12 +24,12 @@ export default function EditProductModal({
   const [image, setImage] = useState(product.image);
   const [price, setPrice] = useState((Math.round(product.price) * 100) / 100);
   const [type, setType] = useState(product && product.type);
-  const [dialColor, setDialColor] = useState(product.dialColor);
+  const [dialColor, setDialColor] = useState(product.dialColor || "");
   const [dialColorList, setDialColorList] = useState(
-    product.dialColor.split(",")
+    (product.dialColor || "").split(",")
   );
   const [waterResistance, setWaterResistance] = useState(
-    product.waterResistance
+    product.waterResistance || 0
   );
   const [box, setBox] = useState(product.box);
   const [papers, setPapers] = useState(product.papers);
