@@ -43,110 +43,109 @@ The **Vintage Timepiece Evaluation and Trading Platform** is an integrated onlin
 The **Vintage Timepiece Evaluation and Trading Platform** aims to revolutionize the vintage watch market by providing a comprehensive, user-friendly, and secure platform for all stakeholders. Whether you are a seller looking to list a prized timepiece, a buyer searching for a unique addition to your collection, or an appraiser providing expert evaluations, this platform is designed to meet all your needs efficiently and effectively.
 
 
-## Sprint Plan
+# Sprint Plan
 
 ## Sprint 1
 Focus on Buyer functionalities.
 
-| Use Case ID | Name                | Actor |
-|-------------|---------------------|-------|
-| UC-03       | Search Product      | Customer |
-| UC-01       | Customer Upload Product To Sell | Customer |
-| UC-16       | Forgot Password     | Customer |
-| UC-14       | Register Account    | Customer |
-| UC-15       | Login               | Customer |
-| UC-25       | View Watch Details  | Customer |
-| UC-24       | Contact Support     | Customer |
+| Use Case ID | Name                             | Actor    | Description                                                                                       |
+|-------------|----------------------------------|----------|---------------------------------------------------------------------------------------------------|
+| UC-03       | Search Product                   | Customer | "Buyer search for specific vintage watches using various filters and search capabilities."        |
+| UC-01       | Customers Post Product To Sale   | Customer | "Customer upload detailed descriptions and images of vintage watches they wish to sell."          |
+| UC-14       | Forgot Password                  | Customer | Users reset their password if they forget it.                                                     |
+| UC-12       | Register Account                 | Customer | Users register for an account on the platform.                                                    |
+| UC-13       | Login                            | Customer | Users log into their accounts on the platform.                                                    |
+| UC-22       | View Watch Details               | Customer | Buyers view detailed information about a specific watch.                                          |
+| UC-21       | Contact Support                  | Customer | Users contact customer support for assistance.                                                    |
 
 ## Sprint 2
 Focus on Seller and Buyer functionalities.
 
-| Use Case ID | Name                       | Actor    |
-|-------------|----------------------------|----------|
-| UC-02       | Chat                       | Customer |
-| UC-09       | View All User Account            | Administrator          |
-| UC-17       | View User Report           | Administrator |
-| UC-26       | Create Wishlist            | Customer    |
-| UC-29       | View Wishlist              | Customer               |
-| UC-23       | Remove Product In Wishlist | Customer       |
-| UC-30       | View All Product Report    | Administrator          |
-| UC-31       | View in appraisal product  | Customer   |   
-| UC-35       | View Available Product     | Customer   |
-| UC-36       | View Updating Product      | Customer               |
-| UC-37       | View Sold Product          | Customer   |
-| UC-10       | Manage Transactions       | Administrator          |
-| UC-11       | View appraiser's requests  | Administrator          |
+| Use Case ID | Name                       | Actor    | Description                                                                                       |
+|-------------|----------------------------|----------|---------------------------------------------------------------------------------------------------|
+| UC-02       | Chat                       | Customer | Messaging function helps exchange and buy with each other.                                        |
+| UC-26       | Create Wishlist            | Customer | Buyers create a wishlist of watches they are interested in.                                       |
+| UC-24       | View Wishlist              | Customer | Buyers make an offer on a watch instead of buying at listed price.                                |
+| UC-20       | Remove Product In Wishlist | Customer | Customer removes the product from wishlist.                                                       |
+| UC-31       | View Available Product     | Customer | See products listed for sale that have been approved.                                             |
+| UC-32       | View Updating Product      | Customer | See all products that are in the process of updating their information.                           |
+| UC-33       | View Sold Product          | Customer | See all products sold.                                                                            |
+| UC-07       | View All User Account      | Administrator | Administrators oversee user accounts, including user, appraiser, administrator, staff.             |
 
 ## Sprint 3
 Focus on Appraiser and Buyer functionalities.
 
-| Use Case ID | Name                     | Actor      |
-|-------------|--------------------------|------------|
-| UC-07       | Conduct Evaluations      | Appraiser  |
-| UC-08       | Generate Reports         | Appraiser  |
-| UC-33       | Verify Authenticity      | Appraiser  |
-| UC-19       | Create Staff account     | Administrator |
-| UC-04       | View Appraisals          | Customer      |
-| UC-05       | Make Purchases           | Customer      |
-| UC-28       | Compare Watches          | Customer      |
-| UC-18       | Create Admin account       | Administrator |
-| UC-06       | Leave Feedback             | Customer   |
+| Use Case ID | Name                     | Actor      | Description                                                                                       |
+|-------------|--------------------------|------------|---------------------------------------------------------------------------------------------------|
+| UC-05       | Conduct Evaluations      | Appraiser  | "Appraisers assess the authenticity, condition, and market value of submitted watches."           |
+| UC-06       | Manage Appraisal History | Appraiser  | Appraiser manages appraisal history.                                                              |
+| UC-29       | Verify Authenticity      | Appraiser  | Appraisers verify the authenticity of a watch post-purchase.                                      |
+| UC-27       | View in Appraisal Product | Customer   | See if the product is in the process of being evaluated.                                          |
+| UC-04       | Process Reported Product | Admin      | Admin view and process reported product.                                                          |
+| UC-08       | Send Report Account      | Customer   | Customer can report account which is suspected to be fake.                                        |
+| UC-10       | View Feedback Account    | Customer   | Customer can view feedback of other customers about this seller.                                  |
+| UC-11       | Sent Feedback Account    | Customer   | Customer can send feedback about Seller account.                                                  |
 
 ## Sprint 4
 Focus on Administrator, Customer Support Agent, and general functionalities.
 
-| Use Case ID | Name                       | Actor                  |
-|-------------|----------------------------|------------------------|
-| UC-32       | Remove Product Report      | Administrator          |
-| UC-39       | Delete Product             | Administrator          |
-| UC-12       | Delete an Account          | Administrator |
-| UC-13       | View Product               | Administrator |
-| UC-40       | Update Product             | Administrator |
-| UC-22       | Update Profile Information | Customer     |
-| UC-21       | Report A Product Issue     | Customer |
-| UC-34       | Review Purchase            | Customer    |
-| UC-20       | Update Product Report      | Administrator |
-| UC-38       | Approve New Appraiser    | Administrator    |
-| UC-27       | Follow Seller            | Customer      |
-## Work assignment table
-## Sprint 1 
+| Use Case ID | Name                       | Actor                  | Description                                                                                       |
+|-------------|----------------------------|------------------------|---------------------------------------------------------------------------------------------------|
+| UC-15       | Process User Report        | Admin                  | Test the administrator's ability to view user reports.                                            |
+| UC-30       | Manage Pending Request     | Appraiser              | Appraiser manages all pending requests.                                                           |
+| UC-39       | Delete Product             | Administrator          | Administrator deletes product from the listing.                                                   |
+| UC-25       | View Seller Request        | Admin                  | View a list of requests from sellers.                                                             |
+| UC-34       | View Management Product    | Admin                  | View User List.                                                                                   |
+| UC-35       | Edit Management Product    | Admin                  | Edit Management Product.                                                                          |
+| UC-36       | Add Image Management Product | Admin                  | Add images to the management product.                                                             |
+| UC-37       | Reset Management Product   | Admin                  | Reset all the information.                                                                        |
+| UC-38       | Search Product             | Admin                  | Search for name and price.                                                                        |
+| UC-28       | Manage All Request         | Appraiser              | Appraiser manages all requests.                                                                   |
+| UC-19       | Edit Sell Product          | Customer               | Customers edit their listed products for sale.                                                    |
+| UC-18       | View Sell Product          | Customer               | Customers view their listed products for sale.                                                    |
+| UC-17       | Edit User Profile          | Customer               | Customer edits their profile.                                                                     |
+| UC-16       | View User Profile          | Customer               | Customer views their profile.                                                                     |
+
+## Work Assignment Table
+
+### Sprint 1
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
 | Trung | UC-03                       | Leader |
-| Phát  | UC-16, UC24                 | Member |
-| Khiêm | UC-14, UC-15                | Member |
+| Phát  | UC-14, UC-21                | Member |
+| Khiêm | UC-12, UC-13                | Member |
 | Phong | UC-01                       | Member |
-| Nghĩa | UC-25                       | Member |
-## Sprint 2:   
+| Nghĩa | UC-22                       | Member |
 
+### Sprint 2
 | Name  | Use Case                    | Role   |
 |-------|-----------------------------|--------|
+| Khiêm | UC-24, UC-23, UC-20        | Member |
+| Nghĩa | UC-08, UC-09               | Member |
+| Phong | UC-04, UC-25, UC-26         | Member |
 | Trung | UC-02                       | Leader |
-| Phát  | UC-09                       | Member |
-| Khiêm | UC-26, UC-29, UC-23         | Member |
-| Phong | UC-31, UC-35, UC-36, UC-37  | Member |
+| Phát  | UC-05, UC-06                | Member |
+
+### Sprint 3
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Khiêm | UC-34, UC-35                 | Member |
+| Nghĩa | UC-10                      | Member |
+| Phong | UC-04, UC-15                | Member |
+| Trung | UC-16, UC-17                | Leader |
+| Phát  | UC-28                      | Member |
+
+### Sprint 4
+| Name  | Use Case                    | Role   |
+|-------|-----------------------------|--------|
+| Khiêm | UC-36, UC-37, UC-38         | Member |
 | Nghĩa | UC-10, UC-11                | Member |
+| Phong | UC-25, UC-26                | Member |
+| Trung | UC-18, UC-19                | Leader |
+| Phát  | UC-29, UC-30                | Member |
 
-## Sprint 3: 
-| Name  | Use Case                    | Role   |
-|-------|-----------------------------|--------|
-| Trung | UC-07, UC-08                | Leader |
-| Phát  |   UC-04, UC-05                | Member |
-| Khiêm | UC-33, UC-19                | Member |
-| Phong | UC-28, UC-39                | Member |
-| Nghĩa | UC-38, UC-27                | Member |
-
-
-## Sprint 4: 
-| Name  | Use Case                    | Role   |
-|-------|-----------------------------|--------|
-| Trung | UC-09, UC-10, UC-32         | Leader |
-| Phát  | UC-11, UC-17,UC-30          | Member |
-| Khiêm | UC-25, UC-06, UC-31         | Member |
-| Phong | UC-40, UC-39,UC-12          | Member |
-| Nghĩa | UC-36, UC-13,UC-29          | Member |
 
 chạy backend: npm run start:dev - 
 chạy frontend: npm run dev 
-
+chạy admin: npm run dev 
 https://docs.google.com/spreadsheets/d/1PVXbwDWsG9AY72gb8cbCuqJCZ5Barpdt/edit?gid=2015656154#gid=2015656154
